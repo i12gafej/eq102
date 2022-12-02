@@ -1,1 +1,0 @@
-HOLA, esto es el readme del project.
