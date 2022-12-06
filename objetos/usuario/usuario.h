@@ -28,6 +28,7 @@ class Usuario{
 		bool iniciarSesion();
 		void verPagina();
 		bool registrarUsuario();
+		void verListas();
 };
 bool comprobar_coincidencia(string cor, string con);
 bool comprobar_correo(string cor);
@@ -38,6 +39,8 @@ void menu();
 bool distancia(string cor);
 void registrar(string cor, string con);
 int contarUsuarios();
+
+int contarDocentes(string titulo);
 
 
 #endif /* OBJETOS_USUARIO_USUARIO_H_ */

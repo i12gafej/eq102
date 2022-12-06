@@ -133,7 +133,7 @@ void Usuario::verPagina(){
 		iniciarSesion();
 	break;
 	case 2:
-		//vercursos();
+		verListas();
 	break;
 	case 3:
 		registrarUsuario();
@@ -261,6 +261,61 @@ void registrar(string cor, string con){
         wr<<v[j]<<endl;//fila a fila
     }
     wr.close();
+}
+void Usuario::verListas(){//cada curso ocupara varias lineas
+	ifstream f;
+	string titulo;//una linea para titulo
+	string descripcion;//una linea para desripcion
+	string aforo;//linea para aforo
+	int n = contarDocentes(titulo), times = 1;
+	string docentes;//varias lineas para docentes:una que diga 'docentes' y las lineas por cada docente
+	f.open("open.txt", ios::in);
+	if(f.fail()){
+		cout<<"Error al abrir fichero de cursos"<<endl;
+		exit(1);
+	}
+	cout<<"-------------------------------------------------"<<endl;
+	while(!f.eof()){
+		getline(f, titulo);
+		cout<<times<<". "<<titulo<<endl;
+		getline(f, descripcion);
+		cout<<"Descripcion: "<<descripcion<<endl;
+		getline(f, aforo);
+		cout<<"Aforo maximo: "<<aforo<<endl;
+		getline(f, docentes);
+		cout<<docentes<<endl;
+		getline(f, docentes);
+		cout<<docentes<<endl;
+		cout<<"-------------------------------------------------"<<endl;
+		times++;
+	}
+
+}
+int contarDocentes(string titulo){
+	ifstream d;
+	string ausi;
+	int c = 0;
+	d.open("open.txt", ios::in);
+	if(d.fail()){
+		cout<<"Error al abrir fichero de cursos"<<endl;
+		exit(1);
+	}
+	while(!d.eof()){
+		getline(d, ausi);
+		if(ausi == titulo){
+			for(int i = 0; i < 3; i++){
+				getline(d, ausi);
+			}
+			getline(d, ausi);
+		}
+	}
+	for(int i = 0 ; i < ausi.length() ; i++){
+		if(ausi[i] == ',')
+			c++;
+	}
+	d.close();
+	c++;
+	return c;
 }
 
 

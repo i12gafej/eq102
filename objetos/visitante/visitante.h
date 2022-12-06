@@ -13,9 +13,6 @@
 
 using namespace std;
 class Visitante: public Usuario{
-private:
-		string correo_;
-		string contra_;
 	public:
 		Visitante(string, string);
 
