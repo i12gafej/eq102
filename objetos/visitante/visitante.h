@@ -18,11 +18,10 @@ private:
 		string contra_;
 	public:
 		Visitante(string, string);
-		bool registrarUsuario();
+
+
 };
-bool distancia(string cor);
-void registrar(string cor, string con);
-int contarUsuarios();
+
 
 
 

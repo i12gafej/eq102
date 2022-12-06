@@ -27,12 +27,17 @@ class Usuario{
 		//User's operations
 		bool iniciarSesion();
 		void verPagina();
+		bool registrarUsuario();
 };
 bool comprobar_coincidencia(string cor, string con);
 bool comprobar_correo(string cor);
 bool arroba(string cor);
 void imprimir();
 void menu();
+
+bool distancia(string cor);
+void registrar(string cor, string con);
+int contarUsuarios();
 
 
 #endif /* OBJETOS_USUARIO_USUARIO_H_ */
