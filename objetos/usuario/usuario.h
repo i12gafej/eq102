@@ -13,8 +13,10 @@ using namespace std;
 
 class Usuario{
 	private:
-		string correo_, contra_;
+		string correo_;
+		string contra_;
 	public:
+
 		Usuario(string, string);
 		//setters
 		inline void set_correo(string correo){correo_ = correo;}
