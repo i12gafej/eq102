@@ -25,10 +25,58 @@ Participante::Participante(string correo,
 		string telefono = "null",
 		string nacimiento = "null",
 		string cmatriculados = "null"):Usuario(correo, contra){}
+void Participante::globalget(string cor){
+	ifstream f;
+	string linea, atribs[5];
+	vector<string> v;
+	v.push_back("");
+	int ncmat = 0, iters;
+	f.open("matriculas.txt", ios::in);
+	if(f.fail()){
+		cout<<"Error al obtener datos en fichero matricula."<<endl;
+		return;
+	}
+	while(!f.eof()){
+		getline(f, linea);//escanea cada linea hasta dar con el correo
+		if(linea == cor){
+			for(int i = 0 ; i < 5 ; i++){
+				getline(f, linea);//escaneamos dni, nombre, estudios, telefono y nacimiento
+				atribs[i] = linea;
+			}
+			getline(f, linea); //escaneamos los cursos
+			while(linea != '-'){//o si hay guion no escanea nada
+				v.push_back(linea);
+				getline(f, linea);
+			}
+		}
+	}
+	iters = v.size();
+	set_dni(atribs[0]);
+	set_nombre(atribs[1]);
+	set_estudios(atribs[2]);
+	set_telefono(atribs[3]);
+	set_nacimiento(atribs[4]);
+	string cursos;
+	cursos = concatenar(v, iters-1);
+	set_cmatriculados(cursos);
 
+
+}
+string concatenar(vector<string> v, int n){
+	string resul;
+    if(n < 0){
+		return resul + ".";
+	}
+    else if(n == 0)
+        resul = v[n] +  concatenar(v, n-1);
+    else{
+        resul = v[n] + ", " + concatenar(v, n-1);
+    }
+    return resul;
+}
 bool Participante::matricularse(){
 	bool valid = false;
-	string aforo, date, estudios, linea, participantes;
+	string aforo, date, estudios, linea, participantes, nombre;
 	int cual, curso, ticks = 0, partips, afor;
 	while(valid != true){
 		cual = Usuario::verListas();
@@ -38,7 +86,7 @@ bool Participante::matricularse(){
 			cout<<"Curso no valido, prueba de nuevo."<<endl;
 		}
 		else{
-			if(buscarCurso(curso) == true){ //el curso existe
+			if(buscarCurso(curso, cual) == true){ //el curso existe
 				cout<<"EN PROCESO DE IMPRESION"<<endl;
 				//tenemos que hacer 3 comprobaciones,
 				//la primera es si el curso tienee aforo
@@ -56,7 +104,12 @@ bool Participante::matricularse(){
 					}
 				}
 				for(int i = 0; i < 5; i++){
-					getline(f, linea);//recorre de ID a descripcion
+					//recorre de ID a descripcion
+					if(i == 1){
+						getline(f, nombre);
+					}
+					else
+						getline(f, linea);
 				}
 				getline(f, estudios);//capta estudios
 				if(get_estudios() == estudios){//comprobacion estudios
@@ -76,19 +129,104 @@ bool Participante::matricularse(){
 				afor = stoi(aforo);
 				if(partips < aforo)
 					ticks++;
-				//tengo que hacer la edicion de la bbdd y el resultado buleano
+				f.close();
+				if(actualizarCursos(partips, cual, curso)==true){
+					cout<<"Base de datos actualizada."<<endl;
+				}
+				else{
+					cout<<"Error al actualizar base de datos de cursos."<<endl;
+					return false;
+				}
+				if(actualizarMatricula(get_dni(), nombre)==true){
+					cout<<"Base de datos de matriculas acctuaalizada."<<endl;
+					valid = true;
+					return true;
+				}
+				else{
+					cout<<"Error al actualizar base de datos de matriculas."<<endl;
+					return false;
+				}
+
 			}
 			else{
 				cout<<"No te matriculas en nada."<<endl;
 				valid = true;
 			}
 		}
-
 	}
 	return false;
 }
-void Participante::globalset(){
-
+bool actualizarMatricula(string dni, string nombre){
+	ifstream re;
+	int posi = 0, lines = 0;
+	vector<string> v;
+	string linea;
+	re.open("matriculas.txt", ios::in);
+	if(re.fail()){
+		cout<<"Error de abrir fichero de lectura."<<endl;
+		return false;
+	}
+	while(!re.eof()){
+		getline(re, linea);
+		if(linea == dni){
+			posi = lines; //guardamos la posicion del dni del alumno matriculado
+		}
+		v.push_back(linea);
+		lines++;
+	}
+	lines++;
+	re.close();
+	ofstream wr;
+	wr.open("matriculas.txt", ios::out);//machaca open con los datos actualizados
+	if(wr.fail()){
+		cout<<"Error de abrir fichero de escritura."<<endl;
+		return false;
+	}
+	int i = 0;
+	while(!wr.eof() || i <= lines){
+		if(i == posi + 5)		//si estamos en 5 posiciones del dni
+			wr<<nombre<<endl;   //escribimos el curso al que se ha matriculado
+		else
+			wr<<v[i]<<endl;
+		i++;
+	}
+	wr.close();
+	return true;
+}
+bool actualizarCursos(int p, int ncursos, int curso){
+	//bolcar datos en vector e imprimirlos en open.txt
+	string a[10][ncursos];
+	ifstream re;
+	int c = 0;
+	re.open("open.txt", ios::in);
+	if(re.fail()){
+		cout<<"Error de abrir fichero de lectura."<<endl;
+		return false;
+	}
+	while(!re.eof() && c < ncursos){
+		for(int i = 0 ; i < 10 ; i++){
+			if(i == 9 && c == curso)
+				a[i][c] = p;
+			else
+				getline(re, a[i][c]);
+		}
+		c++;
+	}
+	re.close();
+	ofstream wr;
+	wr.open("open.txt", ios::out);//machaca open con los datos actualizados
+	if(wr.fail()){
+		cout<<"Error de abrir fichero de escritura."<<endl;
+		return false;
+	}
+	while(!wr.eof() && c < ncursos){
+		for(int i = 0 ; i < 10 ; i++){
+			wr<<a[i][c]<<endl;
+		}
+		c++;
+	}
+	wr.close();
+	return true;
 }
 bool comprobarFecha(string ahora, string date){
 	//Comparar año
@@ -161,7 +299,7 @@ bool comprobarFecha(string ahora, string date){
 	}
 	return false;
 }
-bool buscarCurso(int curso){
+bool buscarCurso(int curso, int ncursos){
 	int i = 1, c;
 	string linea,nombre;
 	ifstream fichero;
@@ -176,7 +314,7 @@ bool buscarCurso(int curso){
 		}							//hasta llegar al que queremos
 			i++;
 	}
-	if(i == curso){
+	if(i == curso && i <= ncursos){//si la posicion está en el curso y no supera los ncursos estamos bien
 		getline(fichero, nombre);//nombre del curso que queremos
 		fichero.close();
 		cout<<"Es <"<<nombre<<"> el curso donde te quieres matricular?"<<endl;
@@ -190,6 +328,10 @@ bool buscarCurso(int curso){
 
 	}
 	else if(fichero.eof()){
+		cout<<"No se ha podido acceder al curso"<<endl;
+		return false;
+	}
+	else{
 		cout<<"No se ha podido acceder al curso"<<endl;
 		return false;
 	}

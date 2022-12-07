@@ -8,6 +8,7 @@
 #include <iostream>
 #include "usuario.h"
 #include <stdlib.h>
+#include <vector>
 #include <string>
 
 
@@ -121,7 +122,7 @@ void imprimir(){
 	}
 	fich.close();
 }
-void Usuario::verPagina(){
+int Usuario::verPagina(){
 	cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
 	cout<<"-------------------------------------------------"<<endl;
 	int c;
@@ -130,7 +131,8 @@ void Usuario::verPagina(){
 	cin>>c;
 	switch(c){
 	case 1:
-		iniciarSesion();
+		if(iniciarSesion()==true)
+			return 1;
 	break;
 	case 2:
 		verListas();
@@ -141,6 +143,7 @@ void Usuario::verPagina(){
 	default:
 		cout<<"Argumento no valido";
 	}
+	return 0;
 }
 void menu(){
 	cout<<"1. Iniciar Sesion(opcional pero hecho)"<<endl;

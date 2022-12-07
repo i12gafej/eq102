@@ -38,14 +38,17 @@ class Participante : public Usuario{
 		inline string get_cmatriculados(){return cmatriculados_;}
 		//funcionalidades
 		bool matricularse();
+		void globalget(string cor);
 		void paginaParticipante();
-		void globalset();
 
 };
 void menu();
 bool opcionaMatricula();
-bool buscarCurso(int curso);
+bool buscarCurso(int curso, int ncursos);
 bool comprobarFecha(string ahora, string date);
+bool actualizarCursos(int p, int ncursos, int curso);
+bool actualizarMatricula(string dni, string nombre);
+string concatenar(vector<string> v, int n);
 
 #endif /* OBJETOS_PARTICIPANTE_PARTICIPANTE_H_ */
 
