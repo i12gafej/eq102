@@ -44,7 +44,8 @@ class Participante : public Usuario{
 };
 void menu();
 bool opcionaMatricula();
-
+bool buscarCurso(int curso);
+bool comprobarFecha(string ahora, string date);
 
 #endif /* OBJETOS_PARTICIPANTE_PARTICIPANTE_H_ */
 

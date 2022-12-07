@@ -28,7 +28,7 @@ class Usuario{
 		bool iniciarSesion();
 		void verPagina();
 		bool registrarUsuario();
-		void verListas();
+		int verListas();
 };
 bool comprobar_coincidencia(string cor, string con);
 bool comprobar_correo(string cor);

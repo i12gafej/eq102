@@ -262,13 +262,19 @@ void registrar(string cor, string con){
     }
     wr.close();
 }
-void Usuario::verListas(){//cada curso ocupara varias lineas
+int Usuario::verListas(){//cada curso ocupara varias lineas
 	ifstream f;
-	string titulo;//una linea para titulo
+	string id, titulo;//una linea paraid y otra pa titulo
 	string descripcion;//una linea para desripcion
 	string aforo;//linea para aforo
 	int n = contarDocentes(titulo), times = 1;
-	string docentes;//varias lineas para docentes:una que diga 'docentes' y las lineas por cada docente
+	string docentes, contacto;//varias lineas para docentes:
+							//una que diga 'docentes'
+							//otra que pona los nombres
+							//otra que muestre sus contactos
+	string estudios;//estudios requeridos para acceder al curso
+	string inicio, fin; //fechas de inicio y fin
+	string participantes;
 	f.open("open.txt", ios::in);
 	if(f.fail()){
 		cout<<"Error al abrir fichero de cursos"<<endl;
@@ -276,20 +282,30 @@ void Usuario::verListas(){//cada curso ocupara varias lineas
 	}
 	cout<<"-------------------------------------------------"<<endl;
 	while(!f.eof()){
-		getline(f, titulo);
+		getline(f, id);//ID
+		cout<<"ID: "<<id<<endl;
+		getline(f, titulo);//nombre
 		cout<<times<<". "<<titulo<<endl;
-		getline(f, descripcion);
+		getline(f, docentes);//Docentes
+		cout<<"Docentes:"<<docentes<<endl;
+		getline(f, contacto);//Contacto
+		cout<<"Contacto de docentes"<<contacto<<endl;
+		getline(f, descripcion);//Descripcion
 		cout<<"Descripcion: "<<descripcion<<endl;
-		getline(f, aforo);
+		getline(f, estudios);//estudios requeridoss
+		cout<<"Estudios requeridos"<<estudios<<endl;
+		getline(f, aforo);//Aforo
 		cout<<"Aforo maximo: "<<aforo<<endl;
-		getline(f, docentes);
-		cout<<docentes<<endl;
-		getline(f, docentes);
-		cout<<docentes<<endl;
+		getline(f,inicio);//Fecha de Inicio
+		cout<<"Fecha de Inicio del Curso: "<<inicio<<endl;
+		getline(f,fin);//Fecha de Final
+		cout<<"Fecha de finalizacion del Curso: "<<fin<<endl;
+		getline(f,participantes);//N participantes cursando
+		cout<<"Participantes del curso: "<<participantes<<endl;
 		cout<<"-------------------------------------------------"<<endl;
 		times++;
 	}
-
+	return times;
 }
 int contarDocentes(string titulo){
 	ifstream d;
@@ -301,11 +317,8 @@ int contarDocentes(string titulo){
 		exit(1);
 	}
 	while(!d.eof()){
-		getline(d, ausi);
+		getline(d, ausi);//lee todas las lineas hasta topar con el titulo
 		if(ausi == titulo){
-			for(int i = 0; i < 3; i++){
-				getline(d, ausi);
-			}
 			getline(d, ausi);
 		}
 	}
