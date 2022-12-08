@@ -271,7 +271,10 @@ void registrar(string cor, string con){
 	}
 	i = 0;
     for(int j = 0; j < n*2; j++){//hasta que no llegue al numero de usuarios no para
-        wr<<v[j]<<endl;//fila a fila
+    	if(j == n*2 -1)
+    		wr<<v[j]; //en la ultima impresion no mete un enter de mas
+    	else
+    		wr<<v[j]<<endl;//fila a fila
     }
     wr.close();
 }

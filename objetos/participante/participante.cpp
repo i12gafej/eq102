@@ -93,7 +93,8 @@ bool Participante::matricularse(){
 		else{
 			if(buscarCurso(curso, cual) == true){ //el curso existe
 				cout<<"EN PROCESO DE IMPRESION"<<endl;
-				//tenemos que hacer 3 comprobaciones,
+				//tenemos que hacer 4 comprobaciones,
+				//antes que nada ver si el alumno esta matriculado ya
 				//la primera es si el curso tienee aforo
 				//la segunda es ver si se tienen los estudios requeridos
 				//la tercera es ver si es antes de la fecha de inicio
@@ -115,6 +116,12 @@ bool Participante::matricularse(){
 					}
 					else
 						getline(f, linea);
+				}
+				string cmat = get_cmatriculados();
+				cout<<cmat<<endl;
+				if(cmat.find(nombre)){
+					cout<<"Este alumno ya esta registrado en el curso"<<endl;
+					return false;
 				}
 				getline(f, estudios);//capta estudios
 				if(get_estudios() == estudios){//comprobacion estudios
