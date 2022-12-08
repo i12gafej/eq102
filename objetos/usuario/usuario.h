@@ -26,7 +26,7 @@ class Usuario{
 		inline string get_contra(){return contra_;}
 		//User's operations
 		bool iniciarSesion();
-		int verPagina();
+		int verPagina(int vez);
 		bool registrarUsuario();
 		int verListas();
 };

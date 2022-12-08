@@ -122,27 +122,37 @@ void imprimir(){
 	}
 	fich.close();
 }
-int Usuario::verPagina(){
-	cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
-	cout<<"-------------------------------------------------"<<endl;
-	int c;
+int Usuario::verPagina(int vez){
+	if(vez == 0){
+		cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
+		cout<<"-------------------------------------------------"<<endl;
+	}
+	int c, d = 0;
 	cout<<"Que desea hacer?"<<endl;
 	menu();
 	cin>>c;
-	switch(c){
-	case 1:
-		if(iniciarSesion()==true)
-			return 1;
-	break;
-	case 2:
-		verListas();
-	break;
-	case 3:
-		registrarUsuario();
-	break;
-	default:
-		cout<<"Argumento no valido";
-	}
+	//while(d == 0){
+		switch(c){
+		case 1:
+			if(iniciarSesion()==true){
+				d = 1;
+				return 1;
+			}
+		break;
+		case 2:
+			verListas();
+			verPagina(1);
+		break;
+		case 3:
+			if(registrarUsuario() == true){
+				d = 1;
+				return 1;
+			}
+		break;
+		default:
+			cout<<"Argumento no valido";
+		}
+	//}
 	return 0;
 }
 void menu(){
@@ -171,7 +181,7 @@ bool Usuario::registrarUsuario(){
 						cout<<"Correo valido";
 						if(comprobar_correo(c) == true){
 							cout<<", pero ya esta registrado." <<endl;
-							flag = 1;
+							flag = 1; //si el correo esta registrado, repites la introduccion de correo con otro mensaje
 						}
 						else{
 							flag = 0;
@@ -272,8 +282,7 @@ int Usuario::verListas(){//cada curso ocupara varias lineas
 	string aforo;//linea para aforo
 	int n = contarDocentes(titulo), times = 1;
 	string docentes, contacto;//varias lineas para docentes:
-							//una que diga 'docentes'
-							//otra que pona los nombres
+							//una que pona los nombres
 							//otra que muestre sus contactos
 	string estudios;//estudios requeridos para acceder al curso
 	string inicio, fin; //fechas de inicio y fin
@@ -308,7 +317,7 @@ int Usuario::verListas(){//cada curso ocupara varias lineas
 		cout<<"-------------------------------------------------"<<endl;
 		times++;
 	}
-	return times;
+	return times - 1;
 }
 int contarDocentes(string titulo){
 	ifstream d;

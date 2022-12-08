@@ -4,9 +4,6 @@
  *  Created on: 6 dic 2022
  *      Author: USUARIO
  */
-
-#include "visitante/visitante.h"
-#include "visitante/visitante.cpp"
 #include "participante/participante.h"
 #include "participante/participante.cpp"
 #include <iostream>
@@ -19,16 +16,16 @@ int main(){
 	int user;
 	string correo, contra;
 	Usuario uno = Usuario("","");
-	Visitante dos = Visitante("","");
 	Participante tres = Participante("","","","","","","","");
 	//CoordinadorC cuatro = CoordinadorC("","");
-	user = uno.verPagina();
+	user = uno.verPagina(0);
+	cout<<"Orden de usuario: "<<user<<endl;
 	if(user == 1){
 		correo = uno.get_correo();
 		contra = uno.get_contra();
 		tres = Participante(correo, contra,"","","","","","");
 		tres.globalget(correo);
-		tres.paginaParticipante();
+		tres.paginaParticipante(0);
 	}
 }
 

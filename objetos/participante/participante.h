@@ -8,7 +8,7 @@
 #ifndef OBJETOS_PARTICIPANTE_PARTICIPANTE_H_
 #define OBJETOS_PARTICIPANTE_PARTICIPANTE_H_
 
-
+#include "../usuario/usuario.cpp"
 #include "../usuario/usuario.h"
 #include <string>
 
@@ -39,10 +39,10 @@ class Participante : public Usuario{
 		//funcionalidades
 		bool matricularse();
 		void globalget(string cor);
-		void paginaParticipante();
+		void paginaParticipante(int vez);
 
 };
-void menu();
+void menuParticipante();
 bool opcionaMatricula();
 bool buscarCurso(int curso, int ncursos);
 bool comprobarFecha(string ahora, string date);

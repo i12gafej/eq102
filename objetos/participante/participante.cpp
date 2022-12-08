@@ -10,7 +10,6 @@
 #include <fstream>
 #include <vector>
 #include <chrono>
-#include "../usuario/usuario.cpp"
 
 #include "participante.h"
 
@@ -44,9 +43,14 @@ void Participante::globalget(string cor){
 				atribs[i] = linea;
 			}
 			getline(f, linea); //escaneamos los cursos
-			while(linea != '-'){//o si hay guion no escanea nada
-				v.push_back(linea);
-				getline(f, linea);
+			bool tri = false;
+			while(tri != true){//o si hay guion no escanea nada
+				if(linea != "-"){
+					v.push_back(linea);
+					getline(f, linea);
+				}
+				else
+					tri = true;
 			}
 		}
 	}
@@ -62,6 +66,7 @@ void Participante::globalget(string cor){
 
 
 }
+//funcion recursiva que concatena los nombres de los cursos matriculados
 string concatenar(vector<string> v, int n){
 	string resul;
     if(n < 0){
@@ -80,7 +85,7 @@ bool Participante::matricularse(){
 	int cual, curso, ticks = 0, partips, afor;
 	while(valid != true){
 		cual = Usuario::verListas();
-		cout<<"En que curso de extension desea matricularse?"<<endl;
+		cout<<"En que curso de extension de los "<<cual<<" desea matricularse?"<<endl;
 		cin>>curso;
 		if(curso < 1 || curso > cual){
 			cout<<"Curso no valido, prueba de nuevo."<<endl;
@@ -126,24 +131,37 @@ bool Participante::matricularse(){
 				getline(f, linea);//fecha fin
 				getline(f, participantes);//participantes
 				partips = stoi(participantes);
+				cout<<"Hay "<<partips<<" participantes ";
 				afor = stoi(aforo);
-				if(partips < aforo)
+				cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
+				if(partips < afor)
 					ticks++;
+				else{
+					cout<<"Aforo completo"<<endl;
+				}
+
 				f.close();
-				if(actualizarCursos(partips, cual, curso)==true){
-					cout<<"Base de datos actualizada."<<endl;
+				if(ticks == 3){
+					if(actualizarCursos(partips, cual, curso)==true){
+						cout<<"Base de datos actualizada."<<endl;
+						if(actualizarMatricula(get_dni(), nombre)==true){
+							cout<<"Base de datos de matriculas acctuaalizada."<<endl;
+							valid = true;
+							return true;
+						}
+						else{
+							cout<<"Error al actualizar base de datos de matriculas."<<endl;
+							return false;
+						}
+					}
+					else{
+						cout<<"Error al actualizar base de datos de cursos."<<endl;
+						return false;
+					}
+
 				}
 				else{
-					cout<<"Error al actualizar base de datos de cursos."<<endl;
-					return false;
-				}
-				if(actualizarMatricula(get_dni(), nombre)==true){
-					cout<<"Base de datos de matriculas acctuaalizada."<<endl;
-					valid = true;
-					return true;
-				}
-				else{
-					cout<<"Error al actualizar base de datos de matriculas."<<endl;
+					cout<<"No puedes matricularte en este curso, ya que no se cumplen los requerimientos posibles para ello."<<endl;
 					return false;
 				}
 
@@ -168,13 +186,19 @@ bool actualizarMatricula(string dni, string nombre){
 	}
 	while(!re.eof()){
 		getline(re, linea);
+        v.push_back(linea);
 		if(linea == dni){
 			posi = lines; //guardamos la posicion del dni del alumno matriculado
+            cout<<"Posicion de la linea del dni que buscamos aqui <"<<posi<<">"<<endl;
 		}
-		v.push_back(linea);
+        cout<<"v["<<lines<<"]= "<<linea<<endl;
 		lines++;
 	}
-	lines++;
+    if(v[v.size()-1] != "-"){ //Si no es un gion el ulitmo elemento del fichero eliminamos el ultimo elemento del vector para no crear espacios en blanco
+        v.pop_back();
+    }
+    cout<<"Numero de lineas: "<<lines<<endl;
+    cout<<"Numero de elementos de v: "<<v.size()<<endl;
 	re.close();
 	ofstream wr;
 	wr.open("matriculas.txt", ios::out);//machaca open con los datos actualizados
@@ -182,46 +206,76 @@ bool actualizarMatricula(string dni, string nombre){
 		cout<<"Error de abrir fichero de escritura."<<endl;
 		return false;
 	}
-	int i = 0;
-	while(!wr.eof() || i <= lines){
-		if(i == posi + 5)		//si estamos en 5 posiciones del dni
+	int i = 0, flag = 0, iter = 0;
+	while(i < v.size()){
+		if(i == posi + 5 && flag == 0){		//si estamos en 5 posiciones del dni
 			wr<<nombre<<endl;   //escribimos el curso al que se ha matriculado
-		else
+            cout<<"v["<<iter<<"]= "<<nombre<<endl;
+            flag++;
+            iter++;
+        }
+		else{
 			wr<<v[i]<<endl;
-		i++;
+            cout<<"v["<<i<<"]= "<<v[i]<<endl;
+            i++;
+            iter++;
+        }
 	}
 	wr.close();
 	return true;
 }
 bool actualizarCursos(int p, int ncursos, int curso){
 	//bolcar datos en vector e imprimirlos en open.txt
-	string a[10][ncursos];
+	string a[10][ncursos], ausi;
+    curso--;
 	ifstream re;
-	int c = 0;
+	int c = 0, lines = 0;
 	re.open("open.txt", ios::in);
 	if(re.fail()){
 		cout<<"Error de abrir fichero de lectura."<<endl;
 		return false;
 	}
+    string participantes = to_string(p+1);
 	while(!re.eof() && c < ncursos){
 		for(int i = 0 ; i < 10 ; i++){
-			if(i == 9 && c == curso)
-				a[i][c] = p;
-			else
+			if(i == 9 && c == curso){
+				a[9][c] = participantes;
+                cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
+                getline(re, ausi);
+            }
+			else{
 				getline(re, a[i][c]);
+                cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
+
+            }
+            lines++;
 		}
 		c++;
+        cout<<"c = "<<c<<endl;
 	}
+
+    c = 0;
 	re.close();
+    cout<<"TAMOS BIEEEEEEN"<<endl;
+    cout<<"---------------------------------"<<endl;
 	ofstream wr;
 	wr.open("open.txt", ios::out);//machaca open con los datos actualizados
 	if(wr.fail()){
 		cout<<"Error de abrir fichero de escritura."<<endl;
 		return false;
 	}
+    cout<<"TAMOS CHULITOO"<<endl;
+    cout<<"---------------------------------"<<endl;
 	while(!wr.eof() && c < ncursos){
 		for(int i = 0 ; i < 10 ; i++){
-			wr<<a[i][c]<<endl;
+			if(i == 9 && c == ncursos - 1){
+                wr<<a[i][c];
+                cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
+            }
+            else{
+                wr<<a[i][c]<<endl;
+                cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
+            }
 		}
 		c++;
 	}
@@ -308,9 +362,10 @@ bool buscarCurso(int curso, int ncursos){
 		cout<<"Error al acceder al fichero de cursos"<<endl;
 		exit(1);
 	}
-	while(!fichero.eof() || i < curso){
+	while(i < curso && i < ncursos){
 		for(int j = 0; j < 10 ; j++){
 			getline(fichero, linea);//escaneamos un curso completo
+			cout<<linea<<endl;
 		}							//hasta llegar al que queremos
 			i++;
 	}
@@ -328,34 +383,48 @@ bool buscarCurso(int curso, int ncursos){
 
 	}
 	else if(fichero.eof()){
-		cout<<"No se ha podido acceder al curso"<<endl;
+		cout<<"No se ha podido acceder al curso(f)"<<endl;
 		return false;
 	}
 	else{
-		cout<<"No se ha podido acceder al curso"<<endl;
+		cout<<"No se ha podido acceder al curso(otro)"<<endl;
 		return false;
 	}
 	return false;
 }
-void Participante::paginaParticipante(){
-	cout<<"BIENVENIDO <"<<get_nombre()<<">."<<endl;
-	cout<<"-------------------------------------------------"<<endl;
+void Participante::paginaParticipante(int vez){
+	if(vez == 0){ //Si es la primera vez que entra pone vienbenido
+		cout<<"BIENVENIDO <"<<get_nombre()<<">."<<endl;
+		cout<<"-------------------------------------------------"<<endl;
+	}
 	int c;
+	bool mat;
 	cout<<"Que desea hacer?"<<endl;
-	menu();
+	menuParticipante();
 	cin>>c;
 	switch(c){
 	case 1:
 		verListas();
 		if(opcionaMatricula() == true){
-			matricularse();
+			mat = matricularse();
+			if(mat == false || mat == true){
+				if(mat == true)
+					cout<<"Inscripcion con exito"<<endl;
+				paginaParticipante(1);
+			}
+
+		}
+		else{
+			paginaParticipante(1);
 		}
 	break;
+	case 2:
+		exit(1);
 	default:
 		cout<<"Argumento no valido";
 	}
 }
-void menu(){
+void menuParticipante(){
 	cout<<"1. Ver cursos de extension"<<endl;
 	cout<<"2. Salirse"<<endl;
 }
