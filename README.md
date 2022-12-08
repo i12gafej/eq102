@@ -12,4 +12,4 @@ He terminado el matricularse, ya que me daba varios errores:
  Tambien he solucionado varios problemas con el registrarse:
  -Cuando tus datos no estan en matriculas.txt te pide las cedenciales
  -Coherencia en la verosimilitud de las fechas y estudios
- -al inscribirse en un curso te incribia todas las veces que le dieses al mismo curso, con lo que habia que reinstanciar los datos del participante a cada vez que se inscribia en un curso
+ -al inscribirse en un curso si aun no te habias inscrito en ningun curso, te incribia todas las veces que le dieses al mismo curso, con lo que habia que reinstanciar los datos del participante a cada vez que se inscribia en un curso
