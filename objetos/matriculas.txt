@@ -1,7 +1,7 @@
 i12gafej@uco.es
 46072146
 Javier Garcia fernandez
-Ingenieria
+Grado en Ingeniería Informática
 Telefono
 04012003
 CURSO DE PILOTO
@@ -23,4 +23,20 @@ Telefono
 04012003
 CURSO DE Pesca
 Controladores
+-
+agaravi@uco.es
+1234234
+Alicia Garcia Aviles
+// Grado en Ingeniería Informática
+666777888
+1102003
+-
+r@t.e
+234234
+papiloma jerona
+// Grado en Ingeniería Informática
+23423423
+31032004
+CURSO DE PILOTO
+CURSO DE ALBANHILERIA
 -

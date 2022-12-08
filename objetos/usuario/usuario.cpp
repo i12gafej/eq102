@@ -40,6 +40,9 @@ bool Usuario::iniciarSesion(){
 		while(ccorr != true){ //si falla el correo se repite el bucle del correo
 			cout<<"Introducir correo: "<<endl;
 			cin>>c;
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
 			set_correo(c);
 			bool al = arroba(c);
 			if(comprobar_correo(c) == true){ //comprueba que el correo esté en el fichero
@@ -54,9 +57,15 @@ bool Usuario::iniciarSesion(){
 		}
 		cout<<"Introducir contrasenya: "<<endl;
 		cin>>p;
+		cout<<endl;
+		cout<<endl;
+		cout<<endl;
 		set_contra(p);
 		if(comprobar_coincidencia(c,p)==true){//comprobamos que la contraseña y el correo casan
-			cout<<"Inicio en la sesión con exito"<<endl;
+			cout<<"Inicio en la sesion con exito"<<endl;
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
 			ccontra = true; //se termina el while grande
 			return true;
 		}
@@ -173,6 +182,9 @@ bool Usuario::registrarUsuario(){
 				else
 					cout<<"Introducir correo, esta vez uno no registrado: "<<endl;
 				cin>>c;
+				cout<<endl;
+				cout<<endl;
+				cout<<endl;
 				set_correo(c);
 				bool al = arroba(c);
 				if(al == true){ //comprueba que el correo tenga arroba y punto
@@ -181,6 +193,9 @@ bool Usuario::registrarUsuario(){
 						cout<<"Correo valido";
 						if(comprobar_correo(c) == true){
 							cout<<", pero ya esta registrado." <<endl;
+							cout<<endl;
+							cout<<endl;
+							cout<<endl;
 							flag = 1; //si el correo esta registrado, repites la introduccion de correo con otro mensaje
 						}
 						else{
@@ -197,7 +212,13 @@ bool Usuario::registrarUsuario(){
 			cout<<"Introducir contrasenya: "<<endl;
 			cin>>p;
 			set_contra(p);
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
 			cout<<"Contraseña valida"<<endl;
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
 			ccontra = true; //se termina el while grande
 			registrar(c,p);
 			return true;

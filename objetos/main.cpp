@@ -24,7 +24,7 @@ int main(){
 		correo = uno.get_correo();
 		contra = uno.get_contra();
 		tres = Participante(correo, contra,"","","","","","");
-		tres.globalget(correo);
+		tres.globalset(correo);
 		tres.paginaParticipante(0);
 	}
 }
