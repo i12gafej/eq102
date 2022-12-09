@@ -533,7 +533,8 @@ bool Participante::matricularse(){
 				getline(f, date);//fecha inicio
 				auto now = chrono::system_clock::now();//semilla reloj activa
 				time_t end_time = chrono::system_clock::to_time_t(now);//semilla parada y guarda hora
-				string ahora = ctime(&end_time); //guardamos fecha en ahora
+				string aus = ctime(&end_time); //guardamos fecha en ahora
+				string ahora = aus.substr(4);//quitamos parte del string
 				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
 					ticks++;
 				}
@@ -687,22 +688,20 @@ bool actualizarCursos(int p, int ncursos, int curso){
 	wr.close();
 	return true;
 }
-bool comprobarFecha(string ahora, string date){
+bool comprobarFecha(string ahora, string date){//traduce la fecha chrono a la de la bbdd
 	//Comparar año
 	int yearA, yearB, checks = 0;
-	string anoActual, anoInicio;
-	anoActual = ahora.substr(20,23);
-	anoInicio = date.substr(20,23);
+	string anoActual = ahora.substr(ahora.length()-4, 4);
+	string anoInicio = date.substr(6,4);
 	yearA = stoi(anoActual);
 	yearB = stoi(anoInicio);
 	if(yearA == yearB){ //Si el año es el mismo años tenemos que averiguar el mes y el dia
 		checks++;
 		//Comparar Mes
 		int nmesA, nmesB;
-		string mesActual, mesInicio;
 		string dicciMeses[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}; //Diccionario meses
-		mesActual = ahora.substr(4,6);
-		mesInicio = date.substr(4,6);
+		string mesActual = ahora.substr(0, 3);
+		string mesInicio = date.substr(3,2);
 		for(int i = 0; i < 12; i++){//pasamos los meses a numeros
 			if(mesActual == dicciMeses[i])
 				nmesA = i;
@@ -713,9 +712,14 @@ bool comprobarFecha(string ahora, string date){
 			checks++;
 			//Comparar Dia
 			int dayA, dayB;
-			string diaActual, diaInicio;
-			diaActual = ahora.substr(9,9);
-			diaInicio = date.substr(9,9);
+			string diaActual;
+			if(ahora[6] == ' '){
+					diaActual = "0"+ ahora.substr(5,1);
+				}
+				else{
+					diaActual = ahora.substr(5,2);
+				}
+			string diaInicio = date.substr(9,9);
 			dayA = stoi(diaActual);
 			dayB = stoi(diaInicio);
 			if(dayA < dayB){//si nos matriculamos un dia antes si podemos
