@@ -282,9 +282,9 @@ bool crearCurso(){
 	curso[3] = docentes[0] + ": " + contactos[0];
 		for(int i = 1; i < ndoc; i++){
 			if(i == ndoc -1)
-				curso[3] = curso[3] +" y " + docentes[i] + contactos[i];
+				curso[3] = curso[3] +" y " + docentes[i] +": "+ contactos[i]+",";
 			else
-				curso[3] = curso[3] +", "+ docentes[i] + contactos[i];
+				curso[3] = curso[3] +", "+ docentes[i] +": "+ contactos[i];
 		}
 	cout<<curso[3]<<endl;
 	buc = false;
@@ -381,30 +381,32 @@ bool crearCurso(){
 }
 bool editarCurso(int ncur){
 	int curso, c = 1;
-	string linea, id, cursos[10];
+	string linea = "", id, datos[10][ncur];
 	bool elec = false, buc = false;
 	cout<<"Introduce el curso que quieres modificar: ";
 	cin>>curso;
-	while(elec != true){
-		if(curso <= ncur){//el curso que metamos tiene que estar ahi
-			ifstream re;//accedemos por primera vez para ver si es ese curso el que queremos editar
-			re.open("open.txt", ios::in);
-			if(re.fail()){
-				cout<<"ERrror de lectura"<<endl;
-				return false;
-			}
-			while(!re.eof() || c != curso){
-					for(int i = 0; i < 10; i++){
-						getline(re, linea);
-					}
-				c++;
-			}
-			if(c == curso){
-				getline(re, id);
-				elec = true;
-				re.close();
-			}
+    ifstream re;
+	if(curso <= ncur && curso > 0){//el curso que metamos tiene que estar ahi
+		//accedemos por primera vez para ver si es ese curso el que queremos editar
+		re.open("open.txt", ios::in);
+		if(re.fail()){
+			cout<<"Error de lectura"<<endl;
+			return false;
 		}
+		while(!re.eof()){//escaneaamos toda la pagina
+				for(int i = 0; i < 10; i++){
+					getline(re, datos[i][c-1]);
+                    //cout<<"DATO CAPTADO DE ["<<i<< "]["<< c-1<<"]="+datos[i][c-1]<<endl;
+					if(c == curso && i == 0){
+						id = datos[0][c-1]; //cuando topemos con el id lo guardamos en string id
+                        cout<<"ID DEL CURSO ES "<<id<<endl;
+                        //cout<<"DATO CAPTADO DE ["<<i<< "]["<< c-1<<"]="+datos[i][c-1]<<endl;
+					}
+				}
+			c++;
+		}
+		re.close();
+        cout<<"CERRAU"<<endl;
 	}
 	cout<<"Es el curso que quieres editar el que tiene este id <"<<id<<">?"<<endl;
 	cout<<"1. Si"<<endl;
@@ -415,22 +417,24 @@ bool editarCurso(int ncur){
 		return false;
 	}
 	string atribs[10];
-	ifstream re;//accedemos una segunda vez para ir volcando en un vector los datos y cambiandolos por otros
+    //accedemos una segunda vez para ir volcando en un vector los datos y cambiandolos por otros
 	re.open("open.txt", ios::in);
 	if(re.fail()){
 		cout<<"Error de lectura"<<endl;
 		return false;
 	}
-	while(!re.eof() || c != curso){
+	c = 1;
+	while(id != linea && c < curso){
 			for(int i = 0; i < 10; i++){
 				getline(re, linea);
+                cout<<linea<<endl;
 			}
 		c++;
 	}
 	if(c == curso){
 		getline(re, atribs[0]);//id
-		cout<<"El id es <"+atribs[0]+">."<<endl;
-		cout<<"Quieres modificarlo?"<<endl;
+		cout<<"El id es <" + atribs[0] + ">."<<endl;
+		cout<<"Quieres modificar el id?"<<endl;
 		cout<<"1. Si"<<endl;
 		cout<<"2. No"<<endl;
 		cin>>x;
@@ -486,18 +490,17 @@ bool editarCurso(int ncur){
 			}
 		}
 		buc = false;
-		bool docFlag = false, encontrado = false;
-		int ndoc = 0;
+		bool docFlag = false, encontrado = false, docsMod = false;
+		int ndoc = 0, d, z;
 		vector<string> docentes;
 		getline(re, atribs[2]);//Docentes
 		cout<<"Los docentes del curso son <"+atribs[2]+">."<<endl;
 		cout<<"Quieres modificarlo?"<<endl;
-		cout<<"1. Si (tendras que introducirlos todos de nuevo)"<<endl;
+		cout<<"1. Si (los eliminaras todos)"<<endl;
 		cout<<"2. No"<<endl;
 		cin>>x;
 		if(x == 1){
 			while(buc != true){
-				cout<<"Ahora aniada los docentes que impartiran el curso: "<<endl;
 				while(docFlag != true){
 					cout<<"Introduzca el nombre del docente"<<endl;
 						getline(cin, linea);
@@ -536,26 +539,309 @@ bool editarCurso(int ncur){
 				linea = docentes[0];
 				for(int i = 1; i < ndoc; i++){
 					if(i == ndoc -1)
-						linea = linea +" y " + docentes[i];
+						linea = linea +" y " + docentes[i] + ".";
 					else
 						linea = linea +", "+ docentes[i];
 				}
+				atribs[2] = linea;
 				buc = true;
+				docsMod = true;
+			}
+		}
+		else if(x == 2){
+			docentes = desglosar(atribs[2], 0);
+		}
+		buc = false;
+		docFlag = false;
+		encontrado = false;
+		vector<string> contactos;
+		int ncon = 0;
+		getline(re, atribs[3]);
+		if(docsMod == true){
+			while(buc != true){
+			cout<<"Ahora vamos a introducir los contactos de los docentes"<<endl;
+			for(int i = 0; i < ndoc; i++){
+				docFlag = false;
+				while(docFlag != true){
+					cout<<"Ncons = "<<ncon<<endl;
+					cout<<"Cual va a ser el contacto de "<<docentes[i]<<" ?"<<endl;
+						getline(cin, atribs[3]);
+						getline(cin, atribs[3]);
+					cout<<"El contacto de <"<<docentes[i]<<"> seria <"<<atribs[3]<<">"<<endl;
+					cout<<"Estas seguro"<<endl;
+					cout<<"1. Si"<<endl;
+					cout<<"2. No"<<endl;
+					cout<<"--> ";
+					cin>>x;
+					if(x == 1){//hay que ver que no sea el mismo que el de otra persona ya que es unico
+						for(int j = 0 ; j < ncon; j++){
+							cout<<"p1"<<endl;
+							size_t found = contactos[j].find(atribs[3]);//en found se guarda la posicion de encontrar
+							if(found != string::npos){//si lo encuentra en el el vector actual
+								encontrado = true;
+							}
+						}
+						if(encontrado == false){
+							//un profesor puede impartir varios cursos, entonces tenemos que comprobar
+							//que si ese contacto está en la bbdd pertenezca al profesor
+							//comprobamo la existencia del correo
+							//si existe comprobamos la existencia del profesor
+							//y calculamos relacion con [posicion de contacto = docente.length()+2(el : y el espacio) -1 (ya que es posicion y no tamanio)]
+							//con lo que if(exiCon!=-1){if(exiCon == exiDoc + docentes[i] + 1 ){ corresponde}
+							size_t exiCon = comprobarExistencia(atribs[3]);
+							size_t exiDoc = comprobarExistencia(docentes[i]);
+
+							//cout<<"Posicion del contacto "<<exiCon<<" Posicion de docentes "<<exiDoc<<" Posicion relativa (si es == exiCon) "<< exiDoc + docentes[i].length() + 2<<endl;
+							cout<<"p2"<<endl;
+							if(exiCon == -1){//el contacto no esta en la bbdd
+								contactos.push_back(atribs[3]);
+								cout<<"Valido"<<endl;
+								ncon++;
+								docFlag = true;
+							}
+							else if(exiDoc != -1 && exiCon == -1){//el docente esta en bbdd pero con otro contacto
+								contactos.push_back(atribs[3]);
+								cout<<"Valido"<<endl;
+								ncon++;
+								docFlag = true;
+							}
+							else if(exiCon != 1 && exiDoc != -1){//estan en la bbdd
+								if(exiCon == (exiDoc + docentes[i].length() + 2)){//comprobamos si corresponde al docente
+									cout<<"Esta en la base de datos pero es valida"<<endl;
+									contactos.push_back(atribs[3]);
+									ncon++;
+									docFlag = true;
+								}
+								else{
+									cout<<"Este contacto no esta correspondiendo con el profesor"<<endl;
+									encontrado = false;
+								}
+							}
+						}
+						else{//esta en el vector actual
+							cout<<"El contacto lo acabas de aniadir, no se puede duplicar"<<endl;
+							encontrado = false;
+						}
+					}
+				}
+			}
+			buc = true;
+			}
+		}
+		else{
+			contactos = desglosar(atribs[3], 1);
+			cout<<"Quieres modificar los contactos"<<endl;
+			cout<<"1. si"<<endl;
+			cout<<"2. no"<<endl;
+			cin>>x;
+			string cp;
+			buc = false;
+			if(x == 1){
+				while(buc != true){
+
+					for(int l = 0; l < contactos.size(); l++){
+						cout<<l+1<<". "+docentes[l] + ": "+contactos[l]<<endl;
+					}
+					cout<<"Contactos size "<<contactos.size()<<endl;
+
+					cout<<"Cual quieres cambiar?"<<endl;
+					cin>>d;
+					if(d > 0 && d <= contactos.size()){
+						cout<<"Introduzca el contacto nuevo de " + docentes[d-1]<<endl;
+						getline(cin, cp);
+						getline(cin, cp);
+						cout<<"Quieres que "+cp+" sea el nuevo contacto de "+ docentes[d-1]+"?"<<d-1<<endl;
+						cout<<"1. si"<<endl;
+						cout<<"2. no"<<endl;
+						cin>>y;
+						if(y == 1){
+							contactos[d-1] = cp;
+							cout<<"quieres editar otro contacto mas?"<<endl;
+							cout<<"1. si"<<endl;
+							cout<<"2. no"<<endl;
+							cin>>z;
+							if(z != 1)
+								buc = true;
+						}
+					}
+				}
+			}
+		}
+		ndoc = docentes.size();
+		atribs[3] = docentes[0] + ": " + contactos[0];
+		if(ndoc == 1){
+			atribs[3] = atribs[3] + ",";
+		}
+		for(int i = 1; i < ndoc; i++){
+			if(i == ndoc - 1){
+				atribs[3] = atribs[3] +" y " + docentes[i] + ": "+contactos[i] + ",";
+			}
+			else
+				atribs[3] = atribs[3] +", "+ docentes[i] +": " + contactos[i];
+		}
+		cout<<atribs[3]<<endl;
+		buc = false;
+		getline(re, atribs[4]);//descripcion
+		cout<<"La descipcion del curso es <"+atribs[4]+">."<<endl;
+		cout<<"Quieres modificarla?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>x;
+		if(x == 1){
+			while(buc != true){
+				cout<<"Descripcion: "<<endl;
+				cout<<"--> ";
+				cin>>atribs[1];
+				cout<<"La descripcion seria <"<<atribs[4]<<">"<<endl;
+				cout<<"Estas seguro"<<endl;
+				cout<<"1. Si"<<endl;
+				cout<<"2. No"<<endl;
+				cout<<"--> ";
+				cin>>x;
+				if(x == 1){
+					if(comprobarExistencia(atribs[4]) != -1){
+						cout<<"Lo sentimos, este nombre ya esta siendo utilizado."<<endl;
+						cout<<"Ingrese otro nombre"<<endl;
+					}
+					else{
+						buc = true;
+					}
+				}
 			}
 		}
 		buc = false;
+		y = 0;
+
+		getline(re, atribs[5]);//grados
+		getline(re, atribs[6]);//aforo
+		cout<<"El aforo del curso es <"+atribs[6]+">."<<endl;
+		cout<<"Quieres modificarlo?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>z;
+		if(z == 1){
+			while(buc != true){
+				if(y == 0)
+					cout<<"Ahora vamos a introducir aforo maximo"<<endl;
+				cout<<"Aforo:"<<endl;
+				getline(cin, atribs[6]);
+				getline(cin, atribs[6]);
+				cout<<"El aforo maximo del curso seria <"<<atribs[6]<<">"<<endl;
+				cout<<"Estas seguro"<<endl;
+				cout<<"1. Si"<<endl;
+				cout<<"2. No"<<endl;
+				cout<<"--> ";
+				cin>>x;
+				if(x == 1){
+					buc = true;
+				}
+				else{
+					y = 1;
+				}
+			}
+		}
+		buc = false;
+		cout<<"Los estudios requeridos del curso son <"+atribs[5]+">."<<endl;
+		cout<<"Quieres modificarlos?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>x;
+		if(x == 1){
+			cout<<"Ahora vamos a introducir los estudios requeridos"<<endl;
+			atribs[5] = estudiosRequeridos();
+		}
+		cout<<atribs[5]<<endl;
+		getline(re, atribs[7]);//fecha inicio
+		cout<<"La fecha de inicio del curso es <"+atribs[7]+">."<<endl;
+		cout<<"Quieres modificarla?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>x;
+		if(x == 1){
+			cout<<"Ahora vamos a introducir la fecha de INICIO del curso"<<endl;
+			atribs[7] = fecha(0);
+		}
+		cout<<atribs[7]<<endl;
+		buc = false;
+		getline(re, atribs[8]);//fecha final
+		cout<<"La fecha de final del curso es <"+atribs[8]+">."<<endl;
+		cout<<"Quieres modificarla?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>x;
+		if(x == 1){
+			cout<<"Introduzca la fecha de FIN del curso"<<endl;
+			while(buc != true){
+				atribs[8] = fecha(1);
+				if(stoi(atribs[7].substr(6,4)) >  stoi(atribs[8].substr(6,4))){
+					cout<<"El curso debe terminar despues de la fecha de inicio(a)"<<endl;
+				}
+				else{
+					if(stoi(atribs[7].substr(3,2)) >  stoi(atribs[8].substr(3,2))){
+					cout<<"El curso debe terminar despues de la fecha de inicio(m)"<<endl;
+					}
+					else{
+						if(stoi(atribs[7].substr(0,2)) >  stoi(atribs[8].substr(0,2))){
+							cout<<"El curso debe terminar despues de la fecha de inicio(d)"<<endl;
+						}
+						else{
+							buc = true;
+						}
+					}
+				}
+			}
+		}
+		cout<<atribs[8]<<endl;
+		getline(re, atribs[9]);
 		//me queda los contactos, que hay que meterlos todos de nuevo, y el resto de cosas
 
-
 	}
+	else{
+		return false;
+	}
+	//ahora vamos a imprimir en la pagina
+	c = 1;
+	ofstream wr;
+	wr.open("open.txt", ios::out);
+	if(wr.fail()){
+		cout<<"Error de escritura"<<endl;
+		return false;
+	}
+	while(c < curso){
+		for(int i = 0; i < 10; i++){
+			wr<<datos[i][c-1]<<endl;
 
-
+		}
+		c++;
+	}
+	for(int i = 0; i < 10; i++){
+		wr<<atribs[i]<<endl;
+		if(c == ncur && i == 9){//si es el ultimo curso no mete intro final
+			wr<<atribs[9];
+			cout<<"FINAL1"<<endl;
+		}
+	}
+	c++;
+	if(c <= ncur){//si siguen quedando cursos seguimos imprimiendo
+		for(int i = c; i <= ncur; i++){
+			for(int j = 0; j < 10; j++){
+				if(i == ncur && j == 9){
+					wr<<datos[j][i-1];
+				}
+				else{
+					wr<<datos[j][i-1]<<endl;
+				}
+			}
+		}
+	}
+	wr.close();
 	return true;
 }
+
 bool eliminarCurso(){
 	return true;
 }
-int comprobarExistencia(string c){
+size_t comprobarExistencia(string c){
 	ifstream f;
 	string linea;
 	size_t found;
@@ -903,4 +1189,44 @@ string estudiosRequeridos(){
 		}
 	}
     return value;
+}
+vector<string> desglosar(string linea, int tipo){
+	int lastPos = 0, j = 0;
+	bool coma = false, done = false;
+	vector<string> v;
+	if(tipo == 0){//docente
+		for(int i = 0; i < linea.length(); i++){
+			if(linea[i] == ','){
+				v.push_back(linea.substr(lastPos, i - lastPos));
+				cout<<linea.substr(lastPos, i - lastPos)<<endl;
+				lastPos = i + 2;
+			}
+			else if(linea[i] == 'y' && linea[i+1] == ' ' && linea[i-1] == ' '){
+				v.push_back(linea.substr(lastPos, i - lastPos - 1));
+				cout<<linea.substr(lastPos, i - lastPos -1)<<endl;
+				lastPos = i + 2;
+			}
+			else if(linea[i] == '.'){
+				v.push_back(linea.substr(lastPos, i - lastPos));
+				cout<<linea.substr(lastPos, i - lastPos)<<endl;
+			}
+		}
+	}
+	else if(tipo == 1){
+		while(j < linea.length()){
+			if(linea[j] == ':'){
+				lastPos = j + 2;
+			}
+			if(lastPos < j && linea[j] == ','){
+				v.push_back(linea.substr(lastPos, j - lastPos));
+				cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
+			}
+			else if(lastPos < j && linea[j] == 'y' && linea[j+1] == ' ' && linea[j-1] == ' '){
+				v.push_back(linea.substr(lastPos, j - lastPos - 1));
+				cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
+			}
+			j++;
+		}
+	}
+	return v;
 }
