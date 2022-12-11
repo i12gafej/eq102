@@ -20,3 +20,9 @@ DIA 9/12/2022
 
 he hecho crar curso, modificado el formato de fecha, hehcho la mitad de editar curso, y me queda borrar curso pero como es cortito no pasa na. 
 hay que implementar los roles
+
+DIA 11/12
+
+he terminado las funcionalidades de editar y cambiado el formato de insercion de la fecha
+
+soloo queda implementar roles, eliminar curso y un formato estetico
