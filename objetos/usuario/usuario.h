@@ -25,12 +25,12 @@ class Usuario{
 		inline string get_correo(){return correo_;}
 		inline string get_contra(){return contra_;}
 		//User's operations
-		bool iniciarSesion();
+		int iniciarSesion();
 		int verPagina(int vez);
 		bool registrarUsuario();
 		int verListas();
 };
-bool comprobar_coincidencia(string cor, string con);
+bool comprobar_coincidencia(string cor, string con, int *rol);
 bool comprobar_correo(string cor);
 bool arroba(string cor);
 void imprimir();

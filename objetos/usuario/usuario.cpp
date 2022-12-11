@@ -32,8 +32,9 @@ bool arroba(string cor){
 	}
 	return false;
 }
-bool Usuario::iniciarSesion(){
+int Usuario::iniciarSesion(){
 	string c, p;
+	int rol;
 	bool ccorr=false; //condicionadores para hacer un bucle por si falla el correo
 	bool ccontra=false; //condicionadores para hacer un bucle por si falla la contraseña
 	while(ccontra != true){ //si falla la contraseña se repite todo el bucle
@@ -61,20 +62,20 @@ bool Usuario::iniciarSesion(){
 		cout<<endl;
 		cout<<endl;
 		set_contra(p);
-		if(comprobar_coincidencia(c,p)==true){//comprobamos que la contraseña y el correo casan
+		if(comprobar_coincidencia(c,p, &rol)==true){//comprobamos que la contraseña y el correo casan
 			cout<<"Inicio en la sesion con exito"<<endl;
 			cout<<endl;
 			cout<<endl;
 			cout<<endl;
 			ccontra = true; //se termina el while grande
-			return true;
+			return rol;
 		}
 		else{
 			ccorr = false; //volvemos a dar como error el correo para que el usuario lo tenga que volver a escribir
 			cout<<"No hay coincidencia entre la contrasenia y el correo proporcionados"<<endl;
 		}
 	}
-	return false;
+	return 0;
 }
 bool comprobar_correo(string cor){
 	ifstream fich;
@@ -93,10 +94,10 @@ bool comprobar_correo(string cor){
 	fich.close();
 	return false;
 }
-bool comprobar_coincidencia(string cor, string con){
+bool comprobar_coincidencia(string cor, string con, int *rol){
 	ifstream fich;
 	int c = 0;
-	string arriba, abajo;
+	string arriba, abajo, us;
 	fich.open("logs.txt", ios::in);//abrimos en modo lectura
 	if(fich.fail()){
 		cout<<"Error al abrir fichero"<<endl;
@@ -107,6 +108,8 @@ bool comprobar_coincidencia(string cor, string con){
 		getline(fich, abajo);
 		if(arriba == cor && abajo == con){
 			c++;
+			getline(fich, us);
+			*rol = stoi(us);
 		}
 	}
 	if(c == 1){
@@ -143,10 +146,13 @@ int Usuario::verPagina(int vez){
 	//while(d == 0){
 		switch(c){
 		case 1:
-			if(iniciarSesion()==true){
-				d = 1;
-				return 1;
-			}
+			d = iniciarSesion();
+			if(d == 1)
+				return 1;//participante
+			else if(d == 2)
+				return 2;//coordinador de curso
+			else
+				return 0;
 		break;
 		case 2:
 			verListas();
@@ -154,7 +160,6 @@ int Usuario::verPagina(int vez){
 		break;
 		case 3:
 			if(registrarUsuario() == true){
-				d = 1;
 				return 1;
 			}
 		break;
@@ -256,14 +261,14 @@ int contarUsuarios(){
 		c++;
 	}
 	f.close();
-	return c/2;
+	return c/3;
 }
 void registrar(string cor, string con){
     int i = 0, n = contarUsuarios();
     cout<<"Usuarios hay "<<n<<endl;
     ifstream re;
     ofstream wr;
-    string a, b;
+    string a, b, rol;
     vector<string> v;
 	re.open("logs.txt", ios::in);//abrimos en modo lectura
 	if(re.fail()){
@@ -273,12 +278,15 @@ void registrar(string cor, string con){
 	while(!re.eof() && i < n){//hasta que no llegue al numero de usuarios no para
 			getline(re, a);
 	        getline(re, b);
+	        getline(re, rol);
 	        v.push_back(a);
 	        v.push_back(b);
+	        v.push_back(rol);
 	        i++;
 	}
 	v.push_back(cor);
 	v.push_back(con);
+	v.push_back("1");
 	n++; //aumenta uno porque añadimos a una persiona
 
 	re.close();
@@ -291,8 +299,8 @@ void registrar(string cor, string con){
 		exit(1);
 	}
 	i = 0;
-    for(int j = 0; j < n*2; j++){//hasta que no llegue al numero de usuarios no para
-    	if(j == n*2 -1)
+    for(int j = 0; j < n*3; j++){//hasta que no llegue al numero de usuarios no para
+    	if(j == n*3 -1)
     		wr<<v[j]; //en la ultima impresion no mete un enter de mas
     	else
     		wr<<v[j]<<endl;//fila a fila

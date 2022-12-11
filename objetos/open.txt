@@ -8,7 +8,7 @@ Grado en Ingeniería Informática
 04/01/2023
 12/03/2023
 11
-00022
+0002
 CURSO DE Pesca
 Mario casas, Maria maduenio y Dolores Casal.
 Mario Casas: casasmario33@uco.es Maria Maduenio: mariamadu333@uco.es Dolores Casal: dolore4@uco.es
@@ -18,7 +18,7 @@ Grado en Ingeniería Informática
 04/01/2023
 12/03/2023
 25
-00345
+003
 CURSO DE PILOTO
 Mario casas, Maria maduenio y Dolores Casal.
 Mario Casas: casasmario33@uco.es Maria Maduenio: mariamadu333@uco.es Dolores Casal: dolore4@uco.es
@@ -28,3 +28,14 @@ Grado en Ingeniería Informática
 04/01/2023
 12/03/2023
 15
+456
+CURSO DE EMPRENDIMIENTO
+Jose Antonio Rivera Reina y Rallo
+Jose Antonio Rivera Reina: jriverajons@uco.es,
+Es un curso para ser tu propio jefe
+// Grado en Administración y Dirección de Empresas// Grado en Psicología
+56
+1/01/2021
+1/01/2022
+0
+0

@@ -24,10 +24,11 @@ class Ccurso : public Usuario{
 	void opcionMod();
 	bool crearCurso();
 	bool editarCurso(int ncur);
-	bool eliminarCurso();
+	bool eliminarCurso(int ncur);
 	size_t comprobarExistencia(string c);//devuelve la posicion de la linea donde se encuentra el elemento existente y -1 si no existe
 	string estudiosRequeridos();
 	string fecha(int mod);
+	vector<string> desglosar(string linea, int tipo);
 
 
 #endif /* OBJETOS_C_CURSOS_C_CURSOS_H_ */

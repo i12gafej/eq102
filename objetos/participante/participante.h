@@ -5,8 +5,7 @@
  *      Author: USUARIO
  */
 
-#ifndef OBJETOS_PARTICIPANTE_PARTICIPANTE_H_
-#define OBJETOS_PARTICIPANTE_PARTICIPANTE_H_
+
 
 #include "../usuario/usuario.cpp"
 #include "../usuario/usuario.h"
@@ -53,5 +52,5 @@ string estudiosPosibles();
 string fechaPosible();
 bool imprimirPerfilNuevo(string cor, string w[]);
 
-#endif /* OBJETOS_PARTICIPANTE_PARTICIPANTE_H_ */
+
 
