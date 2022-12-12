@@ -52,7 +52,6 @@ int main(){
 	Participante tres = Participante("","","","","","","","");
 	Ccurso cuatro = Ccurso("","");
 	user = uno.verPagina(0);
-	cout<<"Orden de usuario: "<<user<<endl;
 	if(user == 1){
 		correo = uno.get_correo();
 		contra = uno.get_contra();

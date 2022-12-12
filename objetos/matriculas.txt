@@ -10,10 +10,12 @@ CURSO DE ALBANHILERIA
 i12cacrm@uco.es
 46072134
 Javier Garcia fernandez
-Ingenieria
+Grado en Ingeniería Informática
 Telefono
 04012003
 CURSO DE PILOTO
+CURSO DE ALBANHILERIA
+Curso de rooneanta
 -
 i12fujuj@uco.es
 46072144
@@ -30,6 +32,8 @@ Alicia Garcia Aviles
 // Grado en Ingeniería Informática
 666777888
 1102003
+Curso de rooneanta
+CURSO DE PILOTO
 -
 r@t.e
 234234

@@ -7,7 +7,7 @@ Grado en Ingeniería Informática
 25
 04/01/2023
 12/03/2023
-11
+12
 0002
 CURSO DE Pesca
 Mario casas, Maria maduenio y Dolores Casal.
@@ -27,7 +27,7 @@ Grado en Ingeniería Informática
 25
 04/01/2023
 12/03/2023
-15
+17
 456
 CURSO DE EMPRENDIMIENTO
 Jose Antonio Rivera Reina y Rallo
@@ -38,4 +38,13 @@ Es un curso para ser tu propio jefe
 1/01/2021
 1/01/2022
 0
-0
+2000
+Curso de rooneanta
+Bad Gyal y Alicia Almaraz
+Bad Gyal: tuniniatauco.es y Alicia Almaraz: agarava@uco.es,
+pa ronear chicaaa
+// Grado en Educación// Grado en Psicología// Grado en Ingeniería Informática
+35
+13/12/2022
+04/01/2023
+3

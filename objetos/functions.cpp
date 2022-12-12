@@ -118,9 +118,9 @@ bool comprobar_coincidencia(string cor, string con, int *rol){
 	while(!fich.eof()){
 		getline(fich, arriba);//hago esto porque la estructura de la base de datos va a ser linea de correo y la siguiente linea de contraseña
 		getline(fich, abajo);
+		getline(fich, us);
 		if(arriba == cor && abajo == con){
 			c++;
-			getline(fich, us);
 			*rol = stoi(us);
 		}
 	}
@@ -182,9 +182,9 @@ int Usuario::verPagina(int vez){
 	return 0;
 }
 void menu(){
-	cout<<"1. Iniciar Sesion(opcional pero hecho)"<<endl;
+	cout<<"1. Iniciar Sesion"<<endl;
 	cout<<"2. Ver cursos de extension"<<endl;
-	cout<<"3. Registrar Usuario(opcional)"<<endl;
+	cout<<"3. Registrar Usuario"<<endl;
 }
 
 bool Usuario::registrarUsuario(){
@@ -391,7 +391,6 @@ bool Participante::globalset(string cor){
 	string linea, atribs[5];
 	vector<string> v;
 	v.push_back("");
-	cout<<"1"<<endl;
 	int ncmat = 0, iters, flag = 0;
 	f.open("matriculas.txt", ios::in);
 	if(f.fail()){
@@ -647,7 +646,11 @@ string fechaPosible(){
 		}
 	}
 	if(dayFlag == 1){
-		return sdia + smes + sano;
+		if(sdia.length() == 1){
+			return "0"+sdia + smes + sano;
+		}
+		else
+			return sdia + smes + sano;
 	}
 	return "";
 }
@@ -887,10 +890,19 @@ bool Participante::matricularse(){
 				}
 				getline(f, estudios);//capta estudios
 				string cestudios = get_estudios();
-				found = cestudios.find(estudios);
-				if(found != string::npos){//3. si se tienen los estudios requeridos
-					//cout<<"Found: "<<found<<endl;
-					ticks++;
+
+				vector<string> studis = desglosar(cestudios, 2);
+				int nestcontaos = 0;
+				while(nestcontaos <= studis.size() - 1){
+					found = estudios.find(studis[nestcontaos]);
+					if(found != string::npos){//3. si se tienen los estudios requeridos
+						//cout<<"ESTUDIOS VALIDOS"<<endl;
+						ticks++;
+						nestcontaos = studis.size();
+					}
+					else{
+						nestcontaos++;
+					}
 				}
 				getline(f, aforo);//aforo
 				getline(f, date);//fecha inicio
@@ -900,15 +912,18 @@ bool Participante::matricularse(){
 				string ahora = aus.substr(4);//quitamos parte del string
 				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
 					ticks++;
+					//cout<<"FECHA VALIDA"<<endl;
 				}
 				getline(f, linea);//fecha fin
 				getline(f, participantes);//participantes
 				partips = stoi(participantes);
-				cout<<"Hay "<<partips<<" participantes ";
+				//cout<<"Hay "<<partips<<" participantes ";
 				afor = stoi(aforo);
-				cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
-				if(partips < afor)//2. si el curso tienee aforo
+				//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
+				if(partips < afor){//2. si el curso tienee aforo
 					ticks++;
+					//cout<<"AFORO VALIDO"<<endl;
+				}
 				else{
 					cout<<"Aforo completo"<<endl;
 				}
@@ -1330,7 +1345,7 @@ bool crearCurso(){
 		cout<<endl;
 		cout<<endl;
 		cout<<endl;
-		cout<<"El curso se llamara "<<curso[1]<<endl;
+		cout<<"El curso se llamara <"+curso[1]+">"<<endl;
 		cout<<"Sera este su nombre definitivo?"<<endl;
 		cout<<"1. Si"<<endl;
 		cout<<"2. No"<<endl;
@@ -1618,7 +1633,6 @@ bool editarCurso(int ncur){
 			c++;
 		}
 		re.close();
-        cout<<"CERRAU"<<endl;
 	}
 	cout<<"Es el curso que quieres editar el que tiene este id <"<<id<<">?"<<endl;
 	cout<<"1. Si"<<endl;
@@ -1639,7 +1653,6 @@ bool editarCurso(int ncur){
 	while(id != linea && c < curso){
 			for(int i = 0; i < 10; i++){
 				getline(re, linea);
-                cout<<linea<<endl;
 			}
 		c++;
 	}
@@ -1775,7 +1788,7 @@ bool editarCurso(int ncur){
 			for(int i = 0; i < ndoc; i++){
 				docFlag = false;
 				while(docFlag != true){
-					cout<<"Ncons = "<<ncon<<endl;
+					//cout<<"Ncons = "<<ncon<<endl;
 					cout<<"Cual va a ser el contacto de "<<docentes[i]<<" ?"<<endl;
 						getline(cin, atribs[3]);
 						getline(cin, atribs[3]);
@@ -1854,7 +1867,7 @@ bool editarCurso(int ncur){
 					for(int l = 0; l < contactos.size(); l++){
 						cout<<l+1<<". "+docentes[l] + ": "+contactos[l]<<endl;
 					}
-					cout<<"Contactos size "<<contactos.size()<<endl;
+					//cout<<"Contactos size "<<contactos.size()<<endl;
 
 					cout<<"Cual quieres cambiar?"<<endl;
 					cin>>d;
@@ -1862,7 +1875,7 @@ bool editarCurso(int ncur){
 						cout<<"Introduzca el contacto nuevo de " + docentes[d-1]<<endl;
 						getline(cin, cp);
 						getline(cin, cp);
-						cout<<"Quieres que "+cp+" sea el nuevo contacto de "+ docentes[d-1]+"?"<<d-1<<endl;
+						cout<<"Quieres que "+cp+" sea el nuevo contacto de "+ docentes[d-1]+"?"<<endl;
 						cout<<"1. si"<<endl;
 						cout<<"2. no"<<endl;
 						cin>>y;
@@ -2027,10 +2040,11 @@ bool editarCurso(int ncur){
 		c++;
 	}
 	for(int i = 0; i < 10; i++){
-		wr<<atribs[i]<<endl;
 		if(c == ncur && i == 9){//si es el ultimo curso no mete intro final
 			wr<<atribs[9];
-			cout<<"FINAL1"<<endl;
+		}
+		else{
+			wr<<atribs[i]<<endl;
 		}
 	}
 	c++;
@@ -2068,7 +2082,7 @@ bool eliminarCurso(int ncur){
 			while(!re.eof()){//escaneaamos toda la pagina
 				getline(re, linea);
 				datos.push_back(linea);
-				cout<<linea<<endl;
+				//cout<<linea<<endl;
 			}
 			id = datos[(curso - 1)*10];
 			re.close();
@@ -2095,9 +2109,10 @@ bool eliminarCurso(int ncur){
 		return false;
 	}
 	for(int i = 0; i < (curso - 1)*10; i++){
-		wr<<datos[i]<<endl;
 		if(i == (curso - 1)*10 - 1)
 			wr<<datos[i];
+		else
+			wr<<datos[i]<<endl;
 	}
 	//por donde sigue despues
 	for(int i = (curso - 1)*10 + 10; i < datos.size(); i++){
@@ -2131,10 +2146,29 @@ string fecha(int mod){
 		auto now = chrono::system_clock::now();
 		time_t end_time = chrono::system_clock::to_time_t(now);
 		string aus = ctime(&end_time);
-		string anoActual = aus.substr(aus.length()-4, 4);
+		string anoActual = aus.substr(aus.length()-5, 4);
+		cout<<"Ano actual: "+ anoActual<<endl;
 		int anoA = stoi(anoActual);
 		//capto el anio actual para ver si el curso se esta creando en el pasado o en una fecha realista
 	int ano = 0, anoFlag = 0, mesFlag=0, mes, dayFlag = 0, dia;
+	int nmesA, ndiaA;
+	string dicciMeses[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}; //Diccionario meses
+	string mesActual = aus.substr(4, 3);
+	for(int i = 0; i < 12; i++){
+		if(mesActual == dicciMeses[i]){
+			nmesA = i+1;
+			cout<<"Mes actual : "<<nmesA<<endl;
+		}
+	}
+	string diaActual = aus.substr(8, 1);
+	if(diaActual == " "){
+		diaActual = aus.substr(9, 1);
+	}
+	else{
+		diaActual = aus.substr(8, 2);
+	}
+	cout<<"El dia actual es: "+diaActual<<endl;
+	ndiaA = stoi(diaActual);
 	bool visiesto = false;
 	string sano, smes, sdia;
 	while(anoFlag == 0){
@@ -2175,61 +2209,66 @@ string fecha(int mod){
 		cout<<"12. Diciembre"<<endl;
 		cout<<"Introduce el mes: ";
 		cin>>mes;
-		if(mes > 0 && mes < 13){
-			switch(mes){
-				case 1:
-					mes = 1;
-					smes = "01";
-				break;
-				case 2:
-					mes = 2;
-					smes = "02";
-				break;
-				case 3:
-					mes = 3;
-					smes = "03";
-				break;
-				case 4:
-					mes = 4;
-					smes = "04";
-				break;
-				case 5:
-					mes = 5;
-					smes = "05";
-				break;
-				case 6:
-					mes = 6;
-					smes = "06";
-				break;
-				case 7:
-					mes = 7;
-					smes = "07";
-				break;
-				case 8:
-					mes = 8;
-					smes = "08";
-				break;
-				case 9:
-					mes = 9;
-					smes = "09";
-				break;
-				case 10:
-					mes = 10;
-					smes = "10";
-				break;
-				case 11:
-					mes = 11;
-					smes = "11";
-				break;
-				case 12:
-					mes = 12;
-					smes = "12";
-				break;
-			}
-			mesFlag = 1;
+		if(mes < nmesA && ano == anoA){
+			cout<<"Fecha pasada, introduzca otra por favor"<<endl;
 		}
 		else{
-			cout<<"Fecha no valida"<<endl;
+			if(mes > 0 && mes < 13){
+				switch(mes){
+					case 1:
+						mes = 1;
+						smes = "01";
+					break;
+					case 2:
+						mes = 2;
+						smes = "02";
+					break;
+					case 3:
+						mes = 3;
+						smes = "03";
+					break;
+					case 4:
+						mes = 4;
+						smes = "04";
+					break;
+					case 5:
+						mes = 5;
+						smes = "05";
+					break;
+					case 6:
+						mes = 6;
+						smes = "06";
+					break;
+					case 7:
+						mes = 7;
+						smes = "07";
+					break;
+					case 8:
+						mes = 8;
+						smes = "08";
+					break;
+					case 9:
+						mes = 9;
+						smes = "09";
+					break;
+					case 10:
+						mes = 10;
+						smes = "10";
+					break;
+					case 11:
+						mes = 11;
+						smes = "11";
+					break;
+					case 12:
+						mes = 12;
+						smes = "12";
+					break;
+				}
+				mesFlag = 1;
+			}
+			else{
+				cout<<"Fecha no valida"<<endl;
+			}
 		}
 	}
 
@@ -2243,43 +2282,52 @@ string fecha(int mod){
 		cout<<"Introduce el dia: ";
 		cin>>dia;
 		if(dia > 0 && dia < 32){ //dia valido
-			if(mes == 2 && dia < 30){//si es febrero
-				if(dia == 29 && visiesto == true){//es 29 y es visiesto
-					cout<<"Dia 29 de febrero valido"<<endl;
-					sdia = "29";
-					dayFlag = 1;
-				}
-				else if(dia == 29 && visiesto != true){ //si es 29 y no es visiesto
-					cout<<"No puede ser, no me la cuelas"<<endl;
-				}
-				else if(dia != 29){//si no es 29 y me da igual que sea visiesto
-					cout<<"Dia valido"<<endl;
-					sdia = to_string(dia);
-					dayFlag = 1;
-				}
-			}
-			else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
-				if(dia == 31){
-					cout<<"Error, este 31 no existe"<<endl;
-				}
-				else{
-					cout<<"Dia valido"<<endl;
-					sdia = to_string(dia);
-					dayFlag = 1;
-				}
-			}
-			else if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
-				cout<<"Dia valido"<<endl;
-				sdia = to_string(dia);
-				dayFlag = 1;
+			if(nmesA == mes && dia <= ndiaA && ano == anoA){ //el curso ha de empezar un dia despues de su creacion como minimo
+				cout<<"Fecha tardia, no es posible"<<endl;
 			}
 			else{
-				cout<<"Dia no valido porque no existe el 30 o 31 de febrero"<<endl;
+				if(mes == 2 && dia < 30){//si es febrero
+					if(dia == 29 && visiesto == true){//es 29 y es visiesto
+						cout<<"Dia 29 de febrero valido"<<endl;
+						sdia = "29";
+						dayFlag = 1;
+					}
+					else if(dia == 29 && visiesto != true){ //si es 29 y no es visiesto
+						cout<<"No puede ser, no me la cuelas"<<endl;
+					}
+					else if(dia != 29){//si no es 29 y me da igual que sea visiesto
+						cout<<"Dia valido"<<endl;
+						sdia = to_string(dia);
+						dayFlag = 1;
+					}
+				}
+				else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
+					if(dia == 31){
+						cout<<"Error, este 31 no existe"<<endl;
+					}
+					else{
+						cout<<"Dia valido"<<endl;
+						sdia = to_string(dia);
+						dayFlag = 1;
+					}
+				}
+				else if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12){
+					cout<<"Dia valido"<<endl;
+					sdia = to_string(dia);
+					dayFlag = 1;
+				}
+				else{
+					cout<<"Dia no valido porque no existe el 30 o 31 de febrero"<<endl;
+				}
 			}
 		}
 	}
 	if(dayFlag == 1){
-		return sdia +"/"+ smes+"/" + sano;
+		if(sdia.length() == 1){
+			return "0"+sdia +"/"+ smes+"/" + sano;
+		}
+		else
+			return sdia +"/"+ smes+"/" + sano;
 	}
 	return "";
 }
@@ -2466,32 +2514,48 @@ vector<string> desglosar(string linea, int tipo){
 		for(int i = 0; i < linea.length(); i++){
 			if(linea[i] == ','){
 				v.push_back(linea.substr(lastPos, i - lastPos));
-				cout<<linea.substr(lastPos, i - lastPos)<<endl;
+				//cout<<linea.substr(lastPos, i - lastPos)<<endl;
 				lastPos = i + 2;
 			}
 			else if(linea[i] == 'y' && linea[i+1] == ' ' && linea[i-1] == ' '){
 				v.push_back(linea.substr(lastPos, i - lastPos - 1));
-				cout<<linea.substr(lastPos, i - lastPos -1)<<endl;
+				//cout<<linea.substr(lastPos, i - lastPos -1)<<endl;
 				lastPos = i + 2;
 			}
 			else if(linea[i] == '.'){
 				v.push_back(linea.substr(lastPos, i - lastPos));
-				cout<<linea.substr(lastPos, i - lastPos)<<endl;
+				//cout<<linea.substr(lastPos, i - lastPos)<<endl;
 			}
 		}
 	}
-	else if(tipo == 1){
+	else if(tipo == 1){//contactos
 		while(j < linea.length()){
 			if(linea[j] == ':'){
 				lastPos = j + 2;
 			}
 			if(lastPos < j && linea[j] == ','){
 				v.push_back(linea.substr(lastPos, j - lastPos));
-				cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
+				//cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
 			}
 			else if(lastPos < j && linea[j] == 'y' && linea[j+1] == ' ' && linea[j-1] == ' '){
 				v.push_back(linea.substr(lastPos, j - lastPos - 1));
-				cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
+				//cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
+			}
+			j++;
+		}
+	}
+	else if(tipo == 2){
+		while(j < linea.length()){
+			if(linea[j] == '/' && linea[j+1] =='/'){
+				lastPos = j;
+			}
+			if(lastPos < j && linea[j + 1] == '/' && linea[j+2] =='/'){
+				v.push_back(linea.substr(lastPos, j - lastPos+1));
+				//cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
+			}
+			else if(lastPos < j && j == linea.length()-1){
+				v.push_back(linea.substr(lastPos, j - lastPos +1));
+				//cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
 			}
 			j++;
 		}
