@@ -106,9 +106,9 @@ bool comprobar_coincidencia(string cor, string con, int *rol){
 	while(!fich.eof()){
 		getline(fich, arriba);//hago esto porque la estructura de la base de datos va a ser linea de correo y la siguiente linea de contraseña
 		getline(fich, abajo);
+		getline(fich, us);
 		if(arriba == cor && abajo == con){
 			c++;
-			getline(fich, us);
 			*rol = stoi(us);
 		}
 	}
@@ -170,9 +170,9 @@ int Usuario::verPagina(int vez){
 	return 0;
 }
 void menu(){
-	cout<<"1. Iniciar Sesion(opcional pero hecho)"<<endl;
+	cout<<"1. Iniciar Sesion"<<endl;
 	cout<<"2. Ver cursos de extension"<<endl;
-	cout<<"3. Registrar Usuario(opcional)"<<endl;
+	cout<<"3. Registrar Usuario"<<endl;
 }
 
 bool Usuario::registrarUsuario(){
@@ -374,6 +374,4 @@ int contarDocentes(string titulo){
 	c++;
 	return c;
 }
-
-
 

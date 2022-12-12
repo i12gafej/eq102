@@ -24,14 +24,14 @@ Participante::Participante(string correo,
 		string nacimiento = "null",
 		string cmatriculados = "null"):Usuario(correo, contra){}
 bool Participante::globalset(string cor){
-	ifstream f;
-	string linea, atribs[5];
+	ifstream f, g;
+	string linea, atribs[5], a,b,rol;
 	vector<string> v;
 	v.push_back("");
-	cout<<"1"<<endl;
 	int ncmat = 0, iters, flag = 0;
 	f.open("matriculas.txt", ios::in);
-	if(f.fail()){
+	g.open("logs.txt", ios::in);
+	if(f.fail() || g.fail()){
 		cout<<"Error al obtener datos en fichero matricula."<<endl;
 		return false;
 	}
@@ -55,7 +55,20 @@ bool Participante::globalset(string cor){
 			}
 		}
 	}
+	if(flag == 0){
+		while(!g.eof()){
+			getline(g, a);
+			getline(g, b);
+			getline(g, rol);
+			if(cor == a){
+				if(rol == "2"){//si tenemos a un coordinador de curso pasamos de aniadir sus datos
+					flag = 1;
+				}
+			}
+		}
+	}
 	f.close();
+
 	if(flag == 0){//no se ha encontrado el correo en los perfiles, no esta registrado
 		cout<<"No tienes datos en la base de datos"<<endl;
 		cout<<"Vas a introducir tus datos personales"<<endl;
@@ -97,6 +110,7 @@ bool Participante::globalset(string cor){
 	}
 	return true;
 }
+
 bool imprimirPerfilNuevo(string cor, string w[]){
 	ifstream re;
 	vector<string> v;
@@ -283,7 +297,11 @@ string fechaPosible(){
 		}
 	}
 	if(dayFlag == 1){
-		return sdia + smes + sano;
+		if(sdia.length() == 1){
+			return "0"+sdia + smes + sano;
+		}
+		else
+			return sdia + smes + sano;
 	}
 	return "";
 }
@@ -523,10 +541,19 @@ bool Participante::matricularse(){
 				}
 				getline(f, estudios);//capta estudios
 				string cestudios = get_estudios();
-				found = cestudios.find(estudios);
-				if(found != string::npos){//3. si se tienen los estudios requeridos
-					//cout<<"Found: "<<found<<endl;
-					ticks++;
+
+				vector<string> studis = desglosar(cestudios, 2);
+				int nestcontaos = 0;
+				while(nestcontaos <= studis.size() - 1){
+					found = estudios.find(studis[nestcontaos]);
+					if(found != string::npos){//3. si se tienen los estudios requeridos
+						//cout<<"ESTUDIOS VALIDOS"<<endl;
+						ticks++;
+						nestcontaos = studis.size();
+					}
+					else{
+						nestcontaos++;
+					}
 				}
 				getline(f, aforo);//aforo
 				getline(f, date);//fecha inicio
@@ -536,15 +563,18 @@ bool Participante::matricularse(){
 				string ahora = aus.substr(4);//quitamos parte del string
 				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
 					ticks++;
+					//cout<<"FECHA VALIDA"<<endl;
 				}
 				getline(f, linea);//fecha fin
 				getline(f, participantes);//participantes
 				partips = stoi(participantes);
-				cout<<"Hay "<<partips<<" participantes ";
+				//cout<<"Hay "<<partips<<" participantes ";
 				afor = stoi(aforo);
-				cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
-				if(partips < afor)//2. si el curso tienee aforo
+				//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
+				if(partips < afor){//2. si el curso tienee aforo
 					ticks++;
+					//cout<<"AFORO VALIDO"<<endl;
+				}
 				else{
 					cout<<"Aforo completo"<<endl;
 				}
@@ -852,18 +882,73 @@ void menuParticipante(){
 }
 bool opcionaMatricula(){
 	int c;
-	cout<<"Desea matricularse en algun curso?"<<endl;
-	cout<<"1. Si"<<endl;
-	cout<<"2. No"<<endl;
-	cin>>c;
-	switch(c){
-	case 1:
-		return true;
-		break;
-	default:
+		cout<<"Desea matricularse en algun curso?"<<endl;
+		cout<<"1. Si"<<endl;
+		cout<<"2. No"<<endl;
+		cin>>c;
+		switch(c){
+		case 1:
+			return true;
+			break;
+		default:
+			return false;
+			break;
+		}
 		return false;
-		break;
-	}
-	return false;
 }
-
+vector<string> desglosar(string linea, int tipo){
+		int lastPos = 0, j = 0;
+		bool coma = false, done = false;
+		vector<string> v;
+		if(tipo == 0){//docente
+			for(int i = 0; i < linea.length(); i++){
+				if(linea[i] == ','){
+					v.push_back(linea.substr(lastPos, i - lastPos));
+					//cout<<linea.substr(lastPos, i - lastPos)<<endl;
+					lastPos = i + 2;
+				}
+				else if(linea[i] == 'y' && linea[i+1] == ' ' && linea[i-1] == ' '){
+					v.push_back(linea.substr(lastPos, i - lastPos - 1));
+					//cout<<linea.substr(lastPos, i - lastPos -1)<<endl;
+					lastPos = i + 2;
+				}
+				else if(linea[i] == '.'){
+					v.push_back(linea.substr(lastPos, i - lastPos));
+					//cout<<linea.substr(lastPos, i - lastPos)<<endl;
+				}
+			}
+		}
+		else if(tipo == 1){//contactos
+			while(j < linea.length()){
+				if(linea[j] == ':'){
+					lastPos = j + 2;
+				}
+				if(lastPos < j && linea[j] == ','){
+					v.push_back(linea.substr(lastPos, j - lastPos));
+					//cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
+				}
+				else if(lastPos < j && linea[j] == 'y' && linea[j+1] == ' ' && linea[j-1] == ' '){
+					v.push_back(linea.substr(lastPos, j - lastPos - 1));
+					//cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
+				}
+				j++;
+			}
+		}
+		else if(tipo == 2){
+			while(j < linea.length()){
+				if(linea[j] == '/' && linea[j+1] =='/'){
+					lastPos = j;
+				}
+				if(lastPos < j && linea[j + 1] == '/' && linea[j+2] =='/'){
+					v.push_back(linea.substr(lastPos, j - lastPos+1));
+					//cout<<linea.substr(lastPos, j - lastPos)<<"yeaaaah"<<endl;
+				}
+				else if(lastPos < j && j == linea.length()-1){
+					v.push_back(linea.substr(lastPos, j - lastPos +1));
+					//cout<<linea.substr(lastPos, j - lastPos - 1)<<"yeaaah"<<endl;
+				}
+				j++;
+			}
+		}
+		return v;
+	}

@@ -277,7 +277,6 @@ int contarUsuarios(){
 }
 void registrar(string cor, string con){
     int i = 0, n = contarUsuarios();
-    cout<<"Usuarios hay "<<n<<endl;
     ifstream re;
     ofstream wr;
     string a, b, rol;
@@ -302,9 +301,9 @@ void registrar(string cor, string con){
 	n++; //aumenta uno porque añadimos a una persiona
 
 	re.close();
-	for(int i = 0; i < n*2; i++){
+	/*for(int i = 0; i < n*2; i++){
 		cout<<v[i]<<endl;
-	}
+	}*/
     wr.open("logs.txt", ios::out);//abrimos en modo escritura
     if(wr.fail()){
 		cout<<"Error al abrir fichero de escritura"<<endl;
@@ -387,13 +386,14 @@ int contarDocentes(string titulo){
 	return c;
 }
 bool Participante::globalset(string cor){
-	ifstream f;
-	string linea, atribs[5];
+	ifstream f, g;
+	string linea, atribs[5], a,b,rol;
 	vector<string> v;
 	v.push_back("");
 	int ncmat = 0, iters, flag = 0;
 	f.open("matriculas.txt", ios::in);
-	if(f.fail()){
+	g.open("logs.txt", ios::in);
+	if(f.fail() || g.fail()){
 		cout<<"Error al obtener datos en fichero matricula."<<endl;
 		return false;
 	}
@@ -417,7 +417,20 @@ bool Participante::globalset(string cor){
 			}
 		}
 	}
+	if(flag == 0){
+		while(!g.eof()){
+			getline(g, a);
+			getline(g, b);
+			getline(g, rol);
+			if(cor == a){
+				if(rol == "2"){//si tenemos a un coordinador de curso pasamos de aniadir sus datos
+					flag = 1;
+				}
+			}
+		}
+	}
 	f.close();
+	g.close();
 	if(flag == 0){//no se ha encontrado el correo en los perfiles, no esta registrado
 		cout<<"No tienes datos en la base de datos"<<endl;
 		cout<<"Vas a introducir tus datos personales"<<endl;
@@ -896,7 +909,7 @@ bool Participante::matricularse(){
 				while(nestcontaos <= studis.size() - 1){
 					found = estudios.find(studis[nestcontaos]);
 					if(found != string::npos){//3. si se tienen los estudios requeridos
-						//cout<<"ESTUDIOS VALIDOS"<<endl;
+						cout<<"ESTUDIOS VALIDOS"<<endl;
 						ticks++;
 						nestcontaos = studis.size();
 					}
@@ -912,7 +925,7 @@ bool Participante::matricularse(){
 				string ahora = aus.substr(4);//quitamos parte del string
 				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
 					ticks++;
-					//cout<<"FECHA VALIDA"<<endl;
+					cout<<"FECHA VALIDA"<<endl;
 				}
 				getline(f, linea);//fecha fin
 				getline(f, participantes);//participantes
@@ -922,7 +935,7 @@ bool Participante::matricularse(){
 				//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
 				if(partips < afor){//2. si el curso tienee aforo
 					ticks++;
-					//cout<<"AFORO VALIDO"<<endl;
+					cout<<"AFORO VALIDO"<<endl;
 				}
 				else{
 					cout<<"Aforo completo"<<endl;
