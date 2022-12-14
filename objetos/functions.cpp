@@ -32,12 +32,19 @@ Participante::Participante(string correo,
 Visitante::Visitante(string correo, string contra):Usuario(correo, contra){}
 //FUNCIONES DE USUARIO Y VISITANTE
 bool arroba(string cor){
-	int c = 0;
+	int c = 0, posi;
 	for(int i = 0; i < cor.length(); i++){
-		if(cor[i]=='@')
+		if(cor[i]=='@'){
 			c++;
+			posi = i;
+		}
 		else if(cor[i]=='.')
 			c++;
+	}
+	//cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
+	if(cor.substr(posi, 7) != "@uco.es"){
+		cout<<"No es un correo de la uco"<<endl;
+		return false;
 	}
 	if(c == 2){
 		return true;
@@ -252,8 +259,13 @@ bool distancia(string cor){
 		if(cor[i] == '.')
 			dot = i;
 	}
-	if((dot - posi) > 10){
+	if((dot - posi) > 4){
 		cout<<"Dominio no válido"<<endl;
+		return false;
+	}
+	if(cor.substr(posi, 7) != "@uco.es"){
+		cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
+		cout<<"No es un correo de la uco"<<endl;
 		return false;
 	}
 	return true;
@@ -714,7 +726,7 @@ string estudiosPosibles(){
 		}
 		else{
 			i = 0;
-            cout<<"Valor es "<<value<<endl;
+            cout<<"Llevas seleccionados los siguientes grados: "<<value<<endl;
 			cout<<"Otro grado al que pertenezcas o tengas?-->"<<endl;
 			cout<<"1. Si"<<endl;
 			cout<<"2. No"<<endl;
@@ -836,7 +848,7 @@ string estudiosPosibles(){
 			break;
 			default:
 				value = value + "";
-                cout<<"No existe este";
+                cout<<"No existe este"<<endl;
 			break;
 		}
 	}
