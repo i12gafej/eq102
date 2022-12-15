@@ -51,6 +51,7 @@ string concatenar(vector<string> v, int n);
 string estudiosPosibles();
 string fechaPosible();
 bool imprimirPerfilNuevo(string cor, string w[]);
+vector<string> desglosa(string linea, int tipo);
 
 
 

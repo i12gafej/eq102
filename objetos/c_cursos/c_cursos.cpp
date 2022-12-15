@@ -41,14 +41,14 @@ int Ccurso::modificarCurso(){
 			}
 			break;
 		case 4:
-			return false;
+			return 0;
 			break;
 		default:
-			return false;
+			return 0;
 			break;
 		}
 	}
-	return false;
+	return 0;
 }
 void Ccurso::paginaCcurso(int vez){
 	int c, ope;

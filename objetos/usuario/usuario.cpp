@@ -20,12 +20,19 @@ Usuario::Usuario(string correo, string contra){
 	contra_ = contra;
 }
 bool arroba(string cor){
-	int c = 0;
+	int c = 0, posi;
 	for(int i = 0; i < cor.length(); i++){
-		if(cor[i]=='@')
+		if(cor[i]=='@'){
 			c++;
+			posi = i;
+		}
 		else if(cor[i]=='.')
 			c++;
+	}
+	//cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
+	if(cor.substr(posi, 7) != "@uco.es"){
+		cout<<"No es un correo de la uco"<<endl;
+		return false;
 	}
 	if(c == 2){
 		return true;
@@ -240,8 +247,13 @@ bool distancia(string cor){
 		if(cor[i] == '.')
 			dot = i;
 	}
-	if((dot - posi) > 10){
+	if((dot - posi) > 4){
 		cout<<"Dominio no válido"<<endl;
+		return false;
+	}
+	if(cor.substr(posi, 7) != "@uco.es"){
+		cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
+		cout<<"No es un correo de la uco"<<endl;
 		return false;
 	}
 	return true;
@@ -265,7 +277,6 @@ int contarUsuarios(){
 }
 void registrar(string cor, string con){
     int i = 0, n = contarUsuarios();
-    cout<<"Usuarios hay "<<n<<endl;
     ifstream re;
     ofstream wr;
     string a, b, rol;
@@ -290,9 +301,9 @@ void registrar(string cor, string con){
 	n++; //aumenta uno porque añadimos a una persiona
 
 	re.close();
-	for(int i = 0; i < n*2; i++){
+	/*for(int i = 0; i < n*2; i++){
 		cout<<v[i]<<endl;
-	}
+	}*/
     wr.open("logs.txt", ios::out);//abrimos en modo escritura
     if(wr.fail()){
 		cout<<"Error al abrir fichero de escritura"<<endl;
@@ -374,4 +385,3 @@ int contarDocentes(string titulo){
 	c++;
 	return c;
 }
-
