@@ -12,6 +12,7 @@
 #include "objects.h"
 
 using namespace std;
+
 //Constructor usuario
 Usuario::Usuario(string correo, string contra){
 	correo_ = correo;
@@ -51,50 +52,34 @@ bool arroba(string cor){
 	}
 	return false;
 }
-int Usuario::iniciarSesion(){
-	string c, p;
-	int rol;
-	bool ccorr=false; //condicionadores para hacer un bucle por si falla el correo
-	bool ccontra=false; //condicionadores para hacer un bucle por si falla la contraseña
-	while(ccontra != true){ //si falla la contraseña se repite todo el bucle
-		while(ccorr != true){ //si falla el correo se repite el bucle del correo
-			cout<<"Introducir correo: "<<endl;
-			cin>>c;
-			cout<<endl;
-			cout<<endl;
-			cout<<endl;
-			set_correo(c);
-			bool al = arroba(c);
-			if(comprobar_correo(c) == true){ //comprueba que el correo esté en el fichero
-				if(al == true){
-					cout<<"Correo valido"<<endl;
-					ccorr = true; //se termina el while del correo
-				}
-			}
-			else{
-				cout<<"Correo erroneo, prueba de nuevo."<<endl;
-			}
-		}
-		cout<<"Introducir contrasenya: "<<endl;
-		cin>>p;
-		cout<<endl;
-		cout<<endl;
-		cout<<endl;
-		set_contra(p);
-		if(comprobar_coincidencia(c,p, &rol)==true){//comprobamos que la contraseña y el correo casan
-			cout<<"Inicio en la sesion con exito"<<endl;
-			cout<<endl;
-			cout<<endl;
-			cout<<endl;
-			ccontra = true; //se termina el while grande
-			return rol;
-		}
-		else{
-			ccorr = false; //volvemos a dar como error el correo para que el usuario lo tenga que volver a escribir
-			cout<<"No hay coincidencia entre la contrasenia y el correo proporcionados"<<endl;
-		}
-	}
-	return 0;
+struct Us introducirUsuarioyContrasenia(){
+    struct Us usuario;
+    cout<<"Introducir correo: "<<endl;
+    cin>>usuario.correo;
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
+    cout<<"Introducir contrasenya: "<<endl;
+    cin>>usuario.contra;
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
+    return usuario;
+
+}
+bool Usuario::iniciarSesion(string cor, string contra, int *role){
+    if(comprobar_coincidencia(cor,contra, &role)==true){
+        set_correo(cor);
+        set_contra(contra);
+
+        cout<<"Inicio de sesion con exito"<<endl;
+        return true;
+    }
+    else{
+        cout<<"No se ha podido iniciar sesion."<<endl;
+        return false;
+    }
+
 }
 bool comprobar_correo(string cor){
 	ifstream fich;
@@ -113,9 +98,12 @@ bool comprobar_correo(string cor){
 	fich.close();
 	return false;
 }
-bool comprobar_coincidencia(string cor, string con, int *rol){
+bool comprobar_coincidencia(string cor, string con, int **rol){
 	ifstream fich;
 	int c = 0;
+    if(arroba(cor) == false){
+        return false;
+    }
 	string arriba, abajo, us;
 	fich.open("logs.txt", ios::in);//abrimos en modo lectura
 	if(fich.fail()){
@@ -128,7 +116,7 @@ bool comprobar_coincidencia(string cor, string con, int *rol){
 		getline(fich, us);
 		if(arriba == cor && abajo == con){
 			c++;
-			*rol = stoi(us);
+			**rol = stoi(us);
 		}
 	}
 	if(c == 1){
@@ -158,20 +146,29 @@ int Usuario::verPagina(int vez){
 		cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
 		cout<<"-------------------------------------------------"<<endl;
 	}
-	int c, d = 0;
+	int c, d = 0, rol;
+    struct Us usuario;
 	cout<<"Que desea hacer?"<<endl;
 	menu();
 	cin>>c;
 	//while(d == 0){
 		switch(c){
 		case 1:
-			d = iniciarSesion();
-			if(d == 1)
-				return 1;//participante
-			else if(d == 2)
-				return 2;//coordinador de curso
-			else
-				return 0;
+			usuario = introducirUsuarioyContrasenia();
+            if(iniciarSesion(usuario.correo, usuario.contra, &rol) == true){
+                if(rol == 1){
+                        return 1;//participante
+                }
+                else if(rol == 2){
+                        return 2;//coordinador de curso
+                }
+                else{
+                    return 0;
+                }
+            }
+            else{
+                return 0;
+            }
 		break;
 		case 2:
 			verListas();
@@ -335,7 +332,7 @@ int Usuario::verListas(){//cada curso ocupara varias lineas
 	string id, titulo;//una linea paraid y otra pa titulo
 	string descripcion;//una linea para desripcion
 	string aforo;//linea para aforo
-	int n = contarDocentes(titulo), times = 1;
+	int times = 1;
 	string docentes, contacto;//varias lineas para docentes:
 							//una que pona los nombres
 							//otra que muestre sus contactos

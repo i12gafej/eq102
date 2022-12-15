@@ -11,7 +11,9 @@
 #include <string>
 #include <vector>
 using namespace std;
-
+struct Us{
+    string correo, contra;
+};
 
 //FUNCIONES DE LA CLASE USUARIO
 class Usuario{
@@ -28,16 +30,17 @@ class Usuario{
 		inline string get_correo(){return correo_;}
 		inline string get_contra(){return contra_;}
 		//User's operations
-		int iniciarSesion();
+		int iniciarSesion(string cor, string contra, int *role);
 		int verPagina(int vez);
 		bool registrarUsuario();
 		int verListas();
 };
-bool comprobar_coincidencia(string cor, string con, int *rol);
+bool comprobar_coincidencia(string cor, string con, int **rol);
 bool comprobar_correo(string cor);
 bool arroba(string cor);
 void imprimir();
 void menu();
+struct Us introducirUsuarioyContrasenia();
 
 bool distancia(string cor);
 void registrar(string cor, string con);
