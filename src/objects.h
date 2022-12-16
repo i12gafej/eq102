@@ -46,7 +46,7 @@ bool distancia(string cor);
 void registrar(string cor, string con);
 int contarUsuarios();
 
-int contarDocentes(string titulo);
+int contarlineas();
 
 //CLASE VISITANTE
 class Visitante: public Usuario{
@@ -77,14 +77,16 @@ class Participante : public Usuario{
 		inline string get_nacimiento(){return nacimiento_;}
 		inline string get_cmatriculados(){return cmatriculados_;}
 		//funcionalidades
-		bool matricularse();
+		bool matricularse(int curso, int cuantos);
 		bool globalset(string cor);
 		void paginaParticipante(int vez);
+		bool comprobaciones(int curso, int cual);
 
 };
+void seleccionarCurso(int *curso, int *cual);
 void menuParticipante();
 bool opcionaMatricula();
-bool buscarCurso(int curso, int ncursos);
+bool buscarCurso(int **curso, int **ncursos);
 bool comprobarFecha(string ahora, string date);
 bool actualizarCursos(int p, int ncursos, int curso);
 bool actualizarMatricula(string dni, string nombre);
@@ -102,7 +104,8 @@ class Ccurso : public Usuario{
 	void paginaCcurso(int vez);
 };
 	void opcionMod();
-	bool crearCurso();
+	vector<string> atributos();
+	bool crearCurso(vector<string> curso);
 	bool editarCurso(int ncur);
 	bool eliminarCurso(int ncur);
 	size_t comprobarExistencia(string c);//devuelve la posicion de la linea donde se encuentra el elemento existente y -1 si no existe

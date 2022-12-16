@@ -40,7 +40,6 @@ bool arroba(string cor){
 		if(cor[i]=='@'){
 			c++;
 			posi = i;
-			cout<<"Hay @"<<endl;
 
 		}
 		else if(cor[i]=='.'){
@@ -181,7 +180,7 @@ int Usuario::verPagina(int vez){
 		cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
 		cout<<"-------------------------------------------------"<<endl;
 	}
-	int c, rol;
+	int c, d = 0, rol;
     struct Us usuario;
 	cout<<"Que desea hacer?"<<endl;
 	menu();
@@ -192,22 +191,16 @@ int Usuario::verPagina(int vez){
 			usuario = introducirUsuarioyContrasenia();
             if(iniciarSesion(usuario.correo, usuario.contra, &rol) == true){
                 if(rol == 1){
-                	set_correo(usuario.correo);
-                	set_contra(usuario.contra);
                         return 1;//participante
                 }
                 else if(rol == 2){
-                	set_correo(usuario.correo);
-                	set_contra(usuario.contra);
                         return 2;//coordinador de curso
                 }
                 else{
-                	verPagina(1);
                     return 0;
                 }
             }
             else{
-            	verPagina(1);
                 return 0;
             }
 		break;
@@ -219,13 +212,7 @@ int Usuario::verPagina(int vez){
 			usuario = introducirUsuarioyContrasenia();
 			if(registrarUsuario(usuario.correo, usuario.contra) == true){
 				registrar(usuario.correo, usuario.contra);//lo pone en el fichero logs.txt
-            	set_correo(usuario.correo);
-            	set_contra(usuario.contra);
 				return 1;
-			}
-			else{
-				verPagina(1);
-				return -1;
 			}
 		break;
 		default:
@@ -234,6 +221,7 @@ int Usuario::verPagina(int vez){
 	//}
 	return 0;
 }
+
 void menu(){
 	cout<<"1. Iniciar Sesion"<<endl;
 	cout<<"2. Ver cursos de extension"<<endl;
@@ -336,6 +324,11 @@ void registrar(string cor, string con){
     wr.close();
 }
 int Usuario::verListas(){//cada curso ocupara varias lineas
+	int n = contarlineas();
+	if(n <= 1){
+		cout<<"NO HAY CURSOS DISPONIBLES"<<endl;
+		return 0;
+	}
 	ifstream f;
 	string id, titulo;//una linea paraid y otra pa titulo
 	string descripcion;//una linea para desripcion
@@ -379,7 +372,7 @@ int Usuario::verListas(){//cada curso ocupara varias lineas
 	}
 	return times - 1;
 }
-int contarDocentes(string titulo){
+int contarlineas(){
 	ifstream d;
 	string ausi;
 	int c = 0;
@@ -390,16 +383,9 @@ int contarDocentes(string titulo){
 	}
 	while(!d.eof()){
 		getline(d, ausi);//lee todas las lineas hasta topar con el titulo
-		if(ausi == titulo){
-			getline(d, ausi);
-		}
-	}
-	for(int i = 0 ; i < ausi.length() ; i++){
-		if(ausi[i] == ',')
-			c++;
+		c++;
 	}
 	d.close();
-	c++;
 	return c;
 }
 bool Participante::globalset(string cor){
@@ -533,6 +519,7 @@ bool imprimirPerfilNuevo(string cor, string w[]){
 	wr.close();
 	return true;
 }
+
 string fechaPosible(){
 	//Ano
 	int ano = 0, anoFlag = 0, mesFlag=0, mes, dayFlag = 0, dia;
@@ -872,125 +859,128 @@ string concatenar(vector<string> v, int n){
     }
     return resul;
 }
-bool Participante::matricularse(){
+bool Participante::comprobaciones(int curso, int cual){
 	bool valid = false;
 	string aforo, date, estudios, linea, participantes, nombre;
-	int cual, curso, ticks = 0, partips, afor;
-	while(valid != true){
-		cual = Usuario::verListas();
-		cout<<"En que curso de extension de los "<<cual<<" desea matricularse?"<<endl;
-		cin>>curso;
-		if(curso < 1 || curso > cual){
-			cout<<"Curso no valido, prueba de nuevo."<<endl;
+	int  ticks = 0, partips, afor;
+
+	 //el curso existe
+		//cout<<"EN PROCESO DE IMPRESION"<<endl;
+		//tenemos que hacer 4 comprobaciones,
+		//1. antes que nada ver si el alumno esta matriculado ya
+		//2. si el curso tienee aforo
+		//3. si se tienen los estudios requeridos
+		//4. si es antes de la fecha de inicio
+		ifstream f;
+		f.open("open.txt", ios::in);
+		if(f.fail()){
+			cout<<"Error al leer fichero open"<<endl;
+			exit(1);
 		}
-		else{
-			if(buscarCurso(curso, cual) == true){ //el curso existe
-				cout<<"EN PROCESO DE IMPRESION"<<endl;
-				//tenemos que hacer 4 comprobaciones,
-				//1. antes que nada ver si el alumno esta matriculado ya
-				//2. si el curso tienee aforo
-				//3. si se tienen los estudios requeridos
-				//4. si es antes de la fecha de inicio
-				ifstream f;
-				f.open("open.txt", ios::in);
-				if(f.fail()){
-					cout<<"Error al leer fichero open"<<endl;
-					exit(1);
-				}
-				for(int i = 1; i < curso; i++){//recorre cursos
-					for(int l = 0; l < 10; l++){//recorre atributos de cada curso
-						getline(f, linea);
-					}
-				}
-				for(int i = 0; i < 5; i++){
-					//recorre de ID a descripcion
-					if(i == 1){
-						getline(f, nombre);
-					}
-					else
-						getline(f, linea);
-				}
+		for(int i = 1; i < curso; i++){//recorre cursos
+			for(int l = 0; l < 10; l++){//recorre atributos de cada curso
+				getline(f, linea);
+			}
+		}
+		for(int i = 0; i < 5; i++){
+			//recorre de ID a descripcion
+			if(i == 1){
+				getline(f, nombre);
+			}
+			else
+				getline(f, linea);
+		}
+		//cout<<"AAAAAAAAH"<<endl;
+		string cmat = get_cmatriculados();
+		cout<<endl;
+		size_t found = cmat.find(nombre);//en found se guarda la posicion de encontrar
+		if(found != string::npos){
+			cout<<"Este alumno ya esta registrado en el curso. //"<<found<<endl;
+			return false;
+		}
+		getline(f, estudios);//capta estudios
+		string cestudios =get_estudios();
 
-				string cmat = get_cmatriculados();
-				cout<<endl;
-				size_t found = cmat.find(nombre);//en found se guarda la posicion de encontrar
-				if(found != string::npos){
-					cout<<"Este alumno ya esta registrado en el curso. //"<<found<<endl;
-					return false;
-				}
-				getline(f, estudios);//capta estudios
-				string cestudios = get_estudios();
-
-				vector<string> studis = desglosar(cestudios, 2);
-				int nestcontaos = 0;
-				while(nestcontaos <= studis.size() - 1){
-					found = estudios.find(studis[nestcontaos]);
-					if(found != string::npos){//3. si se tienen los estudios requeridos
-						cout<<"ESTUDIOS VALIDOS"<<endl;
-						ticks++;
-						nestcontaos = studis.size();
-					}
-					else{
-						nestcontaos++;
-					}
-				}
-				getline(f, aforo);//aforo
-				getline(f, date);//fecha inicio
-				auto now = chrono::system_clock::now();//semilla reloj activa
-				time_t end_time = chrono::system_clock::to_time_t(now);//semilla parada y guarda hora
-				string aus = ctime(&end_time); //guardamos fecha en ahora
-				string ahora = aus.substr(4);//quitamos parte del string
-				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
-					ticks++;
-					cout<<"FECHA VALIDA"<<endl;
-				}
-				getline(f, linea);//fecha fin
-				getline(f, participantes);//participantes
-				partips = stoi(participantes);
-				//cout<<"Hay "<<partips<<" participantes ";
-				afor = stoi(aforo);
-				//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
-				if(partips < afor){//2. si el curso tienee aforo
-					ticks++;
-					cout<<"AFORO VALIDO"<<endl;
-				}
-				else{
-					cout<<"Aforo completo"<<endl;
-				}
-
-				f.close();
-				if(ticks == 3){
-					if(actualizarCursos(partips, cual, curso)==true){
-						cout<<"Base de datos actualizada."<<endl;
-						if(actualizarMatricula(get_dni(), nombre)==true){
-							cout<<"Base de datos de matriculas acctuaalizada."<<endl;
-							valid = true;
-							return true;
-						}
-						else{
-							cout<<"Error al actualizar base de datos de matriculas."<<endl;
-							return false;
-						}
-					}
-					else{
-						cout<<"Error al actualizar base de datos de cursos."<<endl;
-						return false;
-					}
-
-				}
-				else{
-					cout<<"No puedes matricularte en este curso, ya que no se cumplen los requerimientos posibles para ello."<<endl;
-					return false;
-				}
-
+		vector<string> studis = desglosar(cestudios, 2);
+		int nestcontaos = 0;
+		while(nestcontaos <= studis.size() - 1){
+			found = estudios.find(studis[nestcontaos]);
+			if(found != string::npos){//3. si se tienen los estudios requeridos
+				//cout<<"ESTUDIOS VALIDOS"<<endl;
+				ticks++;
+				nestcontaos = studis.size();
 			}
 			else{
-				cout<<"No te matriculas en nada."<<endl;
-				valid = true;
+				nestcontaos++;
 			}
 		}
-	}
+		getline(f, aforo);//aforo
+		getline(f, date);//fecha inicio
+		auto now = chrono::system_clock::now();//semilla reloj activa
+		time_t end_time = chrono::system_clock::to_time_t(now);//semilla parada y guarda hora
+		string aus = ctime(&end_time); //guardamos fecha en ahora
+		string ahora = aus.substr(4);//quitamos parte del string
+
+		if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
+			ticks++;
+			//cout<<"FECHA VALIDA"<<endl;
+		}
+		else{
+			return false;
+		}
+
+		getline(f, linea);//fecha fin
+		getline(f, participantes);//participantes
+		partips = stoi(participantes);
+		//cout<<"Hay "<<partips<<" participantes ";
+		afor = stoi(aforo);
+		//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
+		if(partips < afor){//2. si el curso tienee aforo
+			ticks++;
+			//cout<<"AFORO VALIDO"<<endl;
+		}
+		else{
+			cout<<"Aforo completo"<<endl;
+			return false;
+		}
+
+		f.close();
+		if(ticks == 3){
+			if(actualizarCursos(partips, cual, curso)==true){
+				cout<<"Base de datos actualizada."<<endl;
+				if(actualizarMatricula(get_dni(), nombre)==true){
+					cout<<"Base de datos de matriculas acctuaalizada."<<endl;
+					valid = true;
+					return true;
+				}
+				else{
+					cout<<"Error al actualizar base de datos de matriculas."<<endl;
+					return false;
+				}
+			}
+			else{
+				cout<<"Error al actualizar base de datos de cursos."<<endl;
+				return false;
+			}
+
+		}
+		else{
+			cout<<"No puedes matricularte en este curso, ya que no se cumplen los requerimientos posibles para ello."<<endl;
+			return false;
+		}
 	return false;
+}
+
+bool Participante::matricularse(int curso, int cuantos){
+	if(comprobaciones(curso, cuantos) == true){
+		cout<<"Has sido matriculado con exito en el curso"<<endl;
+		return true;
+	}
+	else{
+		cout<<"No has podido ser matriculado en el curso"<<endl;
+		return false;
+	}
+
 }
 bool actualizarMatricula(string dni, string nombre){
 	ifstream re;
@@ -1099,10 +1089,17 @@ bool actualizarCursos(int p, int ncursos, int curso){
 bool comprobarFecha(string ahora, string date){//traduce la fecha chrono a la de la bbdd
 	//Comparar año
 	int yearA, yearB, checks = 0;
-	string anoActual = ahora.substr(ahora.length()-4, 4);
-	string anoInicio = date.substr(6,4);
-	yearA = stoi(anoActual);
+	string anoActual = ahora.substr(ahora.length()-5, 4);
+	string anoInicio = date.substr(date.length()-4,4);
+
 	yearB = stoi(anoInicio);
+
+	yearA = stoi(anoActual);
+
+
+
+
+
 	if(yearA == yearB){ //Si el año es el mismo años tenemos que averiguar el mes y el dia
 		checks++;
 		//Comparar Mes
@@ -1170,7 +1167,7 @@ bool comprobarFecha(string ahora, string date){//traduce la fecha chrono a la de
 	}
 	return false;
 }
-bool buscarCurso(int curso, int ncursos){
+bool buscarCurso(int **curso, int **ncursos){
 	int i = 1, c;
 	string linea,nombre;
 	ifstream fichero;
@@ -1179,14 +1176,14 @@ bool buscarCurso(int curso, int ncursos){
 		cout<<"Error al acceder al fichero de cursos"<<endl;
 		exit(1);
 	}
-	while(i < curso && i < ncursos){
+	while(i < **curso && i < **ncursos){
 		for(int j = 0; j < 10 ; j++){
-			getline(fichero, linea);//escaneamos un curso completo
+			getline(fichero, linea);//escaneamos un **curso completo
 			//cout<<linea<<endl;
 		}							//hasta llegar al que queremos
 			i++;
 	}
-	if(i == curso && i <= ncursos){//si la posicion está en el curso y no supera los ncursos estamos bien
+	if(i == **curso && i <= **ncursos){//si la posicion está en el curso y no supera los ncursos estamos bien
 		getline(fichero, nombre);//nombre del curso que queremos
 		fichero.close();
 		cout<<"Es <"<<nombre<<"> el curso donde te quieres matricular?"<<endl;
@@ -1208,7 +1205,23 @@ bool buscarCurso(int curso, int ncursos){
 		return false;
 	}
 	return false;
+}void seleccionarCurso(int *curso, int *cual){
+	bool valid = false;
+	while(valid != true){
+
+		cout<<"En que curso de extension de los "<<*cual<<" desea matricularse?"<<endl;
+		cin>>*curso;
+		if(*curso < 1 || *curso > *cual){
+			cout<<"Curso no valido, prueba de nuevo."<<endl;
+		}
+		else{
+			if(buscarCurso(&curso, &cual) == true){
+				return;
+			}
+		}
+	}
 }
+
 void Participante::paginaParticipante(int vez){
 	cout<<endl;
 	cout<<endl;
@@ -1217,7 +1230,7 @@ void Participante::paginaParticipante(int vez){
 		cout<<"BIENVENIDO <"<<get_nombre()<<">."<<endl;
 		cout<<"-------------------------------------------------"<<endl;
 	}
-	int c;
+	int c, curso, cual;
 	bool mat;
 	cout<<"Que desea hacer?"<<endl;
 	menuParticipante();
@@ -1227,9 +1240,10 @@ void Participante::paginaParticipante(int vez){
 	cout<<endl;
 	switch(c){
 	case 1:
-		verListas();
+		cual = verListas();
 		if(opcionaMatricula() == true){
-			mat = matricularse();
+			seleccionarCurso(&curso, &cual);
+			mat = matricularse(curso, cual);
 			if(mat == false || mat == true){
 				if(mat == true){
 					cout<<"Inscripcion con exito"<<endl;
@@ -1240,7 +1254,6 @@ void Participante::paginaParticipante(int vez){
 				cout<<endl;
 				paginaParticipante(1);
 			}
-
 		}
 		else{
 			paginaParticipante(1);
@@ -1280,11 +1293,13 @@ int Ccurso::modificarCurso(){
 	int m, n;
 	while(1){
 		n = verListas();
+		vector<string> atribs;
 		opcionMod();
 		cin>>m;
 		switch(m){
 		case 1:
-			if(crearCurso() == true){
+			atribs = atributos();
+			if(crearCurso(atribs) == true){
 				return 1;
 			}
 			break;
@@ -1359,8 +1374,10 @@ void opcionMod(){
 	cout<<"3. Eliminar Curso Existente"<<endl;
 	cout<<"4. Salirte"<<endl;
 }
-bool crearCurso(){
+vector<string> atributos(){
 	string curso[10];
+    vector<string> c;
+	string linea;
 	bool buc = false, docFlag = false;
 	int x, n = 0, get = 0;
 	vector<string> docentes;
@@ -1371,7 +1388,6 @@ bool crearCurso(){
 
 		getline(cin, curso[1]);
 		getline(cin, curso[1]);
-
 		cout<<endl;
 		cout<<endl;
 		cout<<endl;
@@ -1597,6 +1613,12 @@ bool crearCurso(){
 		cout<<curso[8]<<endl;
 
 	curso[9] = "0";//hay 0 participantes
+    for(int i = 0 ; i < 10 ; i++ ){
+        c.push_back(curso[i]);
+    }
+	return c;
+}
+bool crearCurso(vector<string> curso){
 	string linea;
 	vector<string> lineas;
 	ifstream re;
@@ -1633,7 +1655,6 @@ bool crearCurso(){
 			wr<<curso[b]<<endl;
 	}
 	wr.close();
-
 	return true;
 }
 bool editarCurso(int ncur){
