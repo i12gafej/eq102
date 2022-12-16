@@ -30,9 +30,9 @@ class Usuario{
 		inline string get_correo(){return correo_;}
 		inline string get_contra(){return contra_;}
 		//User's operations
-		int iniciarSesion(string cor, string contra, int *role);
+		bool iniciarSesion(string cor, string contra, int *role);
 		int verPagina(int vez);
-		bool registrarUsuario();
+		bool registrarUsuario(string cor, string cotra);
 		int verListas();
 };
 bool comprobar_coincidencia(string cor, string con, int **rol);

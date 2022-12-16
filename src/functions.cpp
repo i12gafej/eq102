@@ -33,22 +33,57 @@ Participante::Participante(string correo,
 Visitante::Visitante(string correo, string contra):Usuario(correo, contra){}
 //FUNCIONES DE USUARIO Y VISITANTE
 bool arroba(string cor){
-	int c = 0, posi;
+	int c = 0, dot = 0, posi;
+	vector<int> dist;//guarda la distancia entre puntos
+	dist.push_back(0);
 	for(int i = 0; i < cor.length(); i++){
 		if(cor[i]=='@'){
 			c++;
 			posi = i;
+			cout<<"Hay @"<<endl;
+
 		}
-		else if(cor[i]=='.')
-			c++;
+		else if(cor[i]=='.'){
+			if(i != 0){//si se encuentra el punto en una posicion que no sea la primera
+				if(dist[0] == 0){//si se encuentra el primero lo gaurda en dist[0]
+					dist[0] = i;
+					dot++;
+				}
+				else{//si no es el primero que guarda
+					dist.push_back(dot);//añade el calor de distancia entre el anterior y el siguiente
+					dist[dot] = dist[dot] - dist[dot-1]; //y hace que el valor sea la anterior distancia menos la actual encontrada
+					dot++;
+				}
+			}
+			else if(i == 0){// si es la primera letra el punto no se hace comprobacion porque es erroneo
+				cout<<"FORMATO NO VALIDO <No puedes poner ese punto al principio>"<<endl;
+				return false;
+			}
+			else if(c == 1){//si ya ha encontrado un arroba
+				dot++;
+				cout<<"HAY ."<<endl;
+			}
+		}
 	}
-	//cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
-	if(cor.substr(posi, 7) != "@uco.es"){
-		cout<<"No es un correo de la uco"<<endl;
-		return false;
+	int dis = dist.size();
+	for(int i = 0; i < dis; i++){
+		if(dist[i] == 1 && i != 0){
+			cout<<"FORMATO NO VALIDO <dot separation :"<<dist[i]<<">"<<endl;
+			return false;
+		}
 	}
-	if(c == 2){
-		return true;
+		//cout<<"Correo: "+ cor + " y substring " + cor.substr(posi, 7)<<endl;
+	if(c == 1 && (dot >= 1 && dot == dis)){
+		if(cor.substr(posi, 7) != "@uco.es"){
+			cout<<"No es un correo de la uco"<<endl;
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	else{
+		cout<<"Eso no es un correo valido"<<endl;
 	}
 	return false;
 }
@@ -146,7 +181,7 @@ int Usuario::verPagina(int vez){
 		cout<<"BIENVENIDO A NUESTRA PAGINA WEB"<<endl;
 		cout<<"-------------------------------------------------"<<endl;
 	}
-	int c, d = 0, rol;
+	int c, rol;
     struct Us usuario;
 	cout<<"Que desea hacer?"<<endl;
 	menu();
@@ -157,16 +192,22 @@ int Usuario::verPagina(int vez){
 			usuario = introducirUsuarioyContrasenia();
             if(iniciarSesion(usuario.correo, usuario.contra, &rol) == true){
                 if(rol == 1){
+                	set_correo(usuario.correo);
+                	set_contra(usuario.contra);
                         return 1;//participante
                 }
                 else if(rol == 2){
+                	set_correo(usuario.correo);
+                	set_contra(usuario.contra);
                         return 2;//coordinador de curso
                 }
                 else{
+                	verPagina(1);
                     return 0;
                 }
             }
             else{
+            	verPagina(1);
                 return 0;
             }
 		break;
@@ -175,8 +216,16 @@ int Usuario::verPagina(int vez){
 			verPagina(1);
 		break;
 		case 3:
-			if(registrarUsuario() == true){
+			usuario = introducirUsuarioyContrasenia();
+			if(registrarUsuario(usuario.correo, usuario.contra) == true){
+				registrar(usuario.correo, usuario.contra);//lo pone en el fichero logs.txt
+            	set_correo(usuario.correo);
+            	set_contra(usuario.contra);
 				return 1;
+			}
+			else{
+				verPagina(1);
+				return -1;
 			}
 		break;
 		default:
@@ -191,60 +240,19 @@ void menu(){
 	cout<<"3. Registrar Usuario"<<endl;
 }
 
-bool Usuario::registrarUsuario(){
-	string c, p;
-	int flag = 0;
-		bool ccorr=false; //condicionadores para hacer un bucle por si falla el correo
-		bool ccontra=false; //condicionadores para hacer un bucle por si falla la contraseña
-		while(ccontra != true){ //si falla la contraseña se repite todo el bucle
-			while(ccorr != true){ //si falla el correo se repite el bucle del correo
-				if(flag == 0)
-					cout<<"Introducir correo: "<<endl;
-				else
-					cout<<"Introducir correo, esta vez uno no registrado: "<<endl;
-				cin>>c;
-				cout<<endl;
-				cout<<endl;
-				cout<<endl;
-				set_correo(c);
-				bool al = arroba(c);
-				if(al == true){ //comprueba que el correo tenga arroba y punto
-					bool dis = distancia(c);
-					if(dis == true){//comprueba que el dominio sea realista
-						cout<<"Correo valido";
-						if(comprobar_correo(c) == true){
-							cout<<", pero ya esta registrado." <<endl;
-							cout<<endl;
-							cout<<endl;
-							cout<<endl;
-							flag = 1; //si el correo esta registrado, repites la introduccion de correo con otro mensaje
-						}
-						else{
-							flag = 0;
-							ccorr = true; //se termina el while del correo
-						}
-					}
-				}
-				else{
-					cout<<"Correo no valido, prueba con otro correo."<<endl;
-				}
-			}
-			cout<<endl;
-			cout<<"Introducir contrasenya: "<<endl;
-			cin>>p;
-			set_contra(p);
-			cout<<endl;
-			cout<<endl;
-			cout<<endl;
-			cout<<"Contraseña valida"<<endl;
-			cout<<endl;
-			cout<<endl;
-			cout<<endl;
-			ccontra = true; //se termina el while grande
-			registrar(c,p);
-			return true;
-		}
+bool Usuario::registrarUsuario(string cor, string cotra){
+	//tengo que comprobar que el correo sea bueno y que no este ya registrado
+	if(arroba(cor)== false){//no sea correo de la uco y no tenga el @ ni .
 		return false;
+	}
+	if(comprobar_correo(cor) == true){
+		cout<<"Este correo ya ha sido introducido"<<endl;
+		return false;
+	}
+	else{
+		cout<<"Usuario registrado con exito"<<endl;
+		return true;
+	}
 }
 bool distancia(string cor){
 	int posi = 0, dot = 0, comprobantes = 0;
