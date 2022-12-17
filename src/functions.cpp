@@ -1290,7 +1290,7 @@ bool opcionaMatricula(){
 }
 //FUNCIONES COORDINADOR DE CURSOS
 int Ccurso::modificarCurso(){
-	int m, n;
+	int m, n, curso;
 	while(1){
 		n = verListas();
 		vector<string> atribs;
@@ -1310,7 +1310,9 @@ int Ccurso::modificarCurso(){
 		}
 		break;
 		case 3:
-			if(eliminarCurso(n) == true){
+			cout<<"Introduce el curso que quieres modificar: ";
+			cin>>curso;
+			if(eliminarCurso(n, curso) == true){
 				return 3;
 			}
 			break;
@@ -2115,13 +2117,11 @@ bool editarCurso(int ncur){
 	return true;
 }
 
-bool eliminarCurso(int ncur){
+bool eliminarCurso(int ncur, int curso){
 	bool sel = false;
 	int curso, c = 1, x, cont=0;
 	vector<string> datos;
 	string linea, id;
-	cout<<"Introduce el curso que quieres modificar: ";
-	cin>>curso;
 	ifstream re;
 	while(sel != true){
 		if(curso <= ncur && curso > 0){//el curso que metamos tiene que estar ahi

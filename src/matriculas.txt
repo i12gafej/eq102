@@ -4,6 +4,8 @@ Javier Garcia fernandez
 Grado en Ingeniería Informática
 Telefono
 04012003
+CURSO DEL RONEO
+CURSO DE PILOTO
 -
 i12cacrm@uco.es
 46072134
@@ -36,7 +38,7 @@ CURSO DE PILOTO
 i12gafe@uco.es
 4567890
 Jaravito javito malito
-// Grado en Ingeniería Informática
+// Grado en Ingeniería Informática// Grado en Ingeniería Mecánica
 60090004000
 31012003
 CURSO DE ALBANHILERIA

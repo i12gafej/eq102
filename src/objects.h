@@ -107,7 +107,7 @@ class Ccurso : public Usuario{
 	vector<string> atributos();
 	bool crearCurso(vector<string> curso);
 	bool editarCurso(int ncur);
-	bool eliminarCurso(int ncur);
+	bool eliminarCurso(int ncur, int curso);
 	size_t comprobarExistencia(string c);//devuelve la posicion de la linea donde se encuentra el elemento existente y -1 si no existe
 	string estudiosRequeridos();
 	string fecha(int mod);
