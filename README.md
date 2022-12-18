@@ -13,7 +13,9 @@
  ### Codigo de clases y contructores
  #### Usuario:
  ***Clase***
- '''class Usuario{
+ 
+ 
+ 'class Usuario{
 	private:
 		string correo_;
 		string contra_;
@@ -31,7 +33,7 @@
 		int verPagina(int vez, list<Curso> listas);
 		bool registrarUsuario(string cor, string cotra);
 		void verListas(list<Curso> listas);
-};'''
+};'
   ***Constructor***
   '''Usuario::Usuario(string correo, string contra){
      correo_ = correo;
