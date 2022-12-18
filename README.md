@@ -159,8 +159,49 @@
 		string participantes){}
  ```
  ### Funciones no metódicas:
- `list<Curso> listaCursos();
-void imprimirListas(list<Curso> listas);`
+ #### Curso
+ ```
+ list<Curso> listaCursos();
+void imprimirListas(list<Curso> listas);
+```
+#### Usuario
+```
+bool comprobar_coincidencia(string cor, string con, int **rol);
+bool comprobar_correo(string cor);
+bool arroba(string cor);
+void imprimir();
+void menu();
+struct Us introducirUsuarioyContrasenia();
+
+bool distancia(string cor);
+void registrar(string cor, string con);
+int contarUsuarios();
+
+int contarlineas();
+```
+#### Participante
+```
+void seleccionarCurso(int *curso, int *cual, list<Curso> listas);
+void menuParticipante();
+bool opcionaMatricula();
+bool buscarCurso(int **curso, list<Curso> listas);
+bool comprobarFecha(string ahora, string date);
+bool actualizarMatricula(string dni, string nombre);
+string concatenar(vector<string> v, int n);
+string estudiosPosibles();
+string fechaPosible();
+bool imprimirPerfilNuevo(string cor, string w[]);
+```
+#### Coordinador de Cursos
+```
+void opcionMod();
+vector<string> atributos();
+
+size_t comprobarExistencia(string c);//devuelve la posicion de la linea donde se encuentra el elemento existente y -1 si no existe
+string estudiosRequeridos();
+string fecha(int mod);
+vector<string> desglosar(string linea, int tipo);
+```
  ### Casos de uso abordados
  1. Iniciar Sesion
  2. Registrarse
