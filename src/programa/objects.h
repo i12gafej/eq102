@@ -92,6 +92,7 @@ class Visitante: public Usuario{
 class Participante : public Usuario{
 	private:
 		string nombre_, dni_, estudios_, telefono_, nacimiento_, cmatriculados_;
+		list<Curso> listas_;
 	public:
 		Participante(string, string, string, string, string, string, string, string);
 		//setters
@@ -101,7 +102,9 @@ class Participante : public Usuario{
 		inline void set_telefono(string telefono){telefono_ = telefono;}
 		inline void set_nacimiento(string nacimiento){nacimiento_ = nacimiento;}
 		inline void set_cmatriculados(string cmatriculados){cmatriculados_ = cmatriculados;}
+		inline void set_listas(list<Curso> listas){listas_ = listas;};
 		//getters
+		inline list<Curso> get_listas(){return listas_;};
 		inline string get_nombre(){return nombre_;}
 		inline string get_dni(){return dni_;}
 		inline string get_estudios(){return estudios_;}
@@ -111,16 +114,16 @@ class Participante : public Usuario{
 		//funcionalidades
 		bool matricularse(int curso, int cuantos);
 		bool globalset(string cor);
-		void paginaParticipante(int vez, list<Curso> listas);
-		bool comprobaciones(int curso, int cual);
+		void paginaParticipante(int vez);
+		bool comprobaciones(int curso, list<Curso> listas);
 
 };
-void seleccionarCurso(int *curso, int *cual);
+void seleccionarCurso(int *curso, int *cual, list<Curso> listas);
 void menuParticipante();
 bool opcionaMatricula();
-bool buscarCurso(int **curso, int **ncursos);
+bool buscarCurso(int **curso, list<Curso> listas);
 bool comprobarFecha(string ahora, string date);
-bool actualizarCursos(int p, int ncursos, int curso);
+///bool actualizarCursos(int p, int ncursos, int curso);
 bool actualizarMatricula(string dni, string nombre);
 string concatenar(vector<string> v, int n);
 string estudiosPosibles();

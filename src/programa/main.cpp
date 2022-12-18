@@ -53,10 +53,14 @@ int main(){
 	list<Curso> listas = listaCursos();
 	Ccurso cuatro = Ccurso("","", listas);
 	user = uno.verPagina(0, listas);
+	cout<<"user es "<<user<<endl;
 	if(user == 1){
-		tres = Participante(uno.get_correo(), uno.get_contra(), "","","","","","");
+		correo = uno.get_correo();
+		contra = uno.get_contra();
+		tres = Participante(correo, contra,"","","","","","");
 		tres.globalset(correo);
-		tres.paginaParticipante(0, listas);
+		tres.set_listas(listas);
+		tres.paginaParticipante(0);
 	}
 	if(user == 2){
 		
