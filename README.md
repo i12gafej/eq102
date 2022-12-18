@@ -11,7 +11,7 @@
  * Curso
  
  ### Codigo de clases y contructores
- --- Usuario:
+ --- Usuario:---
  ***Clase***
  
  ```
