@@ -29,10 +29,10 @@
 		inline string get_correo(){return correo_;}
 		inline string get_contra(){return contra_;}
 		//User's operations
-		bool iniciarSesion(string cor, string contra, int *role);
-		int verPagina(int vez, list<Curso> listas);
-		bool registrarUsuario(string cor, string cotra);
-		void verListas(list<Curso> listas);
+		bool iniciarSesion(string cor, string contra, int *role);	//permite iniciar sesion a un usuario
+		int verPagina(int vez, list<Curso> listas);			//permite ver la pagina de inicio a un usuario
+		bool registrarUsuario(string cor, string cotra);		//permite registrar a un nuevo usuario
+		void verListas(list<Curso> listas);				//permite ver la lista de cursos disponibles
 };
 ```
   ***Constructor***
@@ -69,10 +69,11 @@
 		inline string get_nacimiento(){return nacimiento_;}
 		inline string get_cmatriculados(){return cmatriculados_;}
 		//funcionalidades
-		bool matricularse(int curso, int cuantos);
-		bool globalset(string cor);
-		void paginaParticipante(int vez);
-		bool comprobaciones(int curso, list<Curso> listas);
+		bool matricularse(int curso, int cuantos);			//permite a un participante matricularse en un curso
+		bool globalset(string cor);					//permite hacer todos los set al participante
+		void paginaParticipante(int vez);				//permite mostrar la página al participante
+		bool comprobaciones(int curso, list<Curso> listas);		//permite comprobar los datos del alumno para entrar
+										//en el curso que desea acceder
 
 };
  ```
@@ -101,11 +102,12 @@
 	inline void set_listas(list<Curso> listas){listas_ = listas;};
 	//getters
 	inline list<Curso> get_listas(){return listas_;};
-	int modificarCurso();
-	void paginaCcurso(int vez);
-	bool crearCurso(Curso c1);
-	bool editarCurso();
-	bool eliminarCurso(int curso);
+	
+	int modificarCurso();				//permite realizar las funcionalidades de modificacion de cursos
+	void paginaCcurso(int vez);			//permite ver la página al coordinador de curso
+	bool crearCurso(Curso c1);			//permite crear un curso
+	bool editarCurso();				//permite editar un curso
+	bool eliminarCurso(int curso);			//permite eliminar un curso
 };
  ```
  ***Constructor***
@@ -161,46 +163,47 @@
  ### Funciones no metódicas:
  #### Curso
  ```
- list<Curso> listaCursos();
-void imprimirListas(list<Curso> listas);
+ list<Curso> listaCursos(); 			//carga los cursos en una lista
+void imprimirListas(list<Curso> listas);	//imprime la lista de cursos en un fichero de texto
 ```
 #### Usuario
 ```
-bool comprobar_coincidencia(string cor, string con, int **rol);
-bool comprobar_correo(string cor);
-bool arroba(string cor);
-void imprimir();
-void menu();
-struct Us introducirUsuarioyContrasenia();
+bool comprobar_coincidencia(string cor, string con, int **rol); 		//comprueba la relacion entre usuario, contraseña y rol
+bool comprobar_correo(string cor);						//comprueba la existencia del correo
+bool arroba(string cor);							//comprueba la validez del formato del correo
+void imprimir();								//imprime los logs.txt
+void menu();									//despliega un menu
+struct Us introducirUsuarioyContrasenia();					//permite introducir correo y contraseña
 
-bool distancia(string cor);
-void registrar(string cor, string con);
-int contarUsuarios();
+bool distancia(string cor);							//permite conocer la distancia entre @ y .
+void registrar(string cor, string con);						//imprime el nuevo usuario registrado en logs.txt
+int contarUsuarios();								//cuenta los usuarios de la pagina
 
-int contarlineas();
+int contarlineas();								//cuenta las lineas del fichero open.txt
 ```
 #### Participante
 ```
-void seleccionarCurso(int *curso, int *cual, list<Curso> listas);
-void menuParticipante();
-bool opcionaMatricula();
-bool buscarCurso(int **curso, list<Curso> listas);
-bool comprobarFecha(string ahora, string date);
-bool actualizarMatricula(string dni, string nombre);
-string concatenar(vector<string> v, int n);
-string estudiosPosibles();
-string fechaPosible();
-bool imprimirPerfilNuevo(string cor, string w[]);
+void seleccionarCurso(int *curso, int *cual, list<Curso> listas);		//sirve para seleccionar un curso
+void menuParticipante();							//muestra menu 
+bool opcionaMatricula();							//pregunta si quieres matricularte
+bool buscarCurso(int **curso, list<Curso> listas);				//busca un curso en la lista
+bool comprobarFecha(string ahora, string date);					//comprueba si la fecha es valida
+bool actualizarMatricula(string dni, string nombre);				//actualiza el fichero matriculas.txt al registrar a alguien
+string concatenar(vector<string> v, int n);					//concatena un vector
+string estudiosPosibles();							//menu de eleccion de grado universitario
+string fechaPosible();								//menu de seleccion de fecha
+bool imprimirPerfilNuevo(string cor, string w[]);				//imprime una matricula nueva
 ```
 #### Coordinador de Cursos
 ```
-void opcionMod();
-vector<string> atributos();
+void opcionMod();								//muestra menu
+vector<string> atributos();							//pide atributos cuando se quiere crear curso
 
-size_t comprobarExistencia(string c);//devuelve la posicion de la linea donde se encuentra el elemento existente y -1 si no existe
-string estudiosRequeridos();
-string fecha(int mod);
-vector<string> desglosar(string linea, int tipo);
+size_t comprobarExistencia(string c);						//devuelve la posicion de la linea donde se encuentra el elemento existente 
+										//y -1 si no existe
+string estudiosRequeridos();							//menu de seleccion de estudios requeridos por curso
+string fecha(int mod);								//menu de eleccion de fecha de inicio y fin de curso
+vector<string> desglosar(string linea, int tipo);				//desglosa un string concatenado segun sea string de docentes, contactos o estudios
 ```
  ### Casos de uso abordados
  1. Iniciar Sesion
