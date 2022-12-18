@@ -13,8 +13,7 @@
  ### Codigo de clases y contructores
  #### Usuario:
  ***Clase***
- ''' 
- class Usuario{
+ '''class Usuario{
 	private:
 		string correo_;
 		string contra_;
@@ -32,20 +31,16 @@
 		int verPagina(int vez, list<Curso> listas);
 		bool registrarUsuario(string cor, string cotra);
 		void verListas(list<Curso> listas);
-};
- '''
+};'''
   ***Constructor***
-  '''
-  Usuario::Usuario(string correo, string contra){
+  '''Usuario::Usuario(string correo, string contra){
      correo_ = correo;
      contra_ = contra;
-  }
-  '''
+  }'''
  
  #### Participante:
  ***Clase***
- '''
- class Participante : public Usuario{
+ '''class Participante : public Usuario{
 	private:
 		string nombre_, dni_, estudios_, telefono_, nacimiento_, cmatriculados_;
 		list<Curso> listas_;
@@ -73,26 +68,22 @@
 		void paginaParticipante(int vez);
 		bool comprobaciones(int curso, list<Curso> listas);
 
-};
- '''
+};'''
  
  ***Constructor***
  
- '''
- Participante::Participante(string correo,
+ '''Participante::Participante(string correo,
 		string contra,
 		string nombre = "null",
 		string dni = "null",
 		string estudios = "null",
 		string telefono = "null",
 		string nacimiento = "null",
-		string cmatriculados = "null"):Usuario(correo, contra){}
- '''
+		string cmatriculados = "null"):Usuario(correo, contra){}'''
  
  #### Coordinador de Cursos:
  ***Clase***
- '''
- class Ccurso : public Usuario{
+ '''class Ccurso : public Usuario{
 	private:
 	list<Curso> listas_;
 	public:
@@ -106,16 +97,12 @@
 	bool crearCurso(Curso c1);
 	bool editarCurso();
 	bool eliminarCurso(int curso);
-};
- '''
+};'''
  ***Constructor***
- '''
- Ccurso::Ccurso(string correo, string contra, list<Curso> listas):Usuario(correo, contra){}
- '''
+ '''Ccurso::Ccurso(string correo, string contra, list<Curso> listas):Usuario(correo, contra){}'''
  #### Curso:
  ***Clase***
- '''
- class Curso{
+ '''class Curso{
 	private:
 		string id_, nombre_, docentes_, contactos_, descripcion_, estudios_, aforo_, inicio_, fin_, participantes_;
 	public:
@@ -143,11 +130,9 @@
 		inline string get_fin(){return fin_;};
 		inline string get_participantes(){return participantes_;};
 		//funcionalidades
-};
- '''
+};'''
  ***Constructor***
- '''
- Curso::Curso(string id, 
+ '''Curso::Curso(string id, 
 		string nombre, 
 		string docentes, 
 		string contactos, 
@@ -156,8 +141,7 @@
 		string aforo, 
 		string inicio, 
 		string fin, 
-		string participantes){}
- '''
+		string participantes){}'''
  ### Casos de uso abordados
  1. Iniciar Sesion
  2. Registrarse
