@@ -14,7 +14,7 @@
  --- Usuario:
  ***Clase***
  
- 
+ ```
  class Usuario{
 	private:
 		string correo_;
@@ -34,11 +34,14 @@
 		bool registrarUsuario(string cor, string cotra);
 		void verListas(list<Curso> listas);
 };
+```
   ***Constructor***
-  '''Usuario::Usuario(string correo, string contra){
+  ```
+  Usuario::Usuario(string correo, string contra){
      correo_ = correo;
      contra_ = contra;
-  }'''
+  }
+  ```
  
  #### Participante:
  ***Clase***
