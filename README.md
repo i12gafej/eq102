@@ -158,6 +158,9 @@
 		string fin, 
 		string participantes){}
  ```
+ ### Funciones no metódicas:
+ `list<Curso> listaCursos();
+void imprimirListas(list<Curso> listas);`
  ### Casos de uso abordados
  1. Iniciar Sesion
  2. Registrarse
