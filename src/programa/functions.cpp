@@ -2823,9 +2823,9 @@ void imprimirListas(list<Curso> listas){
 	size_t n = listas.size();
 	int m = static_cast<int>(n), contador = 1;
 	for(it = listas.begin(); it != listas.end(); ++it){
-			wr<<it->get_nombre()<<endl;
-			//ID
 			wr<<it->get_id()<<endl;
+			//ID
+			wr<<it->get_nombre()<<endl;
 			//Docentes
 			wr<<it->get_docentes()<<endl;
 			//Contacto
