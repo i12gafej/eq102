@@ -52,8 +52,11 @@ int main(){
 	Participante tres = Participante("","","","","","","","");
 	list<Curso> listas = listaCursos();
 	Ccurso cuatro = Ccurso("","", listas);
-	while(user != 1 && user != 2 && user == 0){
-		user = uno.verPagina(0, listas);
+	while(user != 1 && user != 2 && (user == 0|| user == 3)){
+		if(user == 0)
+			user = uno.verPagina(0, listas);
+		else if(curso == 3)
+			user = uno.verPagina(3, listas);
 	}
 	if(user == 1){
 		correo = uno.get_correo();
