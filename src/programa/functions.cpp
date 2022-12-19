@@ -2465,7 +2465,6 @@ list<Curso> listaCursos(){
 	if(re.fail()){
 		cout<<"Error de lectura"<<endl;
 	}
-	cout<<"n entre 10 = "<<n<<endl;
 	while(/*!re.eof() && */(contador <= n)){
 		for(int i = 0; i < 10; i++){
 			getline(re, atribs[i]);
