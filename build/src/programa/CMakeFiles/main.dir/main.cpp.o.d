@@ -1,5 +1,5 @@
 src/programa/CMakeFiles/main.dir/main.cpp.o: \
- /home/yabiel/Desktop/IS/eq102/src/programa/main.cpp \
+ /home/yabiel/Desktop/eq102/src/programa/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -146,7 +146,7 @@ src/programa/CMakeFiles/main.dir/main.cpp.o: \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc /usr/include/c++/11/stdlib.h \
- /home/yabiel/Desktop/IS/eq102/src/programa/objects.h \
+ /home/yabiel/Desktop/eq102/src/programa/objects.h \
  /usr/include/c++/11/vector /usr/include/c++/11/bits/stl_uninitialized.h \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \

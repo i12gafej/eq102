@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/yabiel/Desktop/IS/eq102/src/programa/functions.cpp" "src/programa/CMakeFiles/programa.dir/functions.cpp.o" "gcc" "src/programa/CMakeFiles/programa.dir/functions.cpp.o.d"
+  "/home/yabiel/Desktop/eq102/src/programa/functions.cpp" "src/programa/CMakeFiles/programa.dir/functions.cpp.o" "gcc" "src/programa/CMakeFiles/programa.dir/functions.cpp.o.d"
   )
 
 # Targets to which this target links.

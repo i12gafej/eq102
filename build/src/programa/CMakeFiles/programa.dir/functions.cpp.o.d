@@ -1,5 +1,5 @@
 src/programa/CMakeFiles/programa.dir/functions.cpp.o: \
- /home/yabiel/Desktop/IS/eq102/src/programa/functions.cpp \
+ /home/yabiel/Desktop/eq102/src/programa/functions.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/string \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -159,7 +159,7 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/chrono \
  /usr/include/c++/11/ratio /usr/include/c++/11/limits \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
- /home/yabiel/Desktop/IS/eq102/src/programa/objects.h \
+ /home/yabiel/Desktop/eq102/src/programa/objects.h \
  /usr/include/c++/11/stdlib.h /usr/include/c++/11/list \
  /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \

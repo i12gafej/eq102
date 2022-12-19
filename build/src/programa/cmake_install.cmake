@@ -1,4 +1,4 @@
-# Install script for directory: /home/yabiel/Desktop/IS/eq102/src/programa
+# Install script for directory: /home/yabiel/Desktop/eq102/src/programa
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

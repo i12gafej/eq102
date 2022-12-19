@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/yabiel/Desktop/IS/eq102/src/programa -isystem /home/yabiel/Desktop/IS/eq102/build/_deps/googletest-src/googletest/include -isystem /home/yabiel/Desktop/IS/eq102/build/_deps/googletest-src/googletest
+CXX_INCLUDES = -I/home/yabiel/Desktop/eq102/src/programa -isystem /home/yabiel/Desktop/eq102/build/_deps/googletest-src/googletest/include -isystem /home/yabiel/Desktop/eq102/build/_deps/googletest-src/googletest
 
 CXX_FLAGS = -std=gnu++17
 

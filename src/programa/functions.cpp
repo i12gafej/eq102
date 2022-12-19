@@ -337,7 +337,7 @@ void Usuario::verListas(list<Curso> listas){//cada curso ocupara varias lineas
 	if(n <= 1){
 		cout<<"No hay cursos disponibles"<<endl;
 	}
-	cout<<"ILLOO"<<endl;
+	
 	list<Curso>::iterator it;
 	for(it = listas.begin(); it != listas.end(); it++){
 		//nombre
@@ -375,6 +375,7 @@ int contarlineas(){
 	}
 	while(!d.eof()){
 		getline(d, ausi);//lee todas las lineas hasta topar con el titulo
+		//cout<<"Linea "<<c<<": "+ausi<<endl;
 		c++;
 	}
 	d.close();
@@ -2452,7 +2453,7 @@ vector<string> desglosar(string linea, int tipo){
 list<Curso> listaCursos(){
 	Curso c("", "", "", "", "", "", "", "", "", "");
 	list<Curso> listas;
-	int n = contarlineas();
+	int n = contarlineas() - 1, contador = 1;
 	string atribs[10];
 	if(n <= 1){
 		listas.push_back(c);
@@ -2464,32 +2465,34 @@ list<Curso> listaCursos(){
 	if(re.fail()){
 		cout<<"Error de lectura"<<endl;
 	}
-	
-	while(!re.eof()){
+	cout<<"n entre 10 = "<<n<<endl;
+	while(/*!re.eof() && */(contador <= n)){
 		for(int i = 0; i < 10; i++){
 			getline(re, atribs[i]);
+			contador++;
 		}
 		c.set_id(atribs[0]);
-		//cout<<c.get_id()<<endl;
+		//cout<<c.get_id() + "finlinea"<<endl;
 		c.set_nombre(atribs[1]);
-		//cout<<c.get_nombre()<<endl;
+		//cout<<c.get_nombre() + "finlinea"<<endl;
 		c.set_docentes(atribs[2]);
-		//cout<<c.get_docentes()<<endl;
+		//cout<<c.get_docentes() + "finlinea"<<endl;
 		c.set_contactos(atribs[3]);
-		//cout<<c.get_contactos()<<endl;
+		//cout<<c.get_contactos() + "finlinea"<<endl;
 		c.set_descripcion(atribs[4]);
-		//cout<<c.get_descripcion()<<endl;
+		//cout<<c.get_descripcion() + "finlinea"<<endl;
 		c.set_estudios(atribs[5]);
-		//cout<<c.get_estudios()<<endl;
+		//cout<<c.get_estudios() + "finlinea"<<endl;
 		c.set_aforo(atribs[6]);
-		//cout<<c.get_aforo()<<endl;
+		//cout<<c.get_aforo() + "finlinea"<<endl;
 		c.set_inicio(atribs[7]);
-		//cout<<c.get_inicio()<<endl;
+		//cout<<c.get_inicio() + "finlinea"<<endl;
 		c.set_fin(atribs[8]);
-		//cout<<c.get_fin()<<endl;
+		//cout<<c.get_fin() + "finlinea"<<endl;
 		c.set_participantes(atribs[9]);
-		//cout<<c.get_participantes()<<endl;
+		//cout<<c.get_participantes() + "finlinea"<<endl;
 		listas.push_back(c);
+		//cout<<"UNO"<<endl;
 	}
 	re.close();
 	return listas;

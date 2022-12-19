@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yabiel/Desktop/IS/eq102
+CMAKE_SOURCE_DIR = /home/yabiel/Desktop/eq102
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yabiel/Desktop/IS/eq102/build
+CMAKE_BINARY_DIR = /home/yabiel/Desktop/eq102/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/yabiel/Desktop/IS/eq102/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/yabiel/Desktop/IS/eq102/build/CMakeFiles /home/yabiel/Desktop/IS/eq102/build/src/programa//CMakeFiles/progress.marks
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yabiel/Desktop/IS/eq102/build/CMakeFiles 0
+	cd /home/yabiel/Desktop/eq102/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/yabiel/Desktop/eq102/build/CMakeFiles /home/yabiel/Desktop/eq102/build/src/programa//CMakeFiles/progress.marks
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yabiel/Desktop/eq102/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/clean
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/preinstall
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/preinstall
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/yabiel/Desktop/eq102/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/programa/CMakeFiles/programa.dir/rule:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/CMakeFiles/programa.dir/rule
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/CMakeFiles/programa.dir/rule
 .PHONY : src/programa/CMakeFiles/programa.dir/rule
 
 # Convenience name for target.
@@ -182,12 +182,12 @@ programa: src/programa/CMakeFiles/programa.dir/rule
 
 # fast build rule for target.
 programa/fast:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/build
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/build
 .PHONY : programa/fast
 
 # Convenience name for target.
 src/programa/CMakeFiles/main.dir/rule:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/CMakeFiles/main.dir/rule
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/programa/CMakeFiles/main.dir/rule
 .PHONY : src/programa/CMakeFiles/main.dir/rule
 
 # Convenience name for target.
@@ -196,7 +196,7 @@ main: src/programa/CMakeFiles/main.dir/rule
 
 # fast build rule for target.
 main/fast:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/build
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/build
 .PHONY : main/fast
 
 functions.o: functions.cpp.o
@@ -204,7 +204,7 @@ functions.o: functions.cpp.o
 
 # target to build an object file
 functions.cpp.o:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.o
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.o
 .PHONY : functions.cpp.o
 
 functions.i: functions.cpp.i
@@ -212,7 +212,7 @@ functions.i: functions.cpp.i
 
 # target to preprocess a source file
 functions.cpp.i:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.i
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.i
 .PHONY : functions.cpp.i
 
 functions.s: functions.cpp.s
@@ -220,7 +220,7 @@ functions.s: functions.cpp.s
 
 # target to generate assembly for a file
 functions.cpp.s:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.s
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/programa.dir/build.make src/programa/CMakeFiles/programa.dir/functions.cpp.s
 .PHONY : functions.cpp.s
 
 main.o: main.cpp.o
@@ -228,7 +228,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.o
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -236,7 +236,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.i
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -244,7 +244,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.s
+	cd /home/yabiel/Desktop/eq102/build && $(MAKE) $(MAKESILENT) -f src/programa/CMakeFiles/main.dir/build.make src/programa/CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -279,6 +279,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/yabiel/Desktop/IS/eq102/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/yabiel/Desktop/eq102/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
