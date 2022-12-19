@@ -332,53 +332,7 @@ void registrar(string cor, string con){
     wr.close();
 }
 void Usuario::verListas(list<Curso> listas){//cada curso ocupara varias lineas
-	/*int n = contarlineas();
-	if(n <= 1){
-		cout<<"NO HAY CURSOS DISPONIBLES"<<endl;
-		return 0;
-	}
-	ifstream f;
-	string id, titulo;//una linea paraid y otra pa titulo
-	string descripcion;//una linea para desripcion
-	string aforo;//linea para aforo
-	int times = 1;
-	string docentes, contacto;//varias lineas para docentes:
-							//una que pona los nombres
-							//otra que muestre sus contactos
-	string estudios;//estudios requeridos para acceder al curso
-	string inicio, fin; //fechas de inicio y fin
-	string participantes;
-	f.open("open.txt", ios::in);
-	if(f.fail()){
-		cout<<"Error al abrir fichero de cursos"<<endl;
-		exit(1);
-	}
-	cout<<"-------------------------------------------------"<<endl;
-	while(!f.eof()){
-		getline(f, id);//ID
-		cout<<"ID: "<<id<<endl;
-		getline(f, titulo);//nombre
-		cout<<times<<". "<<titulo<<endl;
-		getline(f, docentes);//Docentes
-		cout<<"Docentes:"<<docentes<<endl;
-		getline(f, contacto);//Contacto
-		cout<<"Contacto de docentes"<<contacto<<endl;
-		getline(f, descripcion);//Descripcion
-		cout<<"Descripcion: "<<descripcion<<endl;
-		getline(f, estudios);//estudios requeridoss
-		cout<<"Estudios requeridos"<<estudios<<endl;
-		getline(f, aforo);//Aforo
-		cout<<"Aforo maximo: "<<aforo<<endl;
-		getline(f,inicio);//Fecha de Inicio
-		cout<<"Fecha de Inicio del Curso: "<<inicio<<endl;
-		getline(f,fin);//Fecha de Final
-		cout<<"Fecha de finalizacion del Curso: "<<fin<<endl;
-		getline(f,participantes);//N participantes cursando
-		cout<<"Participantes del curso: "<<participantes<<endl;
-		cout<<"-------------------------------------------------"<<endl;
-		times++;
-	}
-	return times - 1;*/
+	
 	int n = contarlineas(), c = 1;
 	if(n <= 1){
 		cout<<"No hay cursos disponibles"<<endl;
@@ -904,32 +858,7 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 	int  ticks = 0, partips, afor, contador = 1, cual = static_cast<int>(m);
 	list<Curso>::iterator it;
 	 //el curso existe
-		//cout<<"EN PROCESO DE IMPRESION"<<endl;
-		//tenemos que hacer 4 comprobaciones,
-		//1. antes que nada ver si el alumno esta matriculado ya
-		//2. si el curso tienee aforo
-		//3. si se tienen los estudios requeridos
-		//4. si es antes de la fecha de inicio
-		/*ifstream f;
-		f.open("open.txt", ios::in);
-		if(f.fail()){
-			cout<<"Error al leer fichero open"<<endl;
-			exit(1);
-		}
-		for(int i = 1; i < curso; i++){//recorre cursos
-			for(int l = 0; l < 10; l++){//recorre atributos de cada curso
-				getline(f, linea);
-			}
-		}
-		for(int i = 0; i < 5; i++){
-			//recorre de ID a descripcion
-			if(i == 1){
-				getline(f, nombre);
-			}
-			else
-				getline(f, linea);
-		}*/
-		//cout<<"AAAAAAAAH"<<endl;
+		
 		for(it = listas.begin(); it != listas.end(); it++){
 			if(curso == contador){
 				nombre = it->get_nombre();
@@ -1000,26 +929,14 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 						set_cmatriculados(nombre);
 						//matricula actualizada
 						return true;
-						/*if(actualizarMatricula(get_dni(), nombre)==true){
-							cout<<"Base de datos de matriculas acctuaalizada."<<endl;
-							valid = true;
-							return true;
-						}
-						else{
-							cout<<"Error al actualizar base de datos de matriculas."<<endl;
-							return false;
-						}*/
+
 				}
 				else{
 					cout<<"No cumples requisitos"<<endl;
 					return false;
 				}
 
-				//}
-				//else{
-				//	cout<<"No puedes matricularte en este curso, ya que no se cumplen los requerimientos posibles para ello."<<endl;
-				//	return false;
-				//}
+				
 			}
 			contador++;
 		}
@@ -1061,8 +978,7 @@ bool actualizarMatricula(string dni, string nombre){
     if(v[v.size()-1] != "-"){ //Si no es un gion el ulitmo elemento del fichero eliminamos el ultimo elemento del vector para no crear espacios en blanco
         v.pop_back();
     }
-    //cout<<"Numero de lineas: "<<lines<<endl;
-    //cout<<"Numero de elementos de v: "<<v.size()<<endl;
+   
 	re.close();
 	ofstream wr;
 	wr.open("matriculas.txt", ios::out);//machaca open con los datos actualizados
@@ -1088,60 +1004,7 @@ bool actualizarMatricula(string dni, string nombre){
 	wr.close();
 	return true;
 }
-/*bool actualizarCursos(int p, int ncursos, int curso){
-	//bolcar datos en vector e imprimirlos en open.txt
-	string a[10][ncursos], ausi;
-    curso--;
-	ifstream re;
-	int c = 0, lines = 0;
-	re.open("open.txt", ios::in);
-	if(re.fail()){
-		cout<<"Error de abrir fichero de lectura."<<endl;
-		return false;
-	}
-    string participantes = to_string(p+1);
-	while(!re.eof() && c < ncursos){
-		for(int i = 0 ; i < 10 ; i++){
-			if(i == 9 && c == curso){
-				a[9][c] = participantes;
-                //cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
-                getline(re, ausi);
-            }
-			else{
-				getline(re, a[i][c]);
-                //cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
 
-            }
-            lines++;
-		}
-		c++;
-        //cout<<"c = "<<c<<endl;
-	}
-
-    c = 0;
-	re.close();
-	ofstream wr;
-	wr.open("open.txt", ios::out);//machaca open con los datos actualizados
-	if(wr.fail()){
-		cout<<"Error de abrir fichero de escritura."<<endl;
-		return false;
-	}
-	while(!wr.eof() && c < ncursos){
-		for(int i = 0 ; i < 10 ; i++){
-			if(i == 9 && c == ncursos - 1){
-                wr<<a[i][c];
-                //cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
-            }
-            else{
-                wr<<a[i][c]<<endl;
-                //cout<<"a["<<i<<"]["<<c<<"] = "<<a[i][c]<<endl;
-            }
-		}
-		c++;
-	}
-	wr.close();
-	return true;
-}*/
 bool comprobarFecha(string ahora, string date){//traduce la fecha chrono a la de la bbdd
 	//Comparar año
 	int yearA, yearB, checks = 0;
@@ -1224,47 +1087,7 @@ bool comprobarFecha(string ahora, string date){//traduce la fecha chrono a la de
 	return false;
 }
 bool buscarCurso(int **curso, list<Curso> listas){
-	/*int i = 1, c;
-	string linea,nombre;
-	ifstream fichero;
-	fichero.open("open.txt", ios::in);
-	if(fichero.fail()){
-		cout<<"Error al acceder al fichero de cursos"<<endl;
-		exit(1);
-	}
-	while(i < **curso && i < **ncursos){
-		for(int j = 0; j < 10 ; j++){
-			getline(fichero, linea);//escaneamos un **curso completo
-			//cout<<linea<<endl;
-		}							//hasta llegar al que queremos
-			i++;
-	}
-	if(i == **curso && i <= **ncursos){//si la posicion está en el curso y no supera los ncursos estamos bien
-		getline(fichero, nombre);//nombre del curso que queremos
-		fichero.close();
-		cout<<"Es <"<<nombre<<"> el curso donde te quieres matricular?"<<endl;
-		cout<<"1. Si"<<endl;
-		cout<<"2. No"<<endl;
-		cin>>c;
-		if(c == 1){
-			fichero.close();
-			return true;
-		}
-		else{
-			fichero.close();
-			return false;
-		}
-	}
-	else if(fichero.eof()){
-		cout<<"No se ha podido acceder al curso(f)"<<endl;
-		return false;
-	}
-	else{
-		cout<<"No se ha podido acceder al curso(otro)"<<endl;
-		fichero.close();
-		return false;
-	}
-	fichero.close();*/
+	
 	list<Curso>::iterator it;
 	int cual = static_cast<int>(listas.size()), contador = 1, c;
 	for(it = listas.begin(); it != listas.end(); it++){
@@ -1754,42 +1577,7 @@ vector<string> atributos(){
 	return c;
 }
 bool Ccurso::crearCurso(Curso c1){
-	/*string linea;
-	vector<string> lineas;
-	ifstream re;
-	int count = 0;
-	re.open("open.txt", ios::in);
-	if(re.fail()){
-		cout<<"Error de lectura open"<<endl;
-		return false;
-	}
-	while(!re.eof()){
-		getline(re,linea);
-		lineas.push_back(linea);
-		count++;
-	}
-	re.close();
-	ofstream wr;
-	wr.open("open.txt", ios::out);
-	if(wr.fail()){
-		cout<<"Error de escritura open"<<endl;
-		return false;
-	}
-	int punt = 0;
-	while(punt <= count){
-		if(punt == count)
-            wr<<lineas[punt];
-        else
-            wr<<lineas[punt]<<endl;;
-        punt++;
-	}
-	for(int b = 0; b < 10; b++){
-		if(b == 9)
-			wr<<curso[b];
-		else
-			wr<<curso[b]<<endl;
-	}
-	wr.close();*/
+	
 	list<Curso> l = get_listas();
 	l.push_back(c1);
 	set_listas(l);
@@ -1804,28 +1592,7 @@ bool Ccurso::editarCurso(){
 	bool elec = false, buc = false;
 	cout<<"Introduce el curso que quieres modificar: ";
 	cin>>curso;
-    /*ifstream re;
-	if(curso <= ncur && curso > 0){//el curso que metamos tiene que estar ahi
-		//accedemos por primera vez para ver si es ese curso el que queremos editar
-		re.open("open.txt", ios::in);
-		if(re.fail()){
-			cout<<"Error de lectura"<<endl;
-			return false;
-		}
-		while(!re.eof()){//escaneaamos toda la pagina
-				for(int i = 0; i < 10; i++){
-					getline(re, datos[i][c-1]);
-                    //cout<<"DATO CAPTADO DE ["<<i<< "]["<< c-1<<"]="+datos[i][c-1]<<endl;
-					if(c == curso && i == 0){
-						id = datos[0][c-1]; //cuando topemos con el id lo guardamos en string id
-                        cout<<"ID DEL CURSO ES "<<id<<endl;
-                        //cout<<"DATO CAPTADO DE ["<<i<< "]["<< c-1<<"]="+datos[i][c-1]<<endl;
-					}
-				}
-			c++;
-		}
-		re.close();
-	}*/
+   
 	int contador = 1;
 	if(curso <= ncur && curso > 0){
 		for(it = listas.begin(); it != listas.end(); it++){
@@ -2214,42 +1981,7 @@ bool Ccurso::editarCurso(){
 	set_listas(listas);
 	return true;	
 	//ahora vamos a imprimir en la pagina
-	/*c = 1;
-	ofstream wr;
-	wr.open("open.txt", ios::out);
-	if(wr.fail()){
-		cout<<"Error de escritura"<<endl;
-		return false;
-	}
-	while(c < curso){
-		for(int i = 0; i < 10; i++){
-			wr<<datos[i][c-1]<<endl;
-
-		}
-		c++;
-	}
-	for(int i = 0; i < 10; i++){
-		if(c == ncur && i == 9){//si es el ultimo curso no mete intro final
-			wr<<atribs[9];
-		}
-		else{
-			wr<<atribs[i]<<endl;
-		}
-	}
-	c++;
-	if(c <= ncur){//si siguen quedando cursos seguimos imprimiendo
-		for(int i = c; i <= ncur; i++){
-			for(int j = 0; j < 10; j++){
-				if(i == ncur && j == 9){
-					wr<<datos[j][i-1];
-				}
-				else{
-					wr<<datos[j][i-1]<<endl;
-				}
-			}
-		}
-	}
-	wr.close();*/
+	
 	
 }
 
@@ -2260,28 +1992,7 @@ bool Ccurso::eliminarCurso(int curso){
 	int c = 1, ncur = static_cast<int>(nc)/*, x, cont=0*/;
 	//bool sel = false;
 	vector<string> datos;
-	//string linea, id;
-	/*ifstream re;
-	while(sel != true){
-		if(curso <= ncur && curso > 0){//el curso que metamos tiene que estar ahi
-			re.open("open.txt", ios::in);
-			if(re.fail()){
-				cout<<"Error de lectura"<<endl;
-				return false;
-			}
-			while(!re.eof()){//escaneaamos toda la pagina
-				getline(re, linea);
-				datos.push_back(linea);
-				//cout<<linea<<endl;
-			}
-			id = datos[(curso - 1)*10];
-			re.close();
-			sel = true;
-		}
-		else{
-			cout<<"Escoge un curso que este disponible"<<endl;
-		}
-	}*/
+	
 	if(curso <= ncur && curso > 0){
 		for(it = listas.begin(); it != listas.end(); it++){
 			if(curso == c){
@@ -2297,36 +2008,7 @@ bool Ccurso::eliminarCurso(int curso){
 		return false;
 	}
 	return false;
-	/*c = 1;
-
-	cout<<"Es el curso con el id <"+id+"> el que quieres eliminar?"<<endl;
-	cout<<"1. Si"<<endl;
-	cout<<"2. No"<<endl;
-	cin>>x;
-	if(x != 1){
-		cout<<"No se ha borrado el curso <"+id+">."<<endl;
-		return false;
-	}
-	ofstream wr;
-	wr.open("open.txt", ios::out);
-	if(wr.fail()){
-		cout<<"Error de escritura"<<endl;
-		return false;
-	}
-	for(int i = 0; i < (curso - 1)*10; i++){
-		if(i == (curso - 1)*10 - 1)
-			wr<<datos[i];
-		else
-			wr<<datos[i]<<endl;
-	}
-	//por donde sigue despues
-	for(int i = (curso - 1)*10 + 10; i < datos.size(); i++){
-		if(i == datos.size() - 1)
-			wr<<datos[i];
-		else
-			wr<<datos[i]<<endl;
-	}
-	return true;*/
+	
 }
 size_t comprobarExistencia(string c){
 	ifstream f;
