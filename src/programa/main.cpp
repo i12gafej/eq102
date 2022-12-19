@@ -46,14 +46,15 @@ int main(){
 using namespace std;
 
 int main(){
-	int user;
+	int user = 0;
 	string correo, contra;
 	Usuario uno = Usuario("","");
 	Participante tres = Participante("","","","","","","","");
 	list<Curso> listas = listaCursos();
 	Ccurso cuatro = Ccurso("","", listas);
-	user = uno.verPagina(0, listas);
-	cout<<"user es "<<user<<endl;
+	while(user != 1 && user != 2 && user == 0){
+		user = uno.verPagina(0, listas);
+	}
 	if(user == 1){
 		correo = uno.get_correo();
 		contra = uno.get_contra();

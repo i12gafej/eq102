@@ -214,7 +214,7 @@ int Usuario::verPagina(int vez, list<Curso> listas){
 		break;
 		case 2:
 			verListas(listas);
-			verPagina(1, listas);
+			return 0;
 		break;
 		case 3:
 			usuario = introducirUsuarioyContrasenia();
@@ -227,7 +227,7 @@ int Usuario::verPagina(int vez, list<Curso> listas){
 			cout<<"Argumento no valido";
 		}
 	//}
-	return 0;
+	return -1;
 }
 
 void menu(){
