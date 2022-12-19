@@ -55,7 +55,7 @@ int main(){
 	while(user != 1 && user != 2 && (user == 0|| user == 3)){
 		if(user == 0)
 			user = uno.verPagina(0, listas);
-		else if(curso == 3)
+		else if(user == 3)
 			user = uno.verPagina(3, listas);
 	}
 	if(user == 1){
