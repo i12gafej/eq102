@@ -4,6 +4,9 @@
 **Enlace del repo**
 (https://github.com/i12gafej/eq102)
 
+**Enlace del video explicativo del programa**
+(https://www.youtube.com/watch?v=feJ4mAaixUw)
+
 ### Objetos en nuestra página
 * Usuario
   * Participante
