@@ -10,6 +10,7 @@
 #include <vector>
 #include <chrono>
 #include "objects.h"
+#include <unistd.h>
 
 using namespace std;
 
@@ -97,13 +98,11 @@ bool arroba(string cor){
 	return false;
 }
 struct Us introducirUsuarioyContrasenia(){
-    struct Us usuario;
-    cout<<"Introducir correo: "<<endl;
+	system("clear");
+	struct Us usuario;
+    cout<<"Introducir correo: ";
     cin>>usuario.correo;
-    cout<<endl;
-    cout<<endl;
-    cout<<endl;
-    cout<<"Introducir contrasenya: "<<endl;
+    cout<<"Introducir contrasenya: ";
     cin>>usuario.contra;
     cout<<endl;
     cout<<endl;
@@ -112,15 +111,18 @@ struct Us introducirUsuarioyContrasenia(){
 
 }
 bool Usuario::iniciarSesion(string cor, string contra, int *role){
-    if(comprobar_coincidencia(cor,contra, &role)==true){
+    system("clear");
+	if(comprobar_coincidencia(cor,contra, &role)==true){
         set_correo(cor);
         set_contra(contra);
 
         cout<<"Inicio de sesion con exito"<<endl;
+		sleep(2);
         return true;
     }
     else{
         cout<<"No se ha podido iniciar sesion."<<endl;
+		sleep(2);
         return false;
     }
 
@@ -202,10 +204,10 @@ int Usuario::verPagina(int vez, list<Curso> listas){
 			usuario = introducirUsuarioyContrasenia();
             if(iniciarSesion(usuario.correo, usuario.contra, &rol) == true){
 				if(rol == 1){
-                        return 1;//participante
+                    return 1;//participante
                 }
                 else if(rol == 2){
-                        return 2;//coordinador de curso
+                    return 2;//coordinador de curso
                 }
             }
             else{
@@ -214,6 +216,10 @@ int Usuario::verPagina(int vez, list<Curso> listas){
 		break;
 		case 2:
 			verListas(listas);
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
+			cout<<endl;
 			return 3;
 		break;
 		case 3:
@@ -246,7 +252,10 @@ bool Usuario::registrarUsuario(string cor, string cotra){
 		return false;
 	}
 	else{
+		system("clear");
 		cout<<"Usuario registrado con exito"<<endl;
+		set_correo(cor);
+        set_contra(cotra);
 		return true;
 	}
 }
@@ -381,20 +390,39 @@ int contarlineas(){
 	d.close();
 	return c;
 }
+int contarMatricula(){
+	ifstream d;
+	string ausi;
+	int c = 0;
+	d.open("matriculas.txt", ios::in);
+	if(d.fail()){
+		cout<<"Error al abrir fichero de cursos"<<endl;
+		exit(1);
+	}
+	while(!d.eof()){
+		getline(d, ausi);//lee todas las lineas hasta topar con el titulo
+		//cout<<"Linea "<<c<<": "+ausi<<endl;
+		c++;
+	}
+	d.close();
+	return c;
+}
 bool Participante::globalset(string cor){
+	
 	ifstream f, g;
 	string linea, atribs[5], a,b,rol;
 	vector<string> v;
 	v.push_back("");
-	int ncmat = 0, iters, flag = 0;
+	int ncmat = 0, iters, flag = 0, n = contarMatricula(), contador = 0;
 	f.open("matriculas.txt", ios::in);
 	g.open("logs.txt", ios::in);
 	if(f.fail() || g.fail()){
 		cout<<"Error al obtener datos en fichero matricula."<<endl;
 		return false;
 	}
-	while(!f.eof()){
+	while(contador < n){
 		getline(f, linea);//escanea cada linea hasta dar con el correo
+		
 		if(linea == cor){
 			flag++;
 			for(int i = 0 ; i < 5 ; i++){
@@ -412,7 +440,9 @@ bool Participante::globalset(string cor){
 					tri = true;
 			}
 		}
+		contador++;
 	}
+		
 	if(flag == 0){
 		while(!g.eof()){
 			getline(g, a);
@@ -430,21 +460,27 @@ bool Participante::globalset(string cor){
 	if(flag == 0){//no se ha encontrado el correo en los perfiles, no esta registrado
 		cout<<"No tienes datos en la base de datos"<<endl;
 		cout<<"Vas a introducir tus datos personales"<<endl;
+		sleep(2);
 		//dni
+		system("clear");
 		cout<<"Introduce tu DNI: ";
 		cin>>atribs[0];
 		cout<<endl;
+		system("clear");
 		cout<<"Introduce Tu nombre completo: ";
 		getline(cin,atribs[1]);
 		getline(cin,atribs[1]);
 		cout<<endl;
-		cout<<"Elige tus estudios: ";
+		system("clear");
+		cout<<"Elige tus estudios: "<<endl;
 		atribs[2] = estudiosPosibles() ;
 		cout<<endl;
+		system("clear");
 		cout<<"Introduce numero de telefono: ";
 		cin>>atribs[3];
 		cout<<endl;
-		cout<<"Seleccione su Fecha de nacimiento: ";
+		system("clear");
+		cout<<"Seleccione su Fecha de nacimiento: "<<endl;
 		atribs[4] = fechaPosible();
 	}
 	iters = v.size();
@@ -462,7 +498,8 @@ bool Participante::globalset(string cor){
 	}
 	else if(flag == 0){
 		if(imprimirPerfilNuevo(cor, atribs)==true){
-			cout<<"Registrado con exito"<<endl;
+			cout<<"ENORABUENA, Registrado con exito"<<endl;
+			sleep(2);
 			return true;
 		}
 	}
@@ -487,8 +524,8 @@ bool imprimirPerfilNuevo(string cor, string w[]){
 	if(v[v.size()-1] != "-"){ //Si no es un gion el ulitmo elemento del fichero eliminamos el ultimo elemento del vector para no crear espacios en blanco
 		v.pop_back();
 	}
-	cout<<"Numero de lineas: "<<lines<<endl;
-	cout<<"Numero de elementos de v: "<<v.size()<<endl;
+	//cout<<"Numero de lineas: "<<lines<<endl;
+	//cout<<"Numero de elementos de v: "<<v.size()<<endl;
 	re.close();
 	ofstream wr;
 	wr.open("matriculas.txt", ios::out);//machaca matriculas con los datos actualizados
@@ -501,6 +538,7 @@ bool imprimirPerfilNuevo(string cor, string w[]){
 		wr<<v[i]<<endl;
 		i++;
 	}
+	//cout<<"COR "<<cor<<endl;
 	wr<<cor<<endl;
 	wr<<w[0]<<endl;
 	wr<<w[1]<<endl;
@@ -519,6 +557,7 @@ string fechaPosible(){
 	bool visiesto = false;
 	string sano, smes, sdia;
 	while(anoFlag == 0){
+		system("clear");
 		if(ano == 0)
 			cout<<"Introduce el anio de tu nacimiento: ";
 		else
@@ -526,6 +565,7 @@ string fechaPosible(){
 		cin>>ano;
 		if(ano < 1915 || ano > 2013){ //Ni mas de 107 ni menos de 9 anios xd
 			cout<<"Fecha de nacimiento no valida"<<endl;
+			sleep(2);
 		}
 		else{
 			sano = to_string(ano);
@@ -537,6 +577,7 @@ string fechaPosible(){
 	}
 	//Mes
 	while(mesFlag == 0){
+		system("clear");
 		cout<<"Mes: "<<endl;
 		cout<<"1. Enero"<<endl;
 		cout<<"2. Febrero"<<endl;
@@ -607,10 +648,12 @@ string fechaPosible(){
 		}
 		else{
 			cout<<"Fecha no valida"<<endl;
+			sleep(2);
 		}
 	}
 
 	while(dayFlag == 0){
+		system("clear");
 		cout<<"DIA: "<<endl;
 		cout<<"01  ";cout<<"02  ";cout<<"03  ";cout<<"04  ";cout<<"05  ";cout<<"06  ";	cout<<"07  "<<endl;
 		cout<<"08  ";cout<<"09  ";cout<<"10  ";cout<<"11  ";cout<<"12  ";cout<<"13  ";	cout<<"14  "<<endl;
@@ -627,7 +670,8 @@ string fechaPosible(){
 					dayFlag = 1;
 				}
 				else if(dia == 29 && visiesto != true){ //si es 29 y no es visiesto
-					cout<<"No puede ser, no me la cuelas"<<endl;
+					cout<<"No puede ser posible"<<endl;
+					sleep(2);
 				}
 				else if(dia != 29){//si no es 29 y me da igual que sea visiesto
 					cout<<"Dia valido"<<endl;
@@ -638,6 +682,7 @@ string fechaPosible(){
 			else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
 				if(dia == 31){
 					cout<<"Error, este 31 no existe"<<endl;
+					sleep(2);
 				}
 				else{
 					cout<<"Dia valido"<<endl;
@@ -652,6 +697,7 @@ string fechaPosible(){
 			}
 			else{
 				cout<<"Dia no valido porque no existe el 30 o 31 de febrero"<<endl;
+				sleep(2);
 			}
 		}
 	}
@@ -668,6 +714,7 @@ string estudiosPosibles(){
 	int flag = 0, i = 0, c;
 	string value = "";
 	while(flag != -1){
+		system("clear");
 		cout<<"1. Grado en Administración y Dirección de Empresas"<<endl;
 		cout<<"2. Grado en Biología"<<endl;
 		cout<<"3. Grado en Bioquímica"<<endl;
@@ -879,7 +926,7 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 				while(nestcontaos <= studis.size() - 1){
 					found = estudios.find(studis[nestcontaos]);
 					if(found != string::npos){//3. si se tienen los estudios requeridos
-						cout<<"ESTUDIOS VALIDOS"<<endl;
+						cout<<ticks + 1<<". ESTUDIOS VALIDOS"<<endl;
 						ticks++;
 						nestcontaos = studis.size();
 					}
@@ -896,7 +943,7 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 
 				if(comprobarFecha(ahora, date)==true){//4. si es antes de la fecha de inicio
 					ticks++;
-					//cout<<"FECHA VALIDA"<<endl;
+					cout<<ticks + 1<<". FECHA VALIDA"<<endl;
 				}
 				else{
 					return false;
@@ -911,7 +958,7 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 				//cout<<"para un aforo de "<<afor<<" estudiantes"<<endl;
 				if(partips < afor){//2. si el curso tienee aforo
 					ticks++;
-					//cout<<"AFORO VALIDO"<<endl;
+					cout<<ticks + 1<<". AFORO DISPONIBLE"<<endl;
 					partips++;
 					participantes = to_string(partips);
 				}
@@ -947,11 +994,15 @@ bool Participante::comprobaciones(int curso, list<Curso> listas){
 
 bool Participante::matricularse(int curso, int cuantos){
 	if(comprobaciones(curso, get_listas()) == true){
+		system("clear");
 		cout<<"Has sido matriculado con exito en el curso"<<endl;
+		sleep(1);
 		return true;
 	}
 	else{
-		cout<<"No has podido ser matriculado en el curso"<<endl;
+		system("clear");
+		cout<<"No has podido ser matriculado en el curso, no cumples los requisitos"<<endl;
+		sleep(1);
 		return false;
 	}
 
@@ -1112,6 +1163,7 @@ bool buscarCurso(int **curso, list<Curso> listas){
 	while(valid != true){
 
 		cout<<"En que curso de extension de los "<<*cual<<" desea matricularse?"<<endl;
+		cout<<"--->";
 		cin>>*curso;
 		if(*curso < 1 || *curso > *cual){
 			cout<<"Curso no valido, prueba de nuevo."<<endl;
@@ -1131,6 +1183,7 @@ void Participante::paginaParticipante(int vez){
 	vector<string> cmats;
 	list<Curso> listas = get_listas();
 	size_t m;
+	system("clear");
 	if(vez == 0){ //Si es la primera vez que entra pone vienbenido
 		cout<<"BIENVENIDO <"<<get_nombre()<<">."<<endl;
 		cout<<"-------------------------------------------------"<<endl;
@@ -1149,6 +1202,8 @@ void Participante::paginaParticipante(int vez){
 		m = listas.size();
 		cual = static_cast<int>(m);
 		if(opcionaMatricula() == true){
+			system("clear");
+			verListas(listas);
 			seleccionarCurso(&curso, &cual, listas);
 			mat = matricularse(curso, cual);
 			if(mat == false || mat == true){
@@ -1156,6 +1211,7 @@ void Participante::paginaParticipante(int vez){
 					cmats = desglosar(get_cmatriculados(), 2);
 					if(actualizarMatricula(get_dni(), cmats[0]) == true){
 						cout<<"Inscripcion con exito"<<endl;
+						cout<<get_correo()<<endl;
 						globalset(get_correo());
 					}
 					else{
@@ -1204,6 +1260,7 @@ bool opcionaMatricula(){
 }
 //FUNCIONES COORDINADOR DE CURSOS
 int Ccurso::modificarCurso(){
+	system("clear");
 	int m, n, curso;
 	while(1){
 		list<Curso> l = get_listas();
@@ -1259,6 +1316,8 @@ int Ccurso::modificarCurso(){
 		}
 		break;
 		case 3:
+		system("clear");
+		verListas(l);
 			cout<<"Introduce el curso que quieres modificar: ";
 			cin>>curso;
 			if(eliminarCurso(curso) == true){
@@ -1268,6 +1327,8 @@ int Ccurso::modificarCurso(){
 			}
 			else{
 				cout<<"Curso no elimminado"<<endl;
+				sleep(1);
+				system("clear");
 				paginaCcurso(1);
 			}
 			break;
@@ -1283,11 +1344,11 @@ int Ccurso::modificarCurso(){
 }
 void Ccurso::paginaCcurso(int vez){
 	int c, ope;
-	if(vez == 1){
+	system("clear");
+	if(vez == 0){
 		cout<<"HOLA COORDINADOR DE CURSO"<<endl;
 		cout<<"_-----------------------------------_"<<endl;
 	}
-	verListas(get_listas());
 	cout<<endl;
 	cout<<endl;
 	cout<<endl;
@@ -1302,19 +1363,23 @@ void Ccurso::paginaCcurso(int vez){
 	cout<<endl;
 	switch(c){
 	case 1:
-			
+			system("clear");
 			ope = modificarCurso();
 			if(ope == 1 || ope == 2 || ope == 3){
 				if(ope == 1){
 					cout<<"Creacion con exito"<<endl;
+					sleep(2);
 				}
 				else if(ope == 2){
 					cout<<"Edicion con exito"<<endl;
+					sleep(2);
 				}
 				else if(ope == 3){
 					cout<<"Eliminacion con exito"<<endl;
+					sleep(2);
 				}
 			}
+			system("clear");
 		paginaCcurso(1);
 		break;
 	case 2:
@@ -1340,7 +1405,7 @@ vector<string> atributos(){
 	bool buc = false, docFlag = false;
 	int x, n = 0, get = 0;
 	vector<string> docentes;
-
+	system("clear");
 	while(buc != true){
 		cout<<"Como quiere que se llame el curso?"<<endl;
 		cout<<"--> ";
@@ -1366,11 +1431,13 @@ vector<string> atributos(){
 			}
 		}
 	}
+	system("clear");
 	buc = false;
 	while(buc != true){
 		cout<<"Id del curso: "<<endl;
 		cout<<"--> ";
 		cin>>curso[0];
+		system("clear");
 		cout<<"El ID seria <"<<curso[0]<<">"<<endl;
 		cout<<"Estas seguro"<<endl;
 		cout<<"1. Si"<<endl;
@@ -1380,6 +1447,8 @@ vector<string> atributos(){
 		if(x == 1){
 			if(comprobarExistencia(curso[0]) != -1){
 				cout<<"Lo sentimos, este ID ya esta siendo utilizado."<<endl;
+				sleep(1);
+				system("clear");
 				cout<<"Ingrese otro id"<<endl;
 			}
 			else{
@@ -1387,6 +1456,7 @@ vector<string> atributos(){
 			}
 		}
 	}
+	system("clear");
 	buc = false;
 	bool encontrado = false;
 	int ndoc = 0, ncon = 0, y;
@@ -1396,6 +1466,7 @@ vector<string> atributos(){
 			cout<<"Introduzca el nombre del docente"<<endl;
 				getline(cin, curso[2]);
 				getline(cin, curso[2]);
+				system("clear");
 			cout<<"El docente seria <"<<curso[2]<<">"<<endl;
 			cout<<"Estas seguro"<<endl;
 			cout<<"1. Si"<<endl;
@@ -1412,6 +1483,7 @@ vector<string> atributos(){
 				if(encontrado == false){
 					docentes.push_back(curso[2]);
 					ndoc++;
+					system("clear");
 					cout<<"Quiere aniadir a mas docentes?"<<endl;
 					cout<<"1. Si"<<endl;
 					cout<<"2. No"<<endl;
@@ -1423,6 +1495,8 @@ vector<string> atributos(){
 				}
 				else{
 					cout<<"El docente ya fue aniadido"<<endl;
+					sleep(1);
+					system("clear");
 					encontrado = false;
 				}
 			}
@@ -1437,6 +1511,7 @@ vector<string> atributos(){
 		buc = true;
 	}
 	cout<<curso[2]<<" son "<<ndoc<<" docentes."<<endl;
+	system("clear");
 	buc = false;
 	docFlag = false;
 	encontrado = false;
@@ -1449,6 +1524,7 @@ vector<string> atributos(){
 				cout<<"Cual va a ser el contacto de "<<docentes[i]<<" ?"<<endl;
 					getline(cin, curso[3]);
 					getline(cin, curso[3]);
+					system("clear");
 				cout<<"El contacto de <"<<docentes[i]<<"> seria <"<<curso[3]<<">"<<endl;
 				cout<<"Estas seguro"<<endl;
 				cout<<"1. Si"<<endl;
@@ -1496,12 +1572,16 @@ vector<string> atributos(){
 							}
 							else{
 								cout<<"Este contacto no esta correspondiendo con el profesor"<<endl;
+								sleep(1);
+								system("clear");
 								encontrado = false;
 							}
 						}
 					}
 					else{//esta en el vector actual
 						cout<<"El contacto lo acabas de aniadir, no se puede duplicar"<<endl;
+						sleep(1);
+						system("clear");
 						encontrado = false;
 					}
 				}
@@ -1517,6 +1597,7 @@ vector<string> atributos(){
 				curso[3] = curso[3] +", "+ docentes[i] +": "+ contactos[i];
 		}
 	cout<<curso[3]<<endl;
+	system("clear");
 	buc = false;
 	y = 0;
 	while(buc != true){
@@ -1525,6 +1606,7 @@ vector<string> atributos(){
 		cout<<"Descricion del curso:"<<endl;
 		getline(cin, curso[4]);
 		getline(cin, curso[4]);
+		system("clear");
 		cout<<"La descripcion del curso seria <"<<curso[4]<<">"<<endl;
 		cout<<"Estas seguro"<<endl;
 		cout<<"1. Si"<<endl;
@@ -1539,14 +1621,17 @@ vector<string> atributos(){
 		}
 	}
 	cout<<curso[4]<<endl;
+	system("clear");
 	buc = false;
 	y = 0;
 	while(buc != true){
+		system("clear");
 		if(y == 0)
 			cout<<"Ahora vamos a introducir aforo maximo"<<endl;
 		cout<<"Aforo:"<<endl;
 		getline(cin, curso[6]);
 		getline(cin, curso[6]);
+		system("clear");
 		cout<<"El aforo maximo del curso seria <"<<curso[6]<<">"<<endl;
 		cout<<"Estas seguro"<<endl;
 		cout<<"1. Si"<<endl;
@@ -1560,14 +1645,18 @@ vector<string> atributos(){
 			y = 1;
 		}
 	}
+	system("clear");
 	buc = false;
 		cout<<"Ahora vamos a introducir los estudios requeridos"<<endl;
 		curso[5] = estudiosRequeridos();
+		system("clear");
 		cout<<curso[5]<<endl;
 		cout<<"Ahora vamos a introducir la fecha de INICIO del curso"<<endl;
 		curso[7] = fecha(0);
+		system("clear");
 		cout<<curso[7]<<endl;
 		cout<<"Ahora vamos a introducir la fecha de FIN del curso"<<endl;
+		system("clear");
 		curso[8] = fecha(1);
 		cout<<curso[8]<<endl;
 
@@ -1591,6 +1680,8 @@ bool Ccurso::editarCurso(){
 	int curso, c = 1, ncur = static_cast<int>(nc);
 	string linea = "", id, datos[10][ncur];
 	bool elec = false, buc = false;
+	system("clear");
+	verListas(listas);
 	cout<<"Introduce el curso que quieres modificar: ";
 	cin>>curso;
    
@@ -1599,6 +1690,7 @@ bool Ccurso::editarCurso(){
 		for(it = listas.begin(); it != listas.end(); it++){
 			if(contador == curso){
 				id = it->get_id();
+				system("clear");
 				cout<<"ID DEL CURSO ES "<<id<<endl;
 				cout<<"Es el curso que quieres editar el que tiene este id <"<<id<<">?"<<endl;
 				cout<<"1. Si"<<endl;
@@ -1606,20 +1698,24 @@ bool Ccurso::editarCurso(){
 				int x, y;
 				cin>>x;
 				if(x != 1){
+					system("clear");
 					return false;
 				}
 				string atribs[10];
 				//id
+				system("clear");
 				cout<<"El id es <" + id + ">."<<endl;
 				cout<<"Quieres modificar el id?"<<endl;
 				cout<<"1. Si"<<endl;
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					while(buc != true){
 						cout<<"Id del curso: "<<endl;
 						cout<<"--> ";
 						cin>>atribs[0];
+						system("clear");
 						cout<<"El ID seria <"<<atribs[0]<<">"<<endl;
 						cout<<"Estas seguro"<<endl;
 						cout<<"1. Si"<<endl;
@@ -1628,8 +1724,11 @@ bool Ccurso::editarCurso(){
 						cin>>x;
 						if(x == 1){
 							if(comprobarExistencia(atribs[0]) != -1){
+								system("clear");
 								cout<<"Lo sentimos, este ID ya esta siendo utilizado."<<endl;
 								cout<<"Ingrese otro id"<<endl;
+								sleep(1);
+								system("clear");
 							}
 							else{
 								buc = true;
@@ -1638,6 +1737,7 @@ bool Ccurso::editarCurso(){
 						}
 					}
 				}
+				system("clear");
 				buc = false;
 				atribs[1] = it->get_nombre();//nombre
 				cout<<"El nombre del curso es <"+atribs[1]+">."<<endl;
@@ -1646,10 +1746,12 @@ bool Ccurso::editarCurso(){
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					while(buc != true){
 						cout<<"Nombre del curso: "<<endl;
 						cout<<"--> ";
 						cin>>atribs[1];
+						system("clear");
 						cout<<"El nombre seria <"<<atribs[1]<<">"<<endl;
 						cout<<"Estas seguro"<<endl;
 						cout<<"1. Si"<<endl;
@@ -1658,8 +1760,11 @@ bool Ccurso::editarCurso(){
 						cin>>x;
 						if(x == 1){
 							if(comprobarExistencia(atribs[1]) != -1){
+								system("clear");
 								cout<<"Lo sentimos, este nombre ya esta siendo utilizado."<<endl;
 								cout<<"Ingrese otro nombre"<<endl;
+								sleep(1);
+								system("clear");
 							}
 							else{
 								it->set_nombre(atribs[1]);
@@ -1668,6 +1773,7 @@ bool Ccurso::editarCurso(){
 						}
 					}
 				}
+				system("clear");
 				buc = false;
 				bool docFlag = false, encontrado = false, docsMod = false;
 				int ndoc = 0, d, z;
@@ -1679,11 +1785,15 @@ bool Ccurso::editarCurso(){
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					while(buc != true){
+						system("clear");
 						while(docFlag != true){
+							system("clear");
 							cout<<"Introduzca el nombre del docente"<<endl;
 								getline(cin, linea);
 								getline(cin, linea);
+								system("clear");
 							cout<<"El docente seria <"<<linea<<">"<<endl;
 							cout<<"Estas seguro"<<endl;
 							cout<<"1. Si"<<endl;
@@ -1700,6 +1810,7 @@ bool Ccurso::editarCurso(){
 								if(encontrado == false){
 									docentes.push_back(linea);
 									ndoc++;
+									system("clear");
 									cout<<"Quiere aniadir a mas docentes?"<<endl;
 									cout<<"1. Si"<<endl;
 									cout<<"2. No"<<endl;
@@ -1710,7 +1821,9 @@ bool Ccurso::editarCurso(){
 									}
 								}
 								else{
+									system("clear");
 									cout<<"El docente ya fue aniadido"<<endl;
+									sleep(1);
 									encontrado = false;
 								}
 							}
@@ -1731,6 +1844,7 @@ bool Ccurso::editarCurso(){
 				else if(x == 2){
 					docentes = desglosar(atribs[2], 0);
 				}
+				system("clear");
 				buc = false;
 				docFlag = false;
 				encontrado = false;
@@ -1742,18 +1856,22 @@ bool Ccurso::editarCurso(){
 					cout<<"Ahora vamos a introducir los contactos de los docentes"<<endl;
 					for(int i = 0; i < ndoc; i++){
 						docFlag = false;
+						system("clear");
 						while(docFlag != true){
+							system("clear");
 							//cout<<"Ncons = "<<ncon<<endl;
 							cout<<"Cual va a ser el contacto de "<<docentes[i]<<" ?"<<endl;
 								getline(cin, atribs[3]);
 								getline(cin, atribs[3]);
+								system("clear");
 							cout<<"El contacto de <"<<docentes[i]<<"> seria <"<<atribs[3]<<">"<<endl;
 							cout<<"Estas seguro"<<endl;
 							cout<<"1. Si"<<endl;
 							cout<<"2. No"<<endl;
 							cout<<"--> ";
 							cin>>x;
-							if(x == 1){//hay que ver que no sea el mismo que el de otra persona ya que es unico
+							if(x == 1){
+								//hay que ver que no sea el mismo que el de otra persona ya que es unico
 								for(int j = 0 ; j < ncon; j++){
 									//cout<<"p1"<<endl;
 									size_t found = contactos[j].find(atribs[3]);//en found se guarda la posicion de encontrar
@@ -1781,24 +1899,29 @@ bool Ccurso::editarCurso(){
 									}
 									else if(exiDoc != -1 && exiCon == -1){//el docente esta en bbdd pero con otro contacto
 										contactos.push_back(atribs[3]);
+										system("clear");
 										cout<<"Valido"<<endl;
 										ncon++;
 										docFlag = true;
 									}
 									else if(exiCon != 1 && exiDoc != -1){//estan en la bbdd
 										if(exiCon == (exiDoc + docentes[i].length() + 2)){//comprobamos si corresponde al docente
+											system("clear");
 											cout<<"Esta en la base de datos pero es valida"<<endl;
 											contactos.push_back(atribs[3]);
 											ncon++;
 											docFlag = true;
 										}
 										else{
+											system("clear");
 											cout<<"Este contacto no esta correspondiendo con el profesor"<<endl;
+											sleep(1);
 											encontrado = false;
 										}
 									}
 								}
 								else{//esta en el vector actual
+									system("clear");
 									cout<<"El contacto lo acabas de aniadir, no se puede duplicar"<<endl;
 									encontrado = false;
 								}
@@ -1807,9 +1930,22 @@ bool Ccurso::editarCurso(){
 					}
 					buc = true;
 					}
+					ndoc = docentes.size();
+					atribs[3] = docentes[0] + ": " + contactos[0];
+					if(ndoc == 1){
+						atribs[3] = atribs[3] + ",";
+					}
+					for(int i = 1; i < ndoc; i++){
+						if(i == ndoc - 1){
+							atribs[3] = atribs[3] +" y " + docentes[i] + ": "+contactos[i] + ",";
+						}
+						else
+							atribs[3] = atribs[3] +", "+ docentes[i] +": " + contactos[i];
+					}
 				}
 				else{//no ha sido modificado el contacto
 					contactos = desglosar(atribs[3], 1);
+					system("clear");
 					cout<<"Quieres modificar los contactos"<<endl;
 					cout<<"1. si"<<endl;
 					cout<<"2. no"<<endl;
@@ -1818,7 +1954,7 @@ bool Ccurso::editarCurso(){
 					buc = false;
 					if(x == 1){
 						while(buc != true){
-
+							system("clear");
 							for(int l = 0; l < contactos.size(); l++){
 								cout<<l+1<<". "+docentes[l] + ": "+contactos[l]<<endl;
 							}
@@ -1830,6 +1966,7 @@ bool Ccurso::editarCurso(){
 								cout<<"Introduzca el contacto nuevo de " + docentes[d-1]<<endl;
 								getline(cin, cp);
 								getline(cin, cp);
+								system("clear");
 								cout<<"Quieres que "+cp+" sea el nuevo contacto de "+ docentes[d-1]+"?"<<endl;
 								cout<<"1. si"<<endl;
 								cout<<"2. no"<<endl;
@@ -1840,27 +1977,31 @@ bool Ccurso::editarCurso(){
 									cout<<"1. si"<<endl;
 									cout<<"2. no"<<endl;
 									cin>>z;
-									if(z != 1)
+									if(z != 1){
+										system("clear");
 										buc = true;
+									}
 								}
 							}
 						}
+						ndoc = docentes.size();
+						atribs[3] = docentes[0] + ": " + contactos[0];
+						if(ndoc == 1){
+							atribs[3] = atribs[3] + ",";
+						}
+						for(int i = 1; i < ndoc; i++){
+							if(i == ndoc - 1){
+								atribs[3] = atribs[3] +" y " + docentes[i] + ": "+contactos[i] + ",";
+							}
+							else
+								atribs[3] = atribs[3] +", "+ docentes[i] +": " + contactos[i];
+						}
 					}
 				}
-				ndoc = docentes.size();
-				atribs[3] = docentes[0] + ": " + contactos[0];
-				if(ndoc == 1){
-					atribs[3] = atribs[3] + ",";
-				}
-				for(int i = 1; i < ndoc; i++){
-					if(i == ndoc - 1){
-						atribs[3] = atribs[3] +" y " + docentes[i] + ": "+contactos[i] + ",";
-					}
-					else
-						atribs[3] = atribs[3] +", "+ docentes[i] +": " + contactos[i];
-				}
+				
 				//cout<<atribs[3]<<endl;
 				it->set_contactos(atribs[3]);
+				system("clear");
 				buc = false;
 				atribs[4] = it->get_descripcion();//descripcion
 				cout<<"La descipcion del curso es <"+atribs[4]+">."<<endl;
@@ -1870,9 +2011,11 @@ bool Ccurso::editarCurso(){
 				cin>>x;
 				if(x == 1){
 					while(buc != true){
+						system("clear");
 						cout<<"Descripcion: "<<endl;
 						cout<<"--> ";
 						cin>>atribs[1];
+						system("clear");
 						cout<<"La descripcion seria <"<<atribs[4]<<">"<<endl;
 						cout<<"Estas seguro"<<endl;
 						cout<<"1. Si"<<endl;
@@ -1885,6 +2028,7 @@ bool Ccurso::editarCurso(){
 						}
 					}
 				}
+				system("clear");
 				buc = false;
 				y = 0;
 				atribs[6] = it->get_aforo();//aforo
@@ -1895,11 +2039,13 @@ bool Ccurso::editarCurso(){
 				cin>>z;
 				if(z == 1){
 					while(buc != true){
+						system("clear");
 						if(y == 0)
 							cout<<"Ahora vamos a introducir aforo maximo"<<endl;
 						cout<<"Aforo:"<<endl;
 						getline(cin, atribs[6]);
 						getline(cin, atribs[6]);
+						system("clear");
 						cout<<"El aforo maximo del curso seria <"<<atribs[6]<<">"<<endl;
 						cout<<"Estas seguro"<<endl;
 						cout<<"1. Si"<<endl;
@@ -1907,6 +2053,7 @@ bool Ccurso::editarCurso(){
 						cout<<"--> ";
 						cin>>x;
 						if(x == 1){
+							system("clear");
 							it->set_aforo(atribs[6]);
 							buc = true;
 						}
@@ -1916,6 +2063,7 @@ bool Ccurso::editarCurso(){
 					}
 				}
 				atribs[5] = it->get_estudios();//grados
+				system("clear");
 				buc = false;
 				cout<<"Los estudios requeridos del curso son <"+atribs[5]+">."<<endl;
 				cout<<"Quieres modificarlos?"<<endl;
@@ -1923,10 +2071,13 @@ bool Ccurso::editarCurso(){
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					cout<<"Ahora vamos a introducir los estudios requeridos"<<endl;
 					atribs[5] = estudiosRequeridos();
 				}
+				
 				cout<<atribs[5]<<endl;
+				system("clear");
 				it->set_estudios(atribs[5]);
 				atribs[7] = it->get_inicio();//fecha inicio
 				cout<<"La fecha de inicio del curso es <"+atribs[7]+">."<<endl;
@@ -1935,19 +2086,23 @@ bool Ccurso::editarCurso(){
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					cout<<"Ahora vamos a introducir la fecha de INICIO del curso"<<endl;
 					atribs[7] = fecha(0);
 				}
 				cout<<atribs[7]<<endl;
+				system("clear");
 				it->set_inicio(atribs[7]);
 				buc = false;
 				atribs[8] = it->get_fin();//fecha final
+				system("clear");
 				cout<<"La fecha de final del curso es <"+atribs[8]+">."<<endl;
 				cout<<"Quieres modificarla?"<<endl;
 				cout<<"1. Si"<<endl;
 				cout<<"2. No"<<endl;
 				cin>>x;
 				if(x == 1){
+					system("clear");
 					cout<<"Introduzca la fecha de FIN del curso"<<endl;
 					while(buc != true){
 						atribs[8] = fecha(1);
@@ -2045,6 +2200,7 @@ string fecha(int mod){
 	for(int i = 0; i < 12; i++){
 		if(mesActual == dicciMeses[i]){
 			nmesA = i+1;
+			
 			cout<<"Mes actual : "<<nmesA<<endl;
 		}
 	}
@@ -2064,13 +2220,15 @@ string fecha(int mod){
 			if(mod == 0)
 				cout<<"Introduce el anio de la fecha de inicio del curso: ";
 			else
-				cout<<"Introduce el anio de la fecha de final del curso";
+				cout<<"Introduce el anio de la fecha de final del curso: ";
 		}
 		else
 			cout<<"Introduce de nuevo el anio: ";
 		cin>>ano;
 		if(ano < anoA ){ //que el curso sea el mismo anio de creacion o posterior
 			cout<<"Fecha no valida"<<endl;
+			sleep(1);
+			system("clear");
 		}
 		else{
 			sano = to_string(ano);
@@ -2082,6 +2240,7 @@ string fecha(int mod){
 	}
 	//Mes
 	while(mesFlag == 0){
+		system("clear");
 		cout<<"Mes: "<<endl;
 		cout<<"1. Enero"<<endl;
 		cout<<"2. Febrero"<<endl;
@@ -2099,6 +2258,7 @@ string fecha(int mod){
 		cin>>mes;
 		if(mes < nmesA && ano == anoA){
 			cout<<"Fecha pasada, introduzca otra por favor"<<endl;
+			sleep(1);
 		}
 		else{
 			if(mes > 0 && mes < 13){
@@ -2156,11 +2316,14 @@ string fecha(int mod){
 			}
 			else{
 				cout<<"Fecha no valida"<<endl;
+				sleep(1);
+				system("clear");
 			}
 		}
 	}
 
 	while(dayFlag == 0){
+		system("clear");
 		cout<<"DIA: "<<endl;
 		cout<<"01  ";cout<<"02  ";cout<<"03  ";cout<<"04  ";cout<<"05  ";cout<<"06  ";	cout<<"07  "<<endl;
 		cout<<"08  ";cout<<"09  ";cout<<"10  ";cout<<"11  ";cout<<"12  ";cout<<"13  ";	cout<<"14  "<<endl;
@@ -2172,6 +2335,7 @@ string fecha(int mod){
 		if(dia > 0 && dia < 32){ //dia valido
 			if(nmesA == mes && dia <= ndiaA && ano == anoA){ //el curso ha de empezar un dia despues de su creacion como minimo
 				cout<<"Fecha tardia, no es posible"<<endl;
+				sleep(1);
 			}
 			else{
 				if(mes == 2 && dia < 30){//si es febrero
@@ -2182,6 +2346,7 @@ string fecha(int mod){
 					}
 					else if(dia == 29 && visiesto != true){ //si es 29 y no es visiesto
 						cout<<"No puede ser, no me la cuelas"<<endl;
+						system("clear");
 					}
 					else if(dia != 29){//si no es 29 y me da igual que sea visiesto
 						cout<<"Dia valido"<<endl;
@@ -2192,6 +2357,7 @@ string fecha(int mod){
 				else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
 					if(dia == 31){
 						cout<<"Error, este 31 no existe"<<endl;
+						system("clear");
 					}
 					else{
 						cout<<"Dia valido"<<endl;
@@ -2206,6 +2372,8 @@ string fecha(int mod){
 				}
 				else{
 					cout<<"Dia no valido porque no existe el 30 o 31 de febrero"<<endl;
+					sleep(1);
+					system("clear");
 				}
 			}
 		}
@@ -2465,6 +2633,7 @@ list<Curso> listaCursos(){
 	if(re.fail()){
 		cout<<"Error de lectura"<<endl;
 	}
+	
 	while(/*!re.eof() && */(contador <= n)){
 		for(int i = 0; i < 10; i++){
 			getline(re, atribs[i]);

@@ -5,19 +5,19 @@ Manuel Cabrera Crespo: i12cacrm@uco.es y Javier Garcia Fernandez: i12gafej@uco.e
 Curso sobre app moviles y desarrollo web
 // Grado en Ingeniería Informática// Grado en Ingeniería Eléctrica
 24
-22/12/2022
+22/01/2023
 11/01/2023
-0
+2
 002
 CURSO DE EMPRENDIMIENTO
 Javier Fernandez Pastor
 Javier Fernandez Pastor: i12fepaj@uco.es
 Curso acerca de como emprender
-// Grado en Administración y Dirección de Empresas// Grado en Relaciones Laborales
+// Grado en Administración y Dirección de Empresas// Grado en Relaciones Laborales y Recursos Humanos// Grado en Educación Social
 17
 14/01/2023
 19/01/2023
-0
+2
 003
 CURSO DE ESTUDIOS ORIENTALES
 Drake Alvarez y Alvaro Cech Trypvu
@@ -27,4 +27,24 @@ Curso sobre estudios de zonas asiaticas
 38
 19/12/2022
 28/12/2022
+0
+000
+CURSO DE PRUEBA
+Profesor1
+Profesor1: correo1@.es
+descripcion
+// Grado en Administración y Dirección de Empresas
+10
+01/01/2024
+01/01/2025
+0
+0678
+CURSO DE FAIR TRADE
+Profesor1
+Profesor1: profe@uco.es
+Curso sobre el comercio justo
+// Grado en Administración y Dirección de Empresas
+35
+01/01/2023
+03/03/2023
 0

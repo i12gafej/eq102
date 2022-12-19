@@ -1,0 +1,66 @@
+Start testing: Dec 19 17:54 CET
+----------------------------------------------------------
+1/1 Testing: tests_gtests
+1/1 Test: tests_gtests
+Command: "/home/yabiel/Desktop/eq102/build/tests/tests"
+Directory: /home/yabiel/Desktop/eq102/build/tests
+"tests_gtests" start time: Dec 19 17:54 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/yabiel/Desktop/eq102/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 6 tests from 6 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from comprobacionesYaMatriculado
+[ RUN      ] comprobacionesYaMatriculado.comprobaciones
+
+Este alumno ya esta registrado en el curso. //0
+[       OK ] comprobacionesYaMatriculado.comprobaciones (0 ms)
+[----------] 1 test from comprobacionesYaMatriculado (0 ms total)
+
+[----------] 1 test from Usuarioregistrado
+[ RUN      ] Usuarioregistrado.registrarUsuario
+Este correo ya ha sido introducido
+[       OK ] Usuarioregistrado.registrarUsuario (0 ms)
+[----------] 1 test from Usuarioregistrado (0 ms total)
+
+[----------] 1 test from Curso
+[ RUN      ] Curso.eliminarCurso
+[       OK ] Curso.eliminarCurso (0 ms)
+[----------] 1 test from Curso (0 ms total)
+
+[----------] 1 test from Usuario
+[ RUN      ] Usuario.iniciarSesion
+Inicio de sesion con exito
+[       OK ] Usuario.iniciarSesion (0 ms)
+[----------] 1 test from Usuario (0 ms total)
+
+[----------] 1 test from arrobacomprobacion
+[ RUN      ] arrobacomprobacion.arroba
+FORMATO NO VALIDO <No puedes poner ese punto al principio>
+No es un correo de la uco
+Eso no es un correo valido
+No es un correo de la uco
+No es un correo de la uco
+No es un correo de la uco
+No es un correo de la uco
+Eso no es un correo valido
+[       OK ] arrobacomprobacion.arroba (0 ms)
+[----------] 1 test from arrobacomprobacion (0 ms total)
+
+[----------] 1 test from Ccurso
+[ RUN      ] Ccurso.crearCurso
+[       OK ] Ccurso.crearCurso (0 ms)
+[----------] 1 test from Ccurso (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 6 test suites ran. (0 ms total)
+[  PASSED  ] 6 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"tests_gtests" end time: Dec 19 17:54 CET
+"tests_gtests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 19 17:54 CET

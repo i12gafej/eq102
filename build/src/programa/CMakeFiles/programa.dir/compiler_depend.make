@@ -202,8 +202,24 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: ../src/programa/functions.
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/ext/aligned_buffer.h \
-  /usr/include/c++/11/bits/list.tcc
+  /usr/include/c++/11/bits/list.tcc \
+  /usr/include/unistd.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+  /usr/include/linux/close_range.h
 
+
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/c++/11/bits/stl_list.h:
 
@@ -222,6 +238,8 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: ../src/programa/functions.
 /usr/include/c++/11/bits/stl_bvector.h:
 
 /usr/include/c++/11/bits/stl_uninitialized.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
 /usr/include/c++/11/vector:
 
@@ -379,6 +397,8 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: ../src/programa/functions.
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
+/usr/include/linux/close_range.h:
+
 /usr/include/c++/11/debug/assertions.h:
 
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
@@ -401,6 +421,8 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: ../src/programa/functions.
 
 /usr/include/c++/11/bits/alloc_traits.h:
 
+/usr/include/unistd.h:
+
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
@@ -416,6 +438,8 @@ src/programa/CMakeFiles/programa.dir/functions.cpp.o: ../src/programa/functions.
 /usr/include/c++/11/bits/range_access.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
 
 ../src/programa/functions.cpp:
 

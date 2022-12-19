@@ -77,7 +77,7 @@ struct Us introducirUsuarioyContrasenia();
 bool distancia(string cor);
 void registrar(string cor, string con);
 int contarUsuarios();
-
+int contarMatricula();
 int contarlineas();
 
 //CLASE VISITANTE
