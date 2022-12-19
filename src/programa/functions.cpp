@@ -214,7 +214,7 @@ int Usuario::verPagina(int vez, list<Curso> listas){
 		break;
 		case 2:
 			verListas(listas);
-			return 0;
+			return 3;
 		break;
 		case 3:
 			usuario = introducirUsuarioyContrasenia();
