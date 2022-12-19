@@ -4,7 +4,7 @@ Javier Garcia fernandez
 // Grado en Ingeniería Informática// Grado en Ingeniería Eléctrica
 Telefono
 04012003
-CURSO DE APP MOVILES
+CURSO DE APP MOVILES 
 -
 i12cacrm@uco.es
 46072134
@@ -39,4 +39,34 @@ Jaravito javito malito
 31012003
 CURSO DE EMPRENDIMIENTO
 -
-
+ppp@uco.es
+234234
+11111
+// Grado en Administración y Dirección de Empresas
+123123
+01012000
+CURSO DE EMPRENDIMIENTO 
+-
+maduenio@uco.es
+4567890
+maduenio
+// Grado en Administración y Dirección de Empresas
+555666777
+01012000
+CURSO DE EMPRENDIMIENTO 
+-
+lopes@uco.es
+567822
+Lopez Anselmo
+// Grado en Ingeniería Informática
+666777888
+01012003
+-
+pool@uco.es
+12341234
+pablo castillo
+// Grado en Ingeniería Informática
+123123123
+04012003
+CURSO DE APP MOVILES 
+-

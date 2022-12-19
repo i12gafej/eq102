@@ -4,7 +4,6 @@ Javier Garcia fernandez
 // Grado en Ingeniería Informática// Grado en Ingeniería Eléctrica
 Telefono
 04012003
-CURSO DE APP MOVILES 
 -
 i12cacrm@uco.es
 46072134
@@ -68,5 +67,21 @@ pablo castillo
 // Grado en Ingeniería Informática
 123123123
 04012003
+CURSO DE APP MOVILES 
+-
+pedro@uco.es
+11110000
+Pedro Garcia
+// Grado en Ingeniería Informática
+999888777
+04012003
+CURSO DE APP MOVILES 
+-
+manuel@uco.es
+324234
+manuel cabrera
+// Grado en Ingeniería Informática
+234234
+18102003
 CURSO DE APP MOVILES 
 -

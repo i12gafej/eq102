@@ -1750,7 +1750,8 @@ bool Ccurso::editarCurso(){
 					while(buc != true){
 						cout<<"Nombre del curso: "<<endl;
 						cout<<"--> ";
-						cin>>atribs[1];
+						getline(cin, atribs[1]);
+						getline(cin, atribs[1]);
 						system("clear");
 						cout<<"El nombre seria <"<<atribs[1]<<">"<<endl;
 						cout<<"Estas seguro"<<endl;
