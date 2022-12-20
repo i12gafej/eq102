@@ -8,36 +8,36 @@
 (https://www.youtube.com/watch?v=feJ4mAaixUw)
 
 ### Instalacion
-1. Clonar repositorio
-`git clone https://github.com/i12gafej/eq102.git`
-`cd eq102`
-
-2. Borramos la carpeta build
-`rm -r build`
-
-3. Creamos la carpeta build y accedemos a ella
-`mkdir build`
-`cd build`
-
-4. Iniciamos Cmake
-`cmake ..`
-
-5. Compilamos el proyecto con MakeFile
-`make`
-
-6. Copiamos los ficheros de datos en los ejecuatables del main y del test
-`cd ../src/programa`
-`echo ../../build/src/programa/ ../../build/tests/ | xargs -n 1 cp logs.txt matriculas.txt open.txt`
-
-7. Ejecutar el programa 
-`cd ../../build`
-`./src/programa/main`
-
-8.Ejecutar los tests (en eq102/build)
-`ctest`
-`./tests/tests`
-
-
+1. Clonar repositorio  
+`git clone https://github.com/i12gafej/eq102.git`  
+`cd eq102`  
+  
+2. Borramos la carpeta build  
+`rm -r build`  
+  
+3. Creamos la carpeta build y accedemos a ella  
+`mkdir build`  
+`cd build`  
+  
+4. Iniciamos Cmake  
+`cmake ..`  
+  
+5. Compilamos el proyecto con MakeFile  
+`make`  
+  
+6. Copiamos los ficheros de datos en los ejecuatables del main y del test  
+`cd ../src/programa`  
+`echo ../../build/src/programa/ ../../build/tests/ | xargs -n 1 cp logs.txt matriculas.txt open.txt`  
+  
+7. Ejecutar el programa  
+`cd ../../build`  
+`./src/programa/main`  
+  
+8.Ejecutar los tests (en eq102/build)  
+`ctest`  
+`./tests/tests`  
+  
+  
 ### Objetos en nuestra página
 * Usuario
   * Participante
