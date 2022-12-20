@@ -30,12 +30,14 @@
 `echo ../../build/src/programa/ ../../build/tests/ | xargs -n 1 cp logs.txt matriculas.txt open.txt`  
   
 7. Ejecutar el programa  
-`cd ../../build`  
-`./src/programa/main`  
+`cd ../../build/src/programa`  
+`./main`  
   
 8. Ejecutar los tests (en eq102/build)  
-`ctest`  
-`./tests/tests`  
+`ctest`
+ //ejecuta todos los tests  
+ `cd tests`  
+`./tests`  
   
   
 ### Objetos en nuestra página
