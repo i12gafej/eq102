@@ -33,7 +33,7 @@
 `cd ../../build`  
 `./src/programa/main`  
   
-8.Ejecutar los tests (en eq102/build)  
+8. Ejecutar los tests (en eq102/build)  
 `ctest`  
 `./tests/tests`  
   
