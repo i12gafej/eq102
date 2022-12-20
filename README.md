@@ -7,7 +7,7 @@
 **Enlace del video explicativo del programa**
 (https://www.youtube.com/watch?v=feJ4mAaixUw)
 
-### Instalacion
+### Instalación
 1. Clonar repositorio  
 `git clone https://github.com/i12gafej/eq102.git`  
 `cd eq102`  
@@ -25,7 +25,7 @@
 5. Compilamos el proyecto con MakeFile  
 `make`  
   
-6. Copiamos los ficheros de datos en los ejecuatables del main y del test  
+6. Copiamos los ficheros de datos en los ejecutables del main y del test  
 `cd ../src/programa`  
 `echo ../../build/src/programa/ ../../build/tests/ | xargs -n 1 cp logs.txt matriculas.txt open.txt`  
   
