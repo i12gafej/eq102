@@ -34,10 +34,11 @@
 `./main`  
   
 8. Ejecutar los tests (en eq102/build)  
-`ctest`  
-> * ***ejecuta todos los tests***  
- `cd tests`  
-`./tests`  
+***ejecuta todos los tests***  
+> * `ctest`  
+***ejecuta cada test***
+> * `cd tests`  
+> * `./tests`  
   
   
 ### Objetos en nuestra página
